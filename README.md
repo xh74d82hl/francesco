@@ -4,6 +4,9 @@
   <img src="characters/francesco.svg" width="100%" alt="Francesco — il revisore contabile">
 </p>
 
+<p align="center">
+  <i>🇮🇹 <a href="README.it.md">Parli solo rabbia e salsicce? Clicca qui.</a></i>
+</p>
 
 > **35 years old. Round glasses. Distant stare. Maniacal precision.**
 >
