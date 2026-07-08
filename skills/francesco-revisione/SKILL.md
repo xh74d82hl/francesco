@@ -141,6 +141,7 @@ Poi:
 | Preflight + validazione struttura | `francesco/commands/struttura.md` |
 | Esecuzione documenti per paese | `francesco/commands/revisione.md#Step4` |
 | Check documenti | `francesco/commands/check.md` |
+| Triage / stato rapido | `francesco/commands/triage.md` |
 | Normativa + ricerca fonti | `francesco/commands/normativa.md` |
 | Setup nuova societa | `francesco/commands/inizializza.md` |
 | Setup dipendenze | `francesco/commands/setup.md` |

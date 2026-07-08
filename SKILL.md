@@ -219,6 +219,9 @@ verifica, triplo check, chiude.
     francesco-estratto/     ← scheletro
   normative/                ← archivio (gitignorato)
   characters/
+  DIRECTION.md              ← roadmap
+  LICENSE                   ← MIT
   README.md / README.it.md
   install.sh / install.ps1
+  .gitignore
 ```

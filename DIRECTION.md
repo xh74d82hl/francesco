@@ -32,17 +32,21 @@ francesco/
   characters/
     francesco.svg         — avatar / logo
   commands/               — istruzioni condivise
+    struttura.md          — struttura canonica directory
     revisione.md          — esecuzione sessione revisione
     check.md              — validazione documenti
     normativa.md          — preflight + archivio normativo
     triage.md             — scansione rapida
     inizializza.md        — commissionamento nuova societa
+    setup.md              — installazione dipendenze
+    riepilogo.md          — report DOCX riassuntivo
   skills/                 — skill specializzate
     francesco-revisione/   — workflow revisione (attivo)
     francesco-bilancio/    — controlli bilancio (scheletro)
     francesco-estratto/    — check estratti conto (scheletro)
   normative/              — archivio personale (gitignorato)
-  scripts/                — utility locali
+  scripts/
+    docling-server.py     — MCP server OCR (embedded)
 ```
 
 ## Stato sub-comandi
