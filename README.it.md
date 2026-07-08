@@ -195,7 +195,7 @@ Preserva `normative/` e `scripts/` esistenti. Sicura per sviluppo iterativo.
 
 ## Licenza
 
-MIT
+[MIT](LICENSE)
 
 ---
 
