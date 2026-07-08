@@ -78,6 +78,22 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 
 ## How It Works
 
+Orchestrator (`load francesco`) runs this loop every session:
+
+```
+Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+```
+
+1. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
+2. **What to do?** — if you haven't said anything, shows the routing table and asks
+3. **Picks the right command** — maps your request to a workflow
+4. **Executes** — runs the chosen command
+5. **Verifies output** — opens produced files, checks log was written
+6. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
+7. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
+
+**Sub-skills** (`load francesco-bilancio` etc.) skip step 2 and go straight to their flow — for when you already know the task.
+
 ### 1. Safety Preflight
 
 Before touching anything, Francesco:

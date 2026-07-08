@@ -78,6 +78,22 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 
 ## Come Funziona
 
+L'orchestratore (`load francesco`) esegue questo ciclo a ogni sessione:
+
+```
+Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+```
+
+1. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
+2. **Cosa vuoi fare?** — se non hai ancora detto nulla, mostra la tabella routing e chiede
+3. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
+4. **Esegue** — lancia il comando scelto
+5. **Verifica output** — apre i file prodotti, controlla che il log sia stato scritto
+6. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
+7. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
+
+**Sub-skill** (`load francesco-bilancio` ecc.) saltano il punto 2 e vanno dritte al loro flusso — per quando sai già cosa fare.
+
 ### 1. Safety Preflight
 
 Prima di toccare qualsiasi cosa, Francesco:
