@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Francesco installer.
-# Public path: detect agent, then call `npx skills add` with --agent.
-# Dev path: --dev-copy copies local repo files without deleting user data.
+# Francesco family installer.
+# Installs main skill + all sub-skills for the detected agent.
+#
+# Local:  bash install.sh [--agent <name>] [--yes]
+# Remote: bash <(curl -fsSL URL) <OWNER>/francesco [--yes]
 
 set -euo pipefail
 
-SKILL_NAME="francesco"
+SKILLS=("francesco" "francesco-revisione" "francesco-bilancio" "francesco-estratto")
 DEFAULT_SOURCE="${FRANCESCO_REPO:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || pwd)"
 
@@ -18,18 +20,13 @@ err() { printf "%b\n" "${RED}error${NC} $1"; }
 usage() {
   cat <<'EOF'
 Usage:
-  bash install.sh <OWNER>/francesco-skill
-  bash install.sh <OWNER>/francesco-skill --yes
-  bash install.sh <OWNER>/francesco-skill --agent opencode
+  bash install.sh <OWNER>/francesco
+  bash install.sh <OWNER>/francesco --yes
+  bash install.sh <OWNER>/francesco --agent opencode
   bash install.sh --list
   bash install.sh --dev-copy --target ~/.agents/skills
 
-Public installer:
-  Detects installed harnesses and runs:
-  npx skills add <source> --global --skill francesco --agent <agent>
-
-Dev copy:
-  Copies local files for testing. It never deletes normative/ or other user data.
+Installs all francesco-* skills for the detected agent.
 EOF
 }
 
@@ -54,7 +51,7 @@ choose_agent() {
   detect_agents
   if [ "${#DETECTED[@]}" -eq 0 ]; then
     err "no supported harness detected" >&2
-    info "rerun with --agent opencode, --agent claude-code, --agent cursor, or install manually with npx skills add" >&2
+    info "rerun with --agent opencode, --agent claude-code, or --agent cursor" >&2
     exit 1
   fi
 
@@ -84,21 +81,44 @@ choose_agent() {
   printf "%s" "${DETECTED[$((choice - 1))]}"
 }
 
-install_with_skills() {
-  local source="$1"
-  local agent="$2"
-  local yes="$3"
+install_skill() {
+  local skill_source="$1"
+  local skill_name="$2"
+  local agent="$3"
+  local yes="$4"
   local yes_args=()
   if [ "$yes" -eq 1 ]; then yes_args+=("--yes"); fi
 
-  info "install source: $source"
-  info "target agent: $agent"
-  npx skills add "$source" --global --skill "$SKILL_NAME" --agent "$agent" "${yes_args[@]}"
+  info "  $skill_name..."
+  npx skills add "$skill_source" --global --skill "$skill_name" --agent "$agent" "${yes_args[@]}"
+}
+
+install_all() {
+  local source="$1"
+  local agent="$2"
+  local yes="$3"
+
+  if [ -f "$SCRIPT_DIR/SKILL.md" ]; then
+    # Local install: point directly to each skill directory
+    info "installing from local path: $SCRIPT_DIR"
+    install_skill "$SCRIPT_DIR" "francesco" "$agent" "$yes"
+    for skill_dir in "$SCRIPT_DIR/skills/"*/; do
+      local name
+      name="$(basename "$skill_dir")"
+      install_skill "$skill_dir" "$name" "$agent" "$yes"
+    done
+  else
+    # Remote install: use source repo URL
+    info "installing from remote: $source"
+    for skill in "${SKILLS[@]}"; do
+      install_skill "$source" "$skill" "$agent" "$yes"
+    done
+  fi
 }
 
 dev_copy() {
   local target="$1"
-  local dest="$target/$SKILL_NAME"
+  local dest="$target/francesco"
   if [ ! -f "$SCRIPT_DIR/SKILL.md" ]; then
     err "--dev-copy requires running from local repo"
     exit 1
@@ -109,7 +129,16 @@ dev_copy() {
     --exclude='normative/' \
     --exclude='scripts/' \
     "$SCRIPT_DIR/" "$dest/"
-  ok "dev-copied to $dest"
+  # Also dev-copy each sub-skill
+  for skill_dir in "$SCRIPT_DIR/skills/"*/; do
+    local name
+    name="$(basename "$skill_dir")"
+    local sdest="$target/$name"
+    mkdir -p "$sdest"
+    rsync -a --exclude='.git' "$skill_dir/" "$sdest/"
+    ok "dev-copied $name to $sdest"
+  done
+  ok "dev-copied francesco to $dest"
   info "preserved existing normative/ and scripts/"
 }
 
@@ -163,8 +192,9 @@ main() {
 
   local chosen
   chosen="$(choose_agent "$agent" "$yes")"
-  install_with_skills "$source" "$chosen" "$yes"
-  ok "installed $SKILL_NAME for $chosen"
+
+  install_all "$source" "$chosen" "$yes"
+  ok "installed ${SKILLS[*]} for $chosen"
 }
 
 main "$@"

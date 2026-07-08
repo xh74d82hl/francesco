@@ -1,7 +1,7 @@
 # DIRECTION — Skill Francesco
 
 Salvato il 2026-07-08 durante sessione di refactoring.
-Ultimo aggiornamento: 2026-07-08 — split commands/ completato, installer selettivo, README Ralph.
+Ultimo aggiornamento: 2026-07-08 — struttura multi-skill, root orchestratore, commands/ condivisi.
 
 ## Concept
 
@@ -15,26 +15,34 @@ Ultimo aggiornamento: 2026-07-08 — split commands/ completato, installer selet
 - Non fa mai domande stupide — solo quelle necessarie
 - "Fidati, ce l'ho fatta 50 volte di fila"
 
-## Struttura skill (container di sub-comandi)
+## Struttura multi-skill
 
-Francesco e un container. Ogni sub-comando e un file in `commands/`:
+Francesco e una famiglia di skill, ognuna col suo SKILL.md.
+La root SKILL.md e l'orchestratore (regole condivise + menu).
+commands/ e una libreria riutilizzabile da tutte le skill.
 
 ```
 francesco/
-  SKILL.md                — entry point con routing
+  SKILL.md                — orchestratore (regole condivise + menu)
   DIRECTION.md            — questo file
-  README.md               — marketing in stile Ralph
+  README.md               — inglese
+  README.it.md            — italiano
   install.sh              — auto-detect installer
+  install.ps1             — Windows installer
   characters/
     francesco.svg         — avatar / logo
-  commands/
-    revisione.md          — revisione contabile completa
+  commands/               — istruzioni condivise
+    revisione.md          — esecuzione sessione revisione
     check.md              — validazione documenti
-    normativa.md          — consultazione + auto-aggiornamento archivio
-    triage.md             — scansione rapida societa
-    inizializza.md        — setup nuova societa
-  normative/              — archivio personale (gitignorato, costruito dall'agente)
-  scripts/                — utility script locali
+    normativa.md          — preflight + archivio normativo
+    triage.md             — scansione rapida
+    inizializza.md        — commissionamento nuova societa
+  skills/                 — skill specializzate
+    francesco-revisione/   — workflow revisione (attivo)
+    francesco-bilancio/    — controlli bilancio (scheletro)
+    francesco-estratto/    — check estratti conto (scheletro)
+  normative/              — archivio personale (gitignorato)
+  scripts/                — utility locali
 ```
 
 ## Stato sub-comandi

@@ -159,7 +159,7 @@ Preserves existing `normative/` and `scripts/`. Safe for iterative development.
 
 ```
 ~/.agents/skills/francesco/
-  SKILL.md              — routing + brain
+  SKILL.md              — orchestrator (shared rules + menu)
   README.md             — this file (English)
   README.it.md          — Italian version 🇮🇹
   install.sh            — installer for Linux/macOS
@@ -167,12 +167,19 @@ Preserves existing `normative/` and `scripts/`. Safe for iterative development.
   DIRECTION.md          — roadmap
   characters/
     francesco.svg       — the face
-  commands/
-    revisione.md        — full audit workflow
+  commands/             — shared reusable instructions
+    revisione.md        — full audit session flow
     check.md            — document validation
     normativa.md        — regulation archive + auto-update
     triage.md           — quick company scan
-    inizializza.md      — new company setup
+    inizializza.md      — new company commissioning
+  skills/               — specialized skill entries
+    francesco-revisione/
+      SKILL.md          — revision workflow
+    francesco-bilancio/
+      SKILL.md          — balance checks (upcoming)
+    francesco-estratto/
+      SKILL.md          — bank statement checks (upcoming)
   normative/            — per-company regulation archive (gitignored)
   scripts/              — local utility scripts (gitignored)
 ```
