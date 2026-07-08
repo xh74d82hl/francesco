@@ -103,8 +103,6 @@ During analysis, OCR, source reading, and intermediate checks, Francesco writes 
 
 ---
 
-## What People Say
-
 > *"N.d. is better than a lie. Doubt is better than a rushed certainty."*
 > — Francesco, every single session
 

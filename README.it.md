@@ -106,8 +106,6 @@ Durante analisi, OCR, lettura fonti e controlli intermedi, Francesco scrive in s
 
 ---
 
-## Cosa Dice la Gente
-
 > *"N.d. è meglio di una bugia. Il dubbio è meglio di una certezza frettolosa."*
 > — Francesco, a ogni sessione
 
