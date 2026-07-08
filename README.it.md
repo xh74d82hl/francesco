@@ -16,19 +16,14 @@
 
 ## Avvio Rapido
 
-Dopo l'installazione, le skill vengono scoperte automaticamente dal tuo agente. Basta dire cosa serve:
+Dopo l'installazione, invoca Francesco per nome:
 
-> "Usa Francesco, devo fare una revisione"
-> "Verifica il bilancio con Francesco"
-> "Check the documents with francesco-bilancio" (funziona in inglese)
-> "Fai il test Benford su questi numeri"
+> **`/francesco`** — orchestratore (menu completo, sceglie il flusso giusto)
+> **`/francesco-bilancio`** — controlli bilancio
+> **`/francesco-estratto`** — riconciliazione bancaria
+> **`/francesco-revisione`** — documenti di revisione
 
-Dì **"cosa posso fare"** o dimmi direttamente cosa ti serve — scelgo io il flusso giusto.
-
-Inizia con l'**orchestratore** (solo "francesco") per il menu completo. Usa una **sub-skill** quando sai già cosa fare:
-- `francesco-bilancio` — controlli bilancio
-- `francesco-estratto` — riconciliazione bancaria
-- `francesco-revisione` — documenti di revisione
+L'orchestratore ti saluta, fa i controlli preflight, poi chiede cosa ti serve in poche parole. Dì **"cosa posso fare"** o digli direttamente cosa vuoi — sceglie lui il flusso. Le sub-skill saltano il menu e vanno dritte al lavoro.
 
 ---
 

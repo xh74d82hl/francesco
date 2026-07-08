@@ -16,19 +16,14 @@
 
 ## Quick Start
 
-After installation, skills are auto-discovered by your agent. Just say what you need:
+After installation, invoke Francesco by name:
 
-> "Use Francesco, I need to run an audit"
-> "Verifica il bilancio con Francesco"
-> "Check the documents with francesco-bilancio"
-> "Run Benford test on these numbers"
+> **`/francesco`** — orchestrator (shows menu, picks the right flow)
+> **`/francesco-bilancio`** — balance sheet checks
+> **`/francesco-estratto`** — bank reconciliation
+> **`/francesco-revisione`** — audit documentation
 
-Say **"cosa posso fare"** or tell Francesco directly what you need — he picks the right workflow.
-
-Start with the **orchestrator** (just "francesco") for the full menu. Use a **sub-skill** name when you already know the task:
-- `francesco-bilancio` — balance sheet checks
-- `francesco-estratto` — bank reconciliation  
-- `francesco-revisione` — audit documentation
+The orchestrator greets you, runs preflight, then asks what you need in a few words. Say **"cosa posso fare"** or tell him directly — he picks the right workflow. Sub-skills skip the menu and go straight to work.
 
 ---
 
