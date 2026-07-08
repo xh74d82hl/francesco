@@ -1,7 +1,7 @@
 # Francesco
 
 <p align="center">
-  <img src="characters/francesco.svg" width="280" alt="Francesco — il revisore contabile">
+  <img src="characters/francesco.svg" width="100%" alt="Francesco — il revisore contabile">
 </p>
 
 <p align="center">
