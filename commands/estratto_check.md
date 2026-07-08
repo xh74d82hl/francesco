@@ -22,7 +22,7 @@ Token: stile compresso durante lettura/OCR/controlli. Leggibile per warning, rep
 ## Step 1 — Carica le fonti
 
 Da `Documenti acquisiti/` (XLSX/CSV via skill xlsx, PDF via docling):
-- Estralti conto (per conto e per periodo).
+- Estratti conto (per conto e per periodo).
 - Contabilità banca: libro giornale / mastro / prima nota (colonne: data, descrizione, dare, avere).
 
 Normalizza in `Revisione/estratto_check_[CONTO]_[ANNO].xlsx` (2 sheet: Esterno / Contabilità).

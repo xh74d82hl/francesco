@@ -102,9 +102,9 @@ Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 | "struttura" / "cartelle" / "organizzazione" | `commands/struttura.md` |
 | "setup" / "configura" / "installa dipendenze" | `commands/setup.md` |
 | "riepilogo" / "report" / "stato documento" | `commands/riepilogo.md` |
-| "bilancio" / "controlli bilancio" / "quadratura" | `skills/francesco-bilancio` (poi `commands/bilancio_check.md`) |
-| "check bilancio" / "benford" / "numeri truccati" / "verifica voci" | `commands/bilancio_check.md` |
-| "estratto conto" / "riconciliazione" / "check banca" | `skills/francesco-estratto` (poi `commands/estratto_check.md`) |
+| "bilancio" / "quadratura" / "verifica voci" | `commands/bilancio_check.md` |
+| "benford" / "numeri truccati" / "pattern sospetti" | `commands/bilancio_check.md#benford` |
+| "estratto conto" / "riconciliazione" / "check banca" | `commands/estratto_check.md` |
 | generico / "cosa posso fare" | Mostra tabella routing |
 
 Il comando caricato esegue il suo flusso specifico e produce output.
