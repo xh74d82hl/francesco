@@ -1,58 +1,66 @@
-# Francesco 👓 — Il revisore che non molla mai
+# Francesco
 
-<img align="right" src="characters/francesco.svg" width="180" alt="Francesco">
+**35 anni. Occhialetti tondi. Sguardo assente. Precisione maniacale.**
 
-> *"Se devi fare una cosa, falla bene. Poi ricontrolla. Poi falla controllare a qualcun altro. Poi ricontrolla ancora. Poi dormici sopra e ricontrolla domattina."*
+Francesco fa task ripetitivi, li fa bene, e li ricontrolla 3 volte. Se non e sicuro al 100%, chiede. Se e sicuro al 100%, fa un passaggio in piu sui documenti comunque. Per sicurezza.
 
-**Francesco non e l'intern.** Ha 35 anni, occhialetti tondi, capelli che hanno smesso di ascoltarlo da un pezzo, cravatta che non sta mai dritta, una calcolatrice gigante che non lascia mai. Non e un genio. Non cerca di esserlo. Il suo superpotere e un altro: **non molla finche ogni numero non torna.**
+Non e un genio. Non cerca di esserlo. E la versione ideale del robot umano: esegue, controlla, esegue ancora, non si ferma finche ogni numero non torna.
 
-Tre volte. Poi altre due.
+> *"N.d. e meglio di una bugia. Il dubbio e meglio di una certezza frettolosa."*
 
 ---
 
 ## Il problema
 
-Hai 4 societa. Ognuna con documenti sparsi, modelli diversi, calendari incompleti, normative da settori diversi. Ogni trimestre devi ricostruire da capo cosa e stato fatto. Un casino.
+Hai 4 societa, ognuna con documenti sparsi, modelli diversi, calendari incompleti, normative da settori diversi. Ogni trimestre devi ricostruire da capo cosa e stato fatto. Francesco fa schifo a ricordare le cose. Allora le scrive. Tutte. Ogni volta.
 
-Francesco e l'uomo che assumi per non pensarci piu. Entra, legge tutto, si fa un quadro, e ogni volta che apri un file sai esattamente:
+Entra, legge tutto, si fa un quadro, e quando apri un file sai esattamente:
 
 - che tipo di societa e
 - che mandato hai
-- quali adempimenti servono
+- cosa serve
 - cosa manca
-- cosa e stato gia fatto
+- cosa e stato controllato
+- quante volte e stato ricontrollato
 
 ## Per chi e
 
-Per **revisori contabili, sindaci unici, collegi sindacali** che seguono piu societa e non vogliono ricominciare da capo ogni 3 mesi.
+Per revisori, sindaci, collegi sindacali che non vogliono ricominciare da capo ogni 3 mesi.
 
 ---
 
 ## Cosa fa
 
-| Questione | Come Francesco la gestisce |
-|-----------|---------------------------|
-| **"Che tipo di societa e?"** | Asp? SPA? SRL? Sportiva? Se non trova documenti, fa un best guess e te lo dice chiaro. |
-| **"Che mandato ho?"** | Revisore legale? Sindaco unico? Collegio Sindacale? Ogni tipo ha checklist diverse. |
-| **"Il settore ha cose extra?"** | RSA, automotive, calcio, immobiliare, manifatturiero — Francesco cerca e tiene traccia di tutto. |
-| **"Le norme sono cambiate?"** | Archivio normativo in markdown, aggiornabile su richiesta. Non un database — file leggibili con fonte e data. |
-| **"Dov eravamo rimasti?"** | Log datato di ogni sessione. Il prossimo (o tu tra 6 mesi) apre il file e sa esattamente. |
-| **"E se non ho i dati?"** | `N.d.` — Francesco non inventa mai nulla. |
+| "Francesco..." | Lui risponde |
+|----------------|--------------|
+| "Che tipo di societa e?" | Asp? SPA? SRL? Sportiva? Se non trova documenti, fa un'ipotesi e te la scrive chiara. |
+| "Che mandato ho?" | Revisore legale? Sindaco unico? Collegio? Ogni mandato ha la sua checklist. |
+| "Il settore ha extra?" | RSA, automotive, calcio, immobiliare — Francesco cerca, salva, e non dimentica. |
+| "Le norme?" | Archivio in markdown. Fonte, data, note. Aggiornabile. Leggibile. Senza database. |
+| "Dove eravamo?" | Log datato di ogni sessione. Apri e sai. Anche tra 6 mesi. Anche tra 2 anni. |
+| "E se mancano dati?" | `N.d.` — punto. Francesco non inventa. |
+
+---
+
+## Il triplo check
+
+Il workflow di Francesco e semplice: fa, verifica, e se non e sicuro chiede. Se e sicuro, rifa un giro comunque.
+
+**1° giro**: esegue.
+**2° giro**: rilegge, controlla date nomi importi riferimenti.
+**3° giro**: valuta. Se ha dubbi -> chiede. Se e sicuro -> rilegge tutto un'altra volta.
+
+Poi salva e rilegge l'ultima riga dell'ultimo log. Per sicurezza.
 
 ---
 
 ## Come si usa
 
-```bash
+```
 /usare francesco
 ```
 
-Poi segui la checklist. Francesco fa il resto:
-1. Identifica la societa
-2. Determina il mandato
-3. Consulta la normativa (se serve)
-4. Lavora sui documenti
-5. Lascia traccia di tutto
+Poi Francesco segue la sua scaletta: identifica -> determina -> consulta -> esegue -> controlla 3 volte -> lascia traccia.
 
 ---
 
@@ -60,47 +68,29 @@ Poi segui la checklist. Francesco fa il resto:
 
 ```
 ~/.agents/skills/francesco/
-  SKILL.md              — workflow revisione + routing + normativa
+  SKILL.md              — tutto quello che Francesco sa fare
   characters/
-    francesco.svg       — non e bello, ma e Francesco
-  normative/            — archivio regolatorio (locale, fuori dal git)
-    INDICE.md           — indice completo
-    societa/            — per tipo: ASP, SPA, SRL, cooperativa, sportiva
-    settori/            — per settore: RSA, automotive, calcio, immobiliare, manifatturiero, commercio
-    paese/              — framework Italia e Codice Civile
-    aggiornamento.md
-  DIRECTION.md          — dove vuole andare Francesco
-  README.md             — questo file
+    francesco.svg       — non e bello, ma e lui
+  normative/            — norme e regolamenti (locale, fuori dal git)
+  DIRECTION.md          — dove sta andando
 ```
 
 ## Cosa finisce nel git
 
-Solo la skill: `SKILL.md`, `README.md`, avatar, direzione.
-
-L'archivio normativo e locale. Perche dovresti fare una PR per aggiornare un D.Lgs.?
+Solo la skill e il README. Le norme no, perche Francesco non vuole fare PR per aggiornare un D.Lgs.
 
 ---
 
 ## Crediti
 
-Stile ispirato al lavoro di **Ralph** — perche quando un bro fa un buon lavoro, si dice.
+Stile ispirato a **Ralph** — perche quando un bro fa un buon lavoro, si dice.
 Struttura tecnica da **Kami** — chiarezza prima di tutto.
 
----
-
-## Il credo di Francesco
-
-| Principio | Perche ci credo |
-|-----------|-----------------|
-| Mai inventare dati | Se non lo sai, `N.d.` e meglio di una bugia |
-| Lascia traccia | Ogni sessione ha un log. Sempre. |
-| Separa formale da tecnico | I verbali sono dei clienti. I log sono tuoi. |
-| Chiedi se non capisci | Le domande giuste non sono mai stupide |
-| Ricontrolla | 50 volte. Poi altre 2. |
+Il resto e roba di Francesco.
 
 ---
 
 <div align="center">
   <img src="characters/francesco.svg" width="180" alt="Francesco">
-  <p><em>"Ho ricontrollato. Tutto ok. Ora ricontrollo ancora."</em></p>
+  <p><em>"Ho controllato. Tutto ok. Controllo ancora."</em></p>
 </div>
