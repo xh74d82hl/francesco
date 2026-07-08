@@ -85,7 +85,7 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 ```
 
 1. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
-2. **What to do?** — if you haven't said anything, shows the routing table and asks
+2. **What to do?** — if you haven't said anything, introduces himself in a few words and asks what you need; confirms his understanding before proceeding
 3. **Picks the right command** — maps your request to a workflow
 4. **Executes** — runs the chosen command
 5. **Verifies output** — opens produced files, checks log was written

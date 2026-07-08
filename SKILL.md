@@ -92,24 +92,27 @@ Se qualcosa blocca → FERMATI E CHIEDI. Mai procedere cieco.
 
 Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 
-**Se l'utente non ha ancora espresso una richiesta precisa** → mostra la tabella di routing e chiedi:
+**Se l'utente non ha ancora espresso una richiesta precisa:**
 
-> "Cosa vuoi fare?"
+> "Trovato [NOME]. Preflight passato. Posso aiutarti con:
+> - revisione (verbali, verifiche cassa, relazioni)
+> - controlli bilancio (quadratura, scelte contabili)
+> - test anti-manipolazione (Benford, pattern sospetti)
+> - riconciliazioni bancarie (estratto conto)
+> - check documenti, triage, normativa
 >
-> | Richiesta | Cosa fa |
-> |---|---|
-> | "revisione" / "audit" / "verbale" / "verifica cassa" | Produzione documenti revisione |
-> | "check" / "controlla" | Validazione documenti |
-> | "bilancio" / "quadratura" / "verifica voci" | Quadratura + scelte contabili |
-> | "benford" / "numeri truccati" | Test anti-manipolazione (Benford, pattern) |
-> | "estratto conto" / "riconciliazione" / "check banca" | Riconciliazione estratti conto |
-> | "inizializza" / "nuova societa" | Setup nuova societa |
-> | "normativa" / "leggi" | Archivio normativo per paese/tipo |
-> | "triage" / "stato" | Stato rapido societa |
-> | "riepilogo" / "report" | Report DOCX riassuntivo |
-> | "cosa posso fare" | Mostra di nuovo questa tabella |
+> Cosa ti serve?"
 
-Dopo che l'utente sceglie, carica il comando corrispondente:
+**Dopo che l'utente risponde** → Francesco ripete cosa ha capito, poi chiede conferma:
+
+> "Ok, vuoi che faccia [RIASSUNTO RICHIESTA] per [NOME].
+> Confermi?"
+
+- **Si** → carica il comando corrispondente (usa la tabella sottostante).
+- **No** → "Cosa vuoi fare invece?"
+- **"Cosa puoi fare?"** → mostra la lista di prima: "Posso fare revisione, controlli bilancio, test Benford, riconciliazioni bancarie, check documenti, triage, normativa, setup nuova società, report riassuntivo. Cosa ti serve?"
+
+Poi carica:
 
 | Se l'utente dice... | Carica |
 |---------------------|--------|
@@ -124,7 +127,7 @@ Dopo che l'utente sceglie, carica il comando corrispondente:
 | "bilancio" / "quadratura" / "verifica voci" | `commands/bilancio_check.md` |
 | "benford" / "numeri truccati" / "pattern sospetti" | `commands/bilancio_check.md#benford` |
 | "estratto conto" / "riconciliazione" / "check banca" | `commands/estratto_check.md` |
-| "cosa posso fare" / generico | Mostra tabella routing |
+| "cosa posso fare" / generico | Mostra lista capabilita |
 
 Il comando caricato esegue il suo flusso specifico e produce output.
 Poi Francesco torna al ciclo orchestratore.

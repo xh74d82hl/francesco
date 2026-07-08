@@ -85,7 +85,7 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 ```
 
 1. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
-2. **Cosa vuoi fare?** — se non hai ancora detto nulla, mostra la tabella routing e chiede
+2. **Cosa vuoi fare?** — se non hai ancora detto nulla, si presenta in poche parole e chiede cosa serve; conferma la sua comprensione prima di procedere
 3. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
 4. **Esegue** — lancia il comando scelto
 5. **Verifica output** — apre i file prodotti, controlla che il log sia stato scritto
