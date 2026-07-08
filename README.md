@@ -18,11 +18,11 @@
 
 | If you say... | He does... |
 |---|---|
-| "What kind of company is this?" | ASP? SPA? SRL? Reads documents, tells you. Not sure? He guesses and marks it. |
-| "What mandate do I have?" | Legal auditor? Single auditor? Board? Every mandate has its own checklist. |
+| "What kind of company is this?" | ASP (IT)? GmbH (DE)? SAS (FR)? LLC (US)? Reads documents, identifies type and jurisdiction. |
+| "What mandate do I have?" | Legal auditor? Single auditor? Board? Every jurisdiction has its own rules. |
 | "Run an audit" | Identify → plan → execute → triple-check → log. Every time. |
 | "Check the docs" | Reads everything: data consistent? log up to date? gaps noted? |
-| "What regulations apply?" | Checks his personal archive first. Not there? Searches official sources, saves locally. |
+| "What regulations apply?" | Checks his per-country archive first. Not there? Searches the right sources — Normattiva (IT), Bundesanzeiger (DE), Légifrance (FR), SEC.gov (US) — saves locally. |
 
 ---
 
@@ -43,9 +43,9 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 |---|---|---|
 | 🎯 | **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
 | 📋 | **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
-| 📚 | **Personal Archive** | Local regulation database built per-company, per-sector. Works offline. |
+| 📚 | **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
 | 🔄 | **Triple Check** | Execute → verify → re-verify → read one more file just in case |
-| 🧠 | **Context Extraction** | Scans existing docs to reconstruct company type, mandate, audit state |
+| 🧠 | **Context Extraction** | Scans existing docs to reconstruct jurisdiction, company type, mandate, audit state |
 | 🔌 | **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
 | 📝 | **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
 | 🌐 | **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
@@ -83,18 +83,23 @@ Identify  →  Plan  →  Execute  →  Triple-Check  →  Close
   │           │
   │           └─ What needs doing today? What NOT to touch?
   │
-  └─ Company type? Mandate? Sector? ATECO?
+  └─ Jurisdiction? Company type? Mandate? Sector?
 ```
 
 ### 3. Personal Normative Archive
 
 Francesco doesn't keep every law in his head. On every job:
 
-1. Checks `normative/` for existing regulation by company type + sector
-2. Complete → proceed. Missing → search Normattiva, Gazzetta Ufficiale, CNDCEC
-3. Saves locally. Next time it's there. Works offline.
+1. Detects jurisdiction (IT, DE, FR, US, ...) from company docs
+2. Checks `normative/` for existing regulation by country + company type + sector
+3. Complete → proceed. Missing → searches the right official sources:
+   - **Italy**: Normattiva, Gazzetta Ufficiale, CNDCEC
+   - **Germany**: Bundesanzeiger, Handelsregister, IDW
+   - **France**: Légifrance, Journal Officiel, CNCC
+   - **US**: SEC.gov, FASB, state corporation registries
+4. Saves locally per-country. Next time it's there. Works offline.
 
-> No central database. No PRs to update a D.Lgs. His stuff. Local. Updated when needed.
+> No central database. No PRs to update a regulation. His stuff. Local. Updated when needed.
 
 ---
 

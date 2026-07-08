@@ -18,11 +18,11 @@
 
 | Se gli chiedi... | Lui fa... |
 |---|---|
-| "Che tipo di società è?" | ASP? SPA? SRL? Legge i documenti e te lo dice. Se non è sicuro, fa un'ipotesi e la segna. |
-| "Che mandato ho?" | Revisore legale? Sindaco unico? Collegio? Ogni mandato ha la sua checklist. |
+| "Che tipo di società è?" | ASP (IT)? GmbH (DE)? SAS (FR)? LLC (US)? Legge i documenti, identifica tipo e giurisdizione. |
+| "Che mandato ho?" | Revisore legale? Sindaco unico? Collegio? Ogni giurisdizione ha le sue regole. |
 | "Fammi una revisione" | Identifica → pianifica → esegue → triplo check → chiude. Sempre. |
 | "Controlla i documenti" | Legge tutto: dati coerenti? log aggiornato? lacune segnate? |
-| "Quali normative si applicano?" | Controlla prima il suo archivio personale. Se non c'è, cerca su fonti ufficiali e salva in locale. |
+| "Quali normative si applicano?" | Controlla prima l'archivio per paese. Se non c'è, cerca sulle fonti giuste — Normattiva (IT), Bundesanzeiger (DE), Légifrance (FR), SEC.gov (US) — salva in locale. |
 
 ---
 
@@ -43,9 +43,9 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 |---|---|---|
 | 🎯 | **Flusso di Revisione** | Ciclo completo: estrazione contesto, pianificazione, esecuzione, triplo check, chiusura |
 | 📋 | **Validazione Documenti** | Incrocia dati, date, firme, importi tra tutte le fonti |
-| 📚 | **Archivio Normativo** | Database normativo locale costruito per società e settore. Funziona offline. |
+| 📚 | **Archivio Normativo** | Database normativo locale costruito per giurisdizione, tipo società e settore. Funziona offline. |
 | 🔄 | **Triplo Check** | Esegui → verifica → riverifica → rileggi un altro file per sicurezza |
-| 🧠 | **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire tipo società, mandato, stato revisione |
+| 🧠 | **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire giurisdizione, tipo società, mandato, stato revisione |
 | 🔌 | **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
 | 📝 | **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
 | 🌐 | **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
@@ -83,18 +83,23 @@ Identifica  →  Pianifica  →  Esegui  →  Triplo Check  →  Chiudi
   │             │
   │             └─ Cosa serve oggi? Cosa NON toccare?
   │
-  └─ Tipo società? Mandato? Settore? ATECO?
+  └─ Giurisdizione? Tipo società? Mandato? Settore?
 ```
 
 ### 3. Archivio Normativo Personale
 
 Francesco non tiene in testa tutte le leggi. A ogni lavoro:
 
-1. Controlla `normative/` per vedere se ha già le norme per quel tipo di società e settore
-2. Se sì → procede. Se no → cerca su Normattiva, Gazzetta Ufficiale, CNDCEC
-3. Salva in locale. La prossima volta è già lì. Funziona offline.
+1. Rileva la giurisdizione (IT, DE, FR, US, ...) dai documenti della società
+2. Controlla `normative/` per paese + tipo società + settore
+3. Se completo → procede. Se manca → cerca sulle fonti ufficiali giuste:
+   - **Italia**: Normattiva, Gazzetta Ufficiale, CNDCEC
+   - **Germania**: Bundesanzeiger, Handelsregister, IDW
+   - **Francia**: Légifrance, Journal Officiel, CNCC
+   - **USA**: SEC.gov, FASB, registri societari statali
+4. Salva in locale per paese. La prossima volta è già lì. Funziona offline.
 
-> Niente database centrali. Niente PR per aggiornare un D.Lgs. Roba sua. Locale. Aggiornata quando serve.
+> Niente database centrali. Niente PR per aggiornare una norma. Roba sua. Locale. Aggiornata quando serve.
 
 ---
 
