@@ -131,6 +131,9 @@ Rileggi tutto. Controlla:
 - `N.d.` che potrebbero essere dati certi da qualche altra parte?
 - Date coerenti? Nomi scritti giusti?
 - Importi combaciano con le fonti?
+- **Numeri nei verbali/relazioni quadrati?** Se citi importi di bilancio →
+  carica `commands/bilancio_check.md` per validare quadratura + scelte contabili + Benford/pattern.
+- **Estratti conto riconciliati?** Se citi liquidità → carica `commands/estratto_check.md`.
 - Riferimenti incrociati tornano?
 - **Struttura cartelle ancora integra?** I nuovi documenti salvati
   sono nella cartella giusta? (es. verbale in `Verbali/[ANNO]/`,

@@ -140,6 +140,8 @@ Poi:
 |--------|--------|
 | Preflight + validazione struttura | `francesco/commands/struttura.md` |
 | Esecuzione documenti per paese | `francesco/commands/revisione.md#Step4` |
+| **Check bilancio (quadratura, scelte, Benford)** | `francesco/commands/bilancio_check.md` |
+| **Riconciliazione estratti conto** | `francesco/commands/estratto_check.md` |
 | Check documenti | `francesco/commands/check.md` |
 | Triage / stato rapido | `francesco/commands/triage.md` |
 | Normativa + ricerca fonti | `francesco/commands/normativa.md` |

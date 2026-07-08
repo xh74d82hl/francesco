@@ -102,8 +102,9 @@ Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 | "struttura" / "cartelle" / "organizzazione" | `commands/struttura.md` |
 | "setup" / "configura" / "installa dipendenze" | `commands/setup.md` |
 | "riepilogo" / "report" / "stato documento" | `commands/riepilogo.md` |
-| "bilancio" (non pronto) | "In sviluppo. Faccio revisione?" |
-| "estratto conto" (non pronto) | "In sviluppo. Faccio check?" |
+| "bilancio" / "controlli bilancio" / "quadratura" | `skills/francesco-bilancio` (poi `commands/bilancio_check.md`) |
+| "check bilancio" / "benford" / "numeri truccati" / "verifica voci" | `commands/bilancio_check.md` |
+| "estratto conto" / "riconciliazione" / "check banca" | `skills/francesco-estratto` (poi `commands/estratto_check.md`) |
 | generico / "cosa posso fare" | Mostra tabella routing |
 
 Il comando caricato esegue il suo flusso specifico e produce output.
@@ -191,6 +192,8 @@ Regole:
 | `commands/struttura.md` | Struttura canonica + validazione | Template e check cartelle |
 | `commands/setup.md` | Check Python → uv → docling → MCP → skill docx/xlsx | Setup prima esecuzione |
 | `commands/riepilogo.md` | Leggi stato → Genera DOCX | Report riassuntivo revisione |
+| `commands/bilancio_check.md` | Estrai → Quadratura → Scelte → Benford → Report | Controlli bilancio + anti-manipolazione |
+| `commands/estratto_check.md` | Carica → Confronta → Riconcilia → Report | Riconciliazione estratti conto |
 
 Ogni comando segue: Preflight → Esegui → Output. L'orchestratore chiama,
 verifica, triplo check, chiude.
@@ -206,6 +209,8 @@ verifica, triplo check, chiude.
     struttura.md            ← struttura canonica
     revisione.md            ← flusso revisione
     check.md                ← validazione documenti
+    bilancio_check.md       ← controlli bilancio + Benford/pattern
+    estratto_check.md       ← riconciliazione estratti conto
     normativa.md            ← archivio normativo
     triage.md               ← scansione rapida
     inizializza.md          ← setup nuova societa
@@ -215,8 +220,8 @@ verifica, triplo check, chiude.
     docling-server.py       ← MCP server per OCR
   skills/
     francesco-revisione/    ← workflow revisione
-    francesco-bilancio/     ← scheletro
-    francesco-estratto/     ← scheletro
+    francesco-bilancio/     ← controlli bilancio (attivo)
+    francesco-estratto/     ← riconciliazione bancaria (attivo)
   normative/                ← archivio (gitignorato)
   characters/
   DIRECTION.md              ← roadmap

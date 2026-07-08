@@ -35,6 +35,8 @@ francesco/
     struttura.md          — struttura canonica directory
     revisione.md          — esecuzione sessione revisione
     check.md              — validazione documenti
+    bilancio_check.md     — controlli bilancio + Benford/pattern
+    estratto_check.md     — riconciliazione estratti conto
     normativa.md          — preflight + archivio normativo
     triage.md             — scansione rapida
     inizializza.md        — commissionamento nuova societa
@@ -42,8 +44,8 @@ francesco/
     riepilogo.md          — report DOCX riassuntivo
   skills/                 — skill specializzate
     francesco-revisione/   — workflow revisione (attivo)
-    francesco-bilancio/    — controlli bilancio (scheletro)
-    francesco-estratto/    — check estratti conto (scheletro)
+    francesco-bilancio/    — controlli bilancio (attivo)
+    francesco-estratto/    — riconciliazione bancaria (attivo)
   normative/              — archivio personale (gitignorato)
   scripts/
     docling-server.py     — MCP server OCR (embedded)
@@ -58,6 +60,8 @@ francesco/
 | `normativa` | Completato (con preflight + auto-update) |
 | `triage` | Completato |
 | `inizializza` | Completato |
+| `bilancio_check` | Completato (quadratura + scelte contabili + Benford/pattern) |
+| `estratto_check` | Completato (riconciliazione bancaria) |
 
 ## Auto-update normativa (FLAGSHIP)
 
