@@ -13,122 +13,135 @@ metadata:
 
 # francesco-revisione
 
-Esecuzione della revisione contabile su una societa. Scopre la societa
-da solo, analizza, propone, esegue con triplo check, chiude.
+Esegue revisione contabile. Scopre la societa, analizza, propone,
+esegue con triplo check, chiude con log. Tutto interattivo.
 
-> Per le regole condivise (safety preflight, token discipline, MUST/MUST NOT)
-> vedi la skill principale `francesco`.
+> Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
+> Carica SEMPRE il preflight di SKILL.md prima di iniziare.
 
-## Flusso completo
+---
+
+## Flusso
 
 ```
-Scopri societa → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi
+Scopri → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi
 ```
 
-### Step 1 — Scopri la societa
+---
 
-Guarda nella directory corrente.
+## Step 1 — Scopri
 
-Cosa vede?
-- Directory con `Revisione/` dentro? → societa gia iniziata.
-- Directory con `Bilanci/`? → possibile societa, non ancora in revisione.
-- Piu di una candidata? → elenca e chiedi.
-- Nessuna? → "Non vedo societa qui. Dove devo guardare?"
-- Utente da un percorso? → vai li.
+1. Guarda directory corrente.
+2. Cosa vedi?
+   - `Revisione/` dentro? → societa gia iniziata.
+   - `Bilanci/` ma no `Revisione/`? → possibile nuova societa.
+   - Piu di una candidata? → elenca e chiedi.
+   - Nessuna? → "Non vedo societa. Dove guardo?"
+   - Utente da percorso? → vai li.
+3. "Ho trovato [NOME1], [NOME2]... Su quale lavoriamo?"
+4. Utente sceglie. Spostati in quella directory.
 
-> "Ho trovato [NOME1], [NOME2]... Su quale vuoi lavorare?"
+---
 
-### Step 2 — Leggi stato
+## Step 2 — Leggi stato
 
-Apri i file della societa scelta:
+1. Carica `commands/check.md` e fai un check rapido.
+2. Leggi `Revisione/PROCESSO_REVISIONE.md` → stato, calendario, mancanze.
+3. Leggi `Revisione/Date [NOME].xlsx` → scadenze.
+4. Leggi ultimo log in `LOG_AGENTI/` → ultima sessione.
+5. Scansiona `Documenti acquisiti/` → nuovi documenti?
 
-| File | Cosa cercare |
-|------|-------------|
-| `Revisione/PROCESSO_REVISIONE.md` | Stato, calendario, mancanze, modelli |
-| `Revisione/Date [NOME].xlsx` | Scadenze |
-| `Revisione/LOG_AGENTI/` ultimo log | Ultima sessione |
-| `AGENTS.md` | Regole specifiche |
-| `Revisione/Documenti acquisiti/` | Nuovi documenti? |
-
-Poi mostra all'utente:
+Poi mostra:
 
 > "Ho letto [NOME]. Giurisdizione: [PAESE]. Tipo: [TIPO]. Mandato: [MANDATO].
 > Ultima sessione: [DATA] — [RIASSUNTO].
 > Prossima scadenza: [DOCUMENTO] del [DATA].
-> Mancanze aperte: [N]. Procedo con [PROSSIMO PASSO]?"
+> Mancanze: [N]. Procedo?"
 
-Se `PROCESSO_REVISIONE.md` non esiste:
+Se PROCESSO_REVISIONE.md non esiste → fermati.
+> "Societa non inizializzata. Chiama \`francesco inizializza\` prima."
 
-> "Societa non inizializzata. Vuoi che la inizializzi?
-> Chiama \`francesco inizializza\` o apri la skill \`francesco\`."
+---
 
-### Step 3 — Pianifica sessione
+## Step 3 — Pianifica
 
-Basandoti su calendario + stato + nuovi documenti, proponi:
+Basato su calendario + stato + nuovi documenti:
 
 > "Oggi possiamo:
-> 1. [es. produrre verbale Q2 2025]
+> 1. [es. verbale Q2]
 > 2. [es. OCR nuovi documenti]
 > 3. [es. check generale]
 >
 > Cosa facciamo?"
 
 Utente sceglie. Prendi nota.
+> "Da NON toccare: [documenti firmati, modelli originali]."
 
-> "Da NON toccare: [documenti firmati, modelli originali, modelli di altre societa]."
+---
 
-### Step 4 — Esegui
+## Step 4 — Esegui
 
-| Giurisdizione | Documento | Strumento |
-|--------------|-----------|-----------|
-| **Italia** | Verbale periodico / Verifica cassa ASP / Relazione bilancio | Modello da PROCESSO_REVISIONE.md + skill docx |
-| **Germania** | Prüfungsbericht / Sitzungsprotokoll | Modello + skill docx |
-| **Francia** | Rapport CAC / Lettre de mission | Modello + skill docx |
-| **USA** | Audit report / SOX report | Modello + skill docx |
-| **UK** | Audit report / Governance statement | Modello + skill docx |
-| **Svizzera** | Rapporto di revisione | Modello + skill docx |
-| **Qualsiasi** | Scheletro futuro | Copia modello con N.d. |
-| **Qualsiasi** | OCR su PDF | MCP docling |
-| **Qualsiasi** | Tabella XLSX | skill xlsx (preservare schema) |
+Carica `commands/revisione.md#Step4` per la tabella documenti per paese.
+Usa il modello corretto da PROCESSO_REVISIONE.md.
 
 Per ogni documento:
-- Usa il modello corretto (da PROCESSO_REVISIONE.md o modelli specifici per paese)
-- Compila con dati reali
-- Se manca un dato → N.d. — mai inventare
-- Salva nella cartella giusta (es. Verbali/[ANNO]/, verifica di cassa/[ANNO]/, Prüfungsberichte/[ANNO]/)
+- Modello giusto → compila con dati reali → dato mancante = N.d. → salva in cartella anno.
 
-### Step 5 — Triplo Check
+Salva in:
+- Verbali: `Verbali/[ANNO]/*.docx`
+- Verifiche cassa: `verifica di cassa/[ANNO]/*.docx`
+- Altri paesi: vedi `commands/struttura.md`
 
-1° giro — Esecuzione: fai il lavoro. Senza fretta.
+---
 
-2° giro — Verifica: rileggi tutto. Controlla:
-- N.d. che potrebbero essere dati certi altrove?
+## Step 5 — Triplo check
+
+**1° giro**: Esegui. Senza fretta.
+
+**2° giro**: Verifica tutto.
+- N.d. risolvibili altrove?
 - Date coerenti? Nomi giusti? Importi combaciano?
-- Riferimenti incrociati tornano?
-Se trovi errore → correggi e ricomincia 2° giro.
+- Struttura cartelle integra? (riferimento: `commands/struttura.md`)
+- Documenti salvati nella cartella giusta?
+- Convenzione nomi log rispettata?
+- Errore? → correggi e rifai 2° giro.
 
-3° giro — Sicurezza:
-- Non sicuro? Chiedi all'utente. "Ho [IMPORTO] qui, [IMPORTO] la. Confermi?"
-- 100% sicuro? Fai un passaggio extra sui documenti comunque.
+**3° giro**: Sicurezza.
+- Insicuro? → Chiedi all'utente. "Ho X qui, Y la. Confermi?"
+- 100% sicuro? → Fai un giro extra sui documenti comunque.
 
-4° giro: rileggi ultima riga ultimo log. Per sicurezza.
+**4° giro**: Rileggi ultima riga dell'ultimo log.
 
-### Step 6 — Chiudi
+---
 
-1. Scrivi log in `LOG_AGENTI/`: data, societa, documenti letti/creati/modificati, dati consolidati, mancanze residue
-2. Aggiorna PROCESSO_REVISIONE.md: nuovo stato, log nel registro incrementale, mancanze aggiornate
-3. Valida apertura documenti prodotti (.docx/.xlsx si aprono?)
-4. Se applicabile, aggiorna Date [NOME].xlsx
+## Step 6 — Chiudi
 
-> "Sessione finita. Fatto: [lista]. Manca: [lista]. Prossimo passo: [UNA COSA]."
+1. Scrivi log in `LOG_AGENTI/`: `YYYY-MM-DD_log_NNN_descrizione.md`
+2. Aggiorna `PROCESSO_REVISIONE.md`: nuovo stato, mancanze, riferimento log
+3. Valida apertura documenti prodotti (.docx/.xlsx)
+4. Se applicabile, aggiorna `Date [NOME].xlsx`
+
+Poi:
+
+> "Fatto:
+> - [documento 1] creato/verificato
+> - [documento 2] creato/verificato
+>
+> Manca:
+> - [mancanza 1]
+>
+> Prossimo passo: [UNA COSA]."
+
+---
 
 ## Carica comandi condivisi
 
-Quando servi tool specifici (check, normativa, triage), carica i file
-da `commands/` nella skill principale `francesco`.
+| Quando | Carica |
+|--------|--------|
+| Preflight + validazione struttura | `francesco/commands/struttura.md` |
+| Esecuzione documenti per paese | `francesco/commands/revisione.md#Step4` |
+| Check documenti | `francesco/commands/check.md` |
+| Normativa + ricerca fonti | `francesco/commands/normativa.md` |
+| Setup nuova societa | `francesco/commands/inizializza.md` |
 
-Ad esempio:
-- `francesco/commands/check.md` — validazione documenti
-- `francesco/commands/normativa.md` — preflight + archivio normativo
-- `francesco/commands/triage.md` — scansione rapida
-- `francesco/commands/inizializza.md` — setup nuova societa
+Tutti i comandi stanno in `francesco/commands/`.
