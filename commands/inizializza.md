@@ -205,6 +205,7 @@ I dettagli storici delle singole esecuzioni vanno messi in
 - **Mandato**: [MANDATO]
 - **Settore**: [SETTORE]
 - **Esercizio corrente**: [AAAA]
+- **Fonti normative preferite**: [standard / fonti specifiche fornite dall'utente]
 
 ## Calendario verifiche
 
@@ -284,6 +285,17 @@ Francesco mostra la bozza e dice:
 > Cosa vuoi cambiare? (Tipo? Mandato? Frequenza? Documenti? Altro?)
 
 Aspetta risposta. Applica le modifiche richieste.
+
+Poi Francesco chiede preferenze fonti:
+
+> Per la normativa di [GIURISDIZIONE] uso le fonti standard
+> [elenco]. Hai fonti particolari che preferisci?
+> (Es. portale regionale, rivista settoriale, banca dati specifica)
+>
+> Se non sai o non ti interessa, dico "standard" e vado avanti.
+
+Se l'utente da fonti → le salva in PROCESSO_REVISIONE.md
+sotto `Fonti normative preferite`. Se dice "standard" → non scrive nulla.
 
 Poi:
 

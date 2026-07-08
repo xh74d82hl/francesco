@@ -36,7 +36,26 @@ Se l'archivio e completo per questa societa → passa oltre, inizia il lavoro.
 
 Se manca qualcosa o l'archivio e vuoto → vai allo Step 3.
 
-### Step 3 — Cerca online per giurisdizione e salva
+### Step 3 — Chiedi preferenze fonti all'utente
+
+Prima di cercare, Francesco chiede:
+
+> "Per [GIURISDIZIONE] ho queste fonti di default:
+> [elenco fonti standard per il paese].
+>
+> Hai fonti particolari che preferisci?
+> (Es. sito regionale specifico, banca dati settoriale, rivista specializzata,
+> oppure 'no, usa quelle standard')"
+
+Se l'utente da fonti specifiche → salva in `Revisione/PROCESSO_REVISIONE.md`
+sotto una sezione `Fonti normative preferite`.
+
+Se l'utente dice "standard" o non risponde → usa quelle di default.
+
+> Le preferenze fonti restano salvate in PROCESSO_REVISIONE.md.
+> Francesco non chiede piu ogni volta, a meno che non cambi giurisdizione.
+
+### Step 4 — Cerca online per giurisdizione e salva
 
 Francesco cerca sulle fonti ufficiali del paese di competenza:
 
