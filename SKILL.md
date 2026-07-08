@@ -64,27 +64,27 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 
 Prima di fare qualunque cosa:
 
-### 0. Setup dipendenze (prima esecuzione)
+### 0. Setup utente (prima esecuzione)
 
-Se `~/.agents/skills/francesco/.francesco-setup` non esiste:
+Se `~/.francesco-setup` non esiste:
 > "Prima esecuzione di Francesco. Vuoi configurare le dipendenze?
 > (OCR, MCP docling, skill docx/xlsx)
 >
 > Carica `commands/setup.md` per il setup guidato."
 
-Se utente dice si → carica `commands/setup.md`, esegui.
-Se utente dice no → crea comunque `.francesco-setup` per non chiedere piu,
-ma segnala: "OCR, docx e xlsx potrebbero non funzionare senza setup."
-
-Poi prosegui con preflight normale.
+- Se utente dice si → carica `commands/setup.md`, esegui.
+- Se utente dice no → crea `~/.francesco-setup` per non chiedere piu,
+  ma segnala: "OCR, docx e xlsx potrebbero non funzionare senza setup."
+- Fine setup. Scrivi `~/.francesco-setup`.
 
 ### 1. Trova directory societa
 - Guarda directory corrente.
 - Vedi `Revisione/`? → societa trovata.
 - Vedi `Bilanci/` ma no `Revisione/`? → possibile nuova societa.
 - Piu di una candidata? → elenca e chiedi.
-- Nessuna? → "Non vedo societa. Dove guardo?"
+- Nessuna? → "Qui dentro non c'è niente. Dove mi sposto?"
 - Utente da percorso? → vai li.
+- Ancora nessuna? → "Non trovo società. Dammi un percorso o fammi sapere dove guardare."
 
 ### 2. Check dipendenze (non bloccare, segnala)
 - **docling MCP** disponibile? → Si: usalo per OCR. No: "OCR non disponibile. PDF scansionati saltati."

@@ -210,13 +210,13 @@ Se qualcosa manca:
 
 ## Marker prima esecuzione
 
-Dopo setup completato, Francesco salva un file `.francesco-setup` nella
-directory `francesco` della skill per non ripetere il setup a ogni sessione.
+Dopo setup completato, Francesco salva `~/.francesco-setup` per non ripetere
+il setup a ogni sessione.
 
 ```bash
-touch ~/.agents/skills/francesco/.francesco-setup
+touch ~/.francesco-setup
 ```
 
 Alla prossima sessione, preflight controlla:
-- File `.francesco-setup` esiste? → skip setup.
+- `~/.francesco-setup` esiste? → skip setup.
 - Non esiste? → "Prima esecuzione. Vuoi configurare le dipendenze?"
