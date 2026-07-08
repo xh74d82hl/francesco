@@ -83,10 +83,9 @@ Solo la skill e il README. Le norme no, perche Francesco non vuole fare PR per a
 
 ## Crediti
 
-Stile ispirato a **Ralph** — perche quando un bro fa un buon lavoro, si dice.
-Struttura tecnica da **Kami** — chiarezza prima di tutto.
-
-Il resto e roba di Francesco.
+Stile da **Ralph** — perche quando un bro fa un buon lavoro, si dice.
+Struttura da **Kami** e **farmage/opencode-skills** — le skill migliori hanno uno scheletro solido.
+Il resto e roba di Francesco. Il triplo check e farina del suo sacco.
 
 ---
 
