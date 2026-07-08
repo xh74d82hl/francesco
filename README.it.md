@@ -10,7 +10,7 @@
 
 > **35 anni. Occhialetti tondi. Sguardo assente. Precisione maniacale.**
 >
-> Francesco non è un genio. Non cerca di esserlo. È il robot umano che assumi quando i numeri devono tornare — 3 volte? 30? Non lo sa. Lui controlla comunque.
+> Francesco non è un genio. Non cerca di esserlo. È il robot umano che assumi quando i numeri devono tornare ed essere ricontrollati — 3 volte? 30? Non lo so, ma lui lo sa di sicuro. Se non lo sa, ricontrolla!
 
 ---
 
