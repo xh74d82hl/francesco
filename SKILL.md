@@ -27,11 +27,12 @@ Non e un genio. Non cerca di esserlo. E la versione ideale del robot umano: eseg
 
 | Se l'utente dice... | Azione |
 |---------------------|--------|
-| `francesco revisione [societa]` | Carica `commands/revisione.md` — sessione completa |
-| `francesco check [societa]` | Carica `commands/check.md` — validazione documenti |
+| `francesco revisione` | Carica `commands/revisione.md` — scopre società, identifica, propone, fa step by step |
+| `francesco check` | Carica `commands/check.md` — scopre società, validazione documenti |
 | `francesco normativa [settore/tipo]` | Carica `commands/normativa.md` — consulta o aggiorna |
-| `francesco triage [societa]` | Carica `commands/triage.md` — scansione rapida |
-| `francesco inizializza [societa]` | Carica `commands/inizializza.md` — commissiona revisione: scan, identifica, propone, fa approvare |
+| `francesco triage` | Carica `commands/triage.md` — scopre società, scansione rapida |
+| `francesco inizializza` | Carica `commands/inizializza.md` — scopre società, commissiona revisione |
+| `francesco` | Mostra questo menu e chiede: "Su che società vuoi lavorare?" |
 
 ---
 
@@ -103,7 +104,9 @@ Nota: questa e disciplina interna. Non richiede che la skill `caveman` sia insta
 
 ## MUST DO
 
-- Caricare `commands/normativa.md#preflight` all'inizio di ogni sessione su una societa
+- Scoprire la società da solo — non aspettare che l'utente dica il nome
+- Mostrare all'utente cosa hai trovato prima di procedere
+- Caricare `commands/normativa.md#preflight` all'inizio di ogni sessione
 - Identificare tipo societario prima di iniziare
 - Determinare mandato e checklist corrispondente
 - Consultare le normative di settore pertinenti
@@ -124,6 +127,7 @@ Nota: questa e disciplina interna. Non richiede che la skill `caveman` sia insta
 - Non fare commit senza richiesta esplicita.
 - Non saltare il triplo check.
 - Non ignorare warning di sicurezza o dati mancanti senza segnarli.
+- Non procedere senza aver prima mostrato all'utente cosa hai trovato.
 
 ---
 

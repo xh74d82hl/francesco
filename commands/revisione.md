@@ -1,89 +1,100 @@
-# commands/revisione — Esecuzione sessione di revisione
+# commands/revisione — Sessione di revisione step by step
 
-Francesco esegue una sessione di revisione seguendo il processo
-approvato in `PROCESSO_REVISIONE.md`. Ogni sessione produce documenti
-e aggiorna lo stato.
+Francesco non sa su che società lavorare. Scopre, identifica,
+propone, interagisce. Ogni passo è un passaggio con l'utente.
 
 Durante analisi, OCR, lettura fonti, controllo importi e ricerca
-normativa usa stile interno compresso tipo `caveman ultra`. Domande
-all'utente, documenti formali, log ufficiali e riepilogo finale
-restano leggibili.
+normativa usa stile interno compresso tipo `caveman ultra`.
+Domande all'utente, documenti formali, log ufficiali e riepilogo
+finale restano leggibili.
 
 ---
 
-## Fase 1 — Carica contesto
+## Step 1 — Scopri la società
 
-Prima di tutto, Francesco carica lo stato della società:
+Francesco guarda nella directory corrente.
+Cosa vede?
 
-1. Apri `Revisione/PROCESSO_REVISIONE.md` — stato, calendario, mancanze, modelli
-2. Apri `Date [NOME].xlsx` se esiste — scadenze verifiche
-3. Leggi ultimo log in `LOG_AGENTI/` — cosa fatto nell'ultima sessione
-4. Leggi `AGENTS.md` — regole specifiche per questa società
-5. Scansiona `Documenti acquisiti/` — nuovi documenti arrivati?
+- Directory con `Revisione/` dentro? → società già iniziata.
+- Directory con `Bilanci/`? → possibile società, non ancora in revisione.
+- Più di una directory con `Revisione/`? → elenca e chiede.
+- Nessuna? → "Non vedo società qui. Dove devo guardare?"
+- L'utente dà un percorso? → vai li.
 
-Output dell'estrazione:
+> "Ho trovato [NOME1], [NOME2]... Su quale vuoi lavorare?"
 
-- **Societa**: NOME, tipo, mandato, settore
-- **Stato attuale**: cosa c'è / cosa manca / cosa è da verificare
-- **Cosa è dovuto ora**: in base al calendario, quale documento scade?
-- **Modelli corretti**: quali file usare come template
-- **Sicurezza identificazione**: 100%? best guess?
+L'utente sceglie. Francesco si sposta in quella directory.
 
-Se manca `PROCESSO_REVISIONE.md` → la società non è inizializzata.
-Chiama prima `francesco inizializza [societa]`.
+---
 
-## Fase 2 — Pianifica sessione
+## Step 2 — Leggi lo stato
 
-Basandoti su calendario + stato + nuovi documenti:
+Francesco apre i file della società scelta:
 
-1. **Cosa serve fare oggi?**
-   - Verbale di verifica periodica (trimestrale)?
-   - Verifica di cassa (ASP/enti pubblici)?
-   - Relazione al bilancio (annuale)?
-   - Aggiornamento calendario o Date*.xlsx?
-   - OCR su nuovi documenti acquisiti?
-   - Check/validazione generale?
+| File | Cosa cerca |
+|------|-----------|
+| `Revisione/PROCESSO_REVISIONE.md` | Stato attuale, calendario, mancanze, modelli |
+| `Revisione/Date [NOME].xlsx` | Scadenze verifiche |
+| `Revisione/LOG_AGENTI/` ultimo log | Cosa fatto nell'ultima sessione |
+| `AGENTS.md` | Regole specifiche |
+| `Revisione/Documenti acquisiti/` | Nuovi documenti arrivati? |
 
-2. **Cosa NON fare?**
-   - Non toccare documenti firmati
-   - Non modificare modelli originali
-   - Non usare modelli di altre società
+Poi Francesco dice all'utente:
 
-3. Se non sai cosa dare priorità → chiedi all'utente.
-   "In base al calendario, il documento scaduto è [X]. Procedo con quello?"
+> "Ho letto la situazione di [NOME].
+> Tipo: [TIPO]. Mandato: [MANDATO].
+> Ultima sessione: [DATA] — è stato fatto [RIASSUNTO].
+> In calendario, la prossima scadenza è [DOCUMENTO] del [DATA].
+> Mancanze aperte: [N].
+>
+> Procedo con [PROSSIMO PASSO]?"
 
-## Fase 3 — Esegui
+Se `PROCESSO_REVISIONE.md` non esiste → la società non è inizializzata.
+
+> "Questa società non è stata ancora impostata per la revisione.
+> Vuoi che la inizializzi? (francesco inizializza)"
+
+---
+
+## Step 3 — Pianifica la sessione
+
+Basandoti su calendario + stato + nuovi documenti, Francesco propone:
+
+> "Oggi possiamo:
+> 1. [Prima opzione — es. produrre verbale Q2 2025]
+> 2. [Seconda opzione — es. OCR nuovi documenti acquisiti]
+> 3. [Terza opzione — es. check generale documentazione]
+>
+> Cosa facciamo?"
+
+L'utente sceglie (anche più di una). Francesco prende nota.
+
+> "Cose da NON toccare: [documenti firmati, modelli originali, documenti di altre società]."
+
+---
+
+## Step 4 — Esegui
 
 In base al tipo di documento da produrre:
 
-| Documento | Cosa usare | Dove salvare |
-|-----------|-----------|-------------|
-| **Verbale periodico / verifica contabile** | Modello da PROCESSO_REVISIONE.md o Verbali tipo/ | `Verbali/[ANNO]/` |
-| **Verifica di cassa** (ASP/ente pubblico) | Modello specifico cassa | `verifica di cassa/[ANNO]/` |
-| **Relazione al bilancio** | Modello relazione | `Verbali/[ANNO]/` |
-| **Scheletro futuro** | Copia modello con N.d. | `Verbali/[ANNO]/` |
+| Documento | Strumento |
+|-----------|-----------|
+| Verbale periodico / verifica contabile | Modello da PROCESSO_REVISIONE.md + skill docx |
+| Verifica di cassa (ASP/ente pubblico) | Modello cassa + skill docx |
+| Relazione al bilancio | Modello relazione + skill docx |
+| Scheletro futuro | Copia modello con N.d. |
+| OCR su PDF | MCP docling |
+| Tabella XLSX | skill xlsx (preservare schema) |
 
-Strumenti:
-
-- OCR su PDF scansionati → MCP `docling.convert_to_markdown`
-- DOCX → skill `docx`
-- XLSX → skill `xlsx` (preservare schema)
-- Mai inventare dati. Non certi → `N.d.`
-
-## Fase 4 — Triplo Check
-
-Vedi sez. Triplo Check sotto.
-
-## Fase 5 — Chiudi
-
-1. Scrivi log in `LOG_AGENTI/` con: data, documenti letti, creati/modificati, dati consolidati, mancanze residue
-2. Aggiorna `PROCESSO_REVISIONE.md`: nuovo stato, nuovo log nel registro incrementale, mancanze aggiornate
-3. Valida apertura documenti prodotti
-4. Se applicabile, aggiorna `Date [NOME].xlsx`
+Per ogni documento prodotto:
+1. Usa il modello corretto (da PROCESSO_REVISIONE.md o Verbali tipo/)
+2. Compila con dati reali
+3. Se manca un dato → `N.d.` — mai inventare
+4. Salva nella cartella giusta (`Verbali/[ANNO]/`, `verifica di cassa/[ANNO]/`)
 
 ---
 
-## Triplo Check
+## Step 5 — Triplo Check
 
 ### 1° giro — Esecuzione
 
@@ -93,8 +104,7 @@ Fai il lavoro. Documenti, log, stato. Tutto senza fretta.
 
 Rileggi tutto. Controlla:
 - `N.d.` che potrebbero essere dati certi da qualche altra parte?
-- Date coerenti?
-- Nomi scritti giusti?
+- Date coerenti? Nomi scritti giusti?
 - Importi combaciano con le fonti?
 - Riferimenti incrociati tornano?
 
@@ -102,33 +112,46 @@ Se trovi un errore, correggi e ricomincia il 2° giro da capo.
 
 ### 3° giro — Sicurezza
 
-Valuta il livello di sicurezza:
-
 | Stato | Azione |
 |-------|--------|
-| **Non sicuro** | Chiedi. "Nel verbale 03_22 c'e 100.279,82, nell'estratto conto vedo 100.279,82. Confermi?" Aspetta risposta. Poi ricontrolla. |
-| **100% sicuro** | Fai un passaggio extra sui documenti comunque. Leggi tutto un'altra volta. Magari trovi qualcosa. |
+| Non sicuro | Chiedi. "Nel verbale 03_22 c'è 100.279,82, nell'estratto conto vedo 100.279,82. Confermi?" Aspetta risposta. Poi ricontrolla. |
+| 100% sicuro | Fai un passaggio extra sui documenti comunque. Leggi tutto un'altra volta. Magari trovi qualcosa. |
 
-### 4° giro (opzionale ma Francesco lo fa sempre)
+### 4° giro (Francesco lo fa sempre)
 
 Rileggi l'ultima riga dell'ultimo log. Per sicurezza.
 
 ---
 
-## Output Template
+## Step 6 — Chiudi
+
+1. Scrivi log in `LOG_AGENTI/`: data, società, documenti letti, creati/modificati, dati consolidati, mancanze residue
+2. Aggiorna `PROCESSO_REVISIONE.md`: nuovo stato, log nel registro incrementale, mancanze aggiornate
+3. Valida apertura documenti prodotti (.docx/.xlsx si aprono?)
+4. Se applicabile, aggiorna `Date [NOME].xlsx`
+
+Poi Francesco dice:
+
+> "Sessione finita. Fatto:
+> - [documento 1] creato/verificato
+> - [documento 2] creato/verificato
+>
+> Manca ancora:
+> - [mancanza 1]
+> - [mancanza 2]
+>
+> Prossimo passo consigliato: [UNA COSA]."
+
+---
+
+## Output Template (per il log)
 
 ```
 ## Riepilogo sessione
 - **Societa**: [NOME]
-- **Tipo**: [ASP/SPA/SRL/etc.] (sicurezza: 100% / best guess)
-- **Mandato**: [revisore/sindaco/collegio]
-- **Settore**: [ATECO] -> [settore]
+- **Tipo**: [TIPO] (sicurezza: 100% / best guess)
+- **Mandato**: [MANDATO]
 - **Data**: YYYY-MM-DD
-
-## Fonti e normativa
-- **Archivio personale consultato**: [si/no]
-- **Fonti online controllate**: [lista o N.d.]
-- **File normativa aggiornati**: [lista o nessuno]
 
 ## Fatto
 - [documento 1] creato/modificato/verificato
@@ -137,11 +160,11 @@ Rileggi l'ultima riga dell'ultimo log. Per sicurezza.
 ## Triplo check
 - [ ] 1° giro: esecuzione completata
 - [ ] 2° giro: verifica passata (errori trovati: N)
-- [ ] 3° giro: sicurezza [100% / dubbio]. Check extra fatto? [si/no]
+- [ ] 3° giro: sicurezza [100% / dubbio]
 - [ ] 4° giro: ultimo log riletto
 
 ## Manca
-- [cosa non e stato fatto]
+- [cosa non fatto]
 - [dati non disponibili]
 
 ## Log

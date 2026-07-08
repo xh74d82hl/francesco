@@ -1,6 +1,6 @@
 # commands/inizializza — Commissionamento revisione: analisi + proposta
 
-Francesco non impone un template fisso. Scansiona la società, la capisce,
+Francesco non impone un template fisso. Scopre la società, la capisce,
 propone un processo di revisione su misura, lo fa approvare dall'utente,
 poi lo segue.
 
@@ -9,12 +9,34 @@ poi lo segue.
 ## Flusso
 
 ```
-Scan  →  Identifica  →  Propone  →  Utente approva  →  Salva e inizia
+Scopri  →  Scan  →  Identifica  →  Propone  →  Utente approva  →  Salva e inizia
 ```
 
 ---
 
-## Fase 1 — Scan
+## Step 0 — Scopri la società
+
+Francesco guarda nella directory corrente.
+Cosa vede?
+
+- Directory con `Bilanci/` ma senza `Revisione/`? → possibile nuova società.
+- Directory con `Revisione/` già? → "Questa è già inizializzata. Vuoi farci una revisione?"
+- Più di una candidata? → elenca e chiede.
+- Nessuna? → "Non vedo società qui. Dove devo guardare?"
+- L'utente dà un percorso? → vai lì.
+
+> "Ho trovato [NOME1], [NOME2]... Quale vuoi inizializzare?"
+
+L'utente sceglie. Francesco si sposta in quella directory.
+
+Poi fa un primo scan veloce:
+
+> "Vedo che [NOME] ha [Bilanci, statuto, visura...].
+> Sembra una [TIPO IPOTESI]. Confermi?"
+
+---
+
+## Fase 1 — Scan approfondito
 
 Scansiona la directory della società per capire cosa c'è già.
 
