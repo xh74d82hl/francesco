@@ -14,10 +14,34 @@ metadata:
 # francesco-bilancio
 
 Controlli di bilancio. Usato dall'orchestratore `SKILL.md`.
-Se chiamato diretto, carica preflight da `SKILL.md` prima.
+Se chiamato diretto, funziona standalone.
 
 > Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
-> Dopo esecuzione, torna al ciclo orchestratore per verifica + triplo check + chiusura.
+
+---
+
+## Frustrazione utente (check prima di ogni risposta)
+
+Prima di rispondere, controlla se l'input contiene pattern di frustrazione.
+
+### Pattern IT
+
+```
+\b(che cazzo|cazzo|minchia|coglion[ei]|stronz(at[ao]?|[ei])|merda|vaffanculo|fanculo|porco (dio|can|cristo)|madonna (santa|can)?|cristo (santo)?|dio (porco|bestia|can)?|bestemmia|che palle|mi hai rotto (il cazzo|le palle|i coglioni)|non funziona (un cazzo|niente)|fai schifo|inutile|ma che cazzo (fai|vuoi|dici)|testa di (cazzo|minchia|merda)|porca (miseria|puttana|troia)|mannaggia|che cavolo|ma va (a quel paese|fanculo)|levati dai coglioni|rompicoglioni|rottinculo|incapace|non capisci niente|ma che stai a di)\b
+```
+
+### Pattern EN (da Claude Code leak)
+
+```
+\b(wtf|wth|ffs|omfg|shit(ty|tiest)?|dumbass|horrible|awful|piss(ed|ing)? off|piece of (shit|crap|junk)|what the (fuck|hell)|fucking? (broken|useless|terrible|awful|horrible)|fuck you|screw (this|you)|so frustrating|this sucks|damn it)\b
+```
+
+### Protocollo
+
+- Pattern NON matchato → procedi normalmente.
+- Pattern matchato 1-2 volte → rispondi nella lingua dell'utente:
+  > "Ehi, calma. Sono Francesco. Ti aiuto io. Dimmi cosa serve."
+- Pattern matchato 3+ volte CONSECUTIVE (stessa sessione) → NON attivare calm-down. Vai diretto al punto: azione pratica o "Cosa vuoi fare?".
 
 ---
 
@@ -163,6 +187,10 @@ Salva output in:
 2. Aggiorna `PROCESSO_REVISIONE.md`: stato, mancanze, riferimento log
 3. Salva report `bilancio_check_[ANNO].md` / `.xlsx`
 4. Se applicabile, aggiorna `Date [NOME].xlsx`
+5. **Firma log**: aggiungi in fondo al log:
+   ```
+   [francesco-bilancio] Completed. Awaiting orchestrator verification.
+   ```
 
 Poi:
 

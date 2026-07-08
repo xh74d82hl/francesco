@@ -74,7 +74,7 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 
 ## Come Funziona
 
-L'orchestratore (`load francesco`) esegue questo ciclo a ogni sessione:
+L'orchestratore (`/francesco`) esegue questo ciclo a ogni sessione:
 
 ```
 Check frustrazione → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
@@ -89,7 +89,7 @@ Check frustrazione → Preflight → Capisci richiesta → Carica comando → Es
 7. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
 8. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
 
-**Sub-skill** (nominando direttamente `francesco-bilancio` ecc.) saltano il punto 3 e vanno dritte al loro flusso — per quando sai già cosa fare.
+**Sub-skill** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) saltano il punto 3 e vanno dritte al loro flusso — completamente standalone, con triplo check e chiusura propri.
 
 ### 1. Safety Preflight
 

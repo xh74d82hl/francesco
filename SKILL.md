@@ -109,6 +109,16 @@ Poi prosegui con preflight normale.
 - Data ultimo log coerente? → No: aggiorna.
 - File .docx/.xlsx leggibili? → No: "X non si apre. Salto e segno."
 
+### 5. Lazy refresh — verifica lavoro sub-skill
+
+Se ultimo log contiene `[francesco-bilancio]`, `[francesco-estratto]` o `[francesco-revisione]` E nessuna riga `[Orchestrator verify:` presente:
+
+1. Leggi il log — cosa e stato fatto?
+2. Verifica output: file prodotti esistono? sono aperti?
+3. Stampa log con riga: `[Orchestrator verify: YYYY-MM-DD — output OK]` o `[Orchestrator verify: YYYY-MM-DD — issues: ...]`
+4. Aggiorna `PROCESSO_REVISIONE.md` se necessario
+5. Menziona casualmente: "Ho visto [X] di ieri. Verificato. OK." oppure "Trovato [X] — un file mancante, segnalato."
+
 Se qualcosa blocca → FERMATI E CHIEDI. Mai procedere cieco.
 
 ---
