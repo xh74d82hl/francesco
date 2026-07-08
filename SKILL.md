@@ -1,6 +1,6 @@
 ---
 name: francesco
-description: "Francesco — orchestratore della famiglia di skill di revisione contabile. Supporta giurisdizioni: Italia, Germania, Francia, USA, UK, Svizzera e altre. Menu principale per scegliere la skill giusta o avviare il flusso generico. Use when users ask for: revisione, bilancio, estratti conto, audit, check, normativa."
+description: "Francesco — orchestratore della famiglia di skill di revisione contabile. Supporta giurisdizioni: Italia, Germania, Francia, USA, UK, Svizzera e altre. Menu principale: carica per scegliere la skill giusta o avviare il flusso generico. Use when users ask for: francesco, cosa posso fare, help, menu, voglio fare una revisione, vorrei controllare un bilancio, non so cosa fare."
 license: MIT
 compatibility: opencode, claude-code, cursor
 metadata:
