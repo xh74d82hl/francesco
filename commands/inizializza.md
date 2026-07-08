@@ -1,92 +1,253 @@
-# commands/inizializza — Setup struttura revisione per nuova societa
+# commands/inizializza — Commissionamento revisione: analisi + proposta
 
-Flusso per creare la struttura di revisione da zero per una nuova societa.
+Francesco non impone un template fisso. Scansiona la società, la capisce,
+propone un processo di revisione su misura, lo fa approvare dall'utente,
+poi lo segue.
 
 ---
 
-## Cosa crea
+## Flusso
 
 ```
-[cartella-societa]/
-  AGENTS.md                    — regole per l'agente
-  Revisione/
-    PROCESSO_REVISIONE.md       — stato iniziale
-    LOG_AGENTI/                 — vuoto, pronto
-    verifica di cassa/          — vuoto, pronto
-    Verbali/                    — vuoto, pronto
-    Documenti acquisiti/        — vuoto, pronto
+Scan  →  Identifica  →  Propone  →  Utente approva  →  Salva e inizia
 ```
 
-## Procedura
+---
 
-1. Chiedi all'utente: nome societa, tipo (ASP/SPA/SRL/coop/sportiva), settore.
-2. Se non sa il tipo → ipotesi basata su nome, segna "da verificare".
-3. Crea struttura directory.
-4. Crea `AGENTS.md` con regole base dal tipo societario.
-5. Crea `Revisione/PROCESSO_REVISIONE.md` con il template sottostante.
-6. Esegui preflight normativa (vedi `commands/normativa.md#preflight`).
-7. Scrivi log di inizializzazione.
+## Fase 1 — Scan
 
-## Template PROCESSO_REVISIONE.md
+Scansiona la directory della società per capire cosa c'è già.
 
-Basato sul lavoro reale sulla società ASP Casa di Riposo Mosca. Ogni società avrà il suo, ma la struttura portante è questa.
+Cosa cercare:
+- Nome della cartella (indizio sul tipo: "ASP", "SPA", "SRL", "sportiva"?)
+- `Statuto/` o file statuto (PDF/DOCX) → tipo societario
+- `Visura/` o file visura → tipo, ATECO, dati camerali
+- `Bilanci/` → esercizi già depositati
+- `Verbali soci/` o `Verbali cda/` → governance
+- `Revisione/` già esistente? Se sì → carica stato, non ri-inizializzare
+- `Documenti statutari/` → statuto, atto costitutivo, nomine
+- File `.xlsx` con nome "Date*" → calendario verifiche già esistente?
+
+Output della scansione:
+
+| Indizio | Cosa rivela |
+|---------|-------------|
+| "ASP" nel nome | Ente pubblico, D.Lgs. 118/2011 art. 14 |
+| "SPA" / "S.P.A." nel nome | Società per azioni, Codice Civile |
+| "SRL" / "S.R.L." nel nome | Responsabilità limitata, Codice Civile |
+| "sportiva" / calcio / FIGC | Settore sportivo, D.Lgs. 36/2021, NOIF |
+| "cooperativa" / "coop" | D.Lgs. 220/2002 (Basevi) |
+| Bilanci depositati | Esercizi chiusi, dati dimensionali |
+
+---
+
+## Fase 2 — Identifica
+
+### Tipo societario
+
+Usa gli indizi della scansione. Se non certo:
+
+```
+Tipo non documentato. Ipotesi: [TIPO] per [motivo].
+Da verificare su visura/statuto.
+Chiedi: "Che tipo di società è? (ASP/SPA/SRL/cooperativa/sportiva/altro)"
+```
+
+### Mandato
+
+Cerca in:
+- `AGENTS.md` esistente
+- `Documenti statutari/` → nomine, delibere
+- `Revisione/Documenti da tenere/` → lettera incarico, attestazioni
+- Nome cartella revisione, log esistenti
+
+Opzioni:
+
+| Mandato | Indizi |
+|---------|--------|
+| **Revisore unico / Organo di revisione** | Ente pubblico (ASP, comune), D.Lgs. 118/2011 |
+| **Sindaco unico** | SRL, nomina singola, statuto |
+| **Collegio sindacale** | SPA, obbligo collegiale per legge |
+| **Revisore legale + Collegio** | SPA con revisione legale affidata al collegio o esterna |
+
+### Settore
+
+Dedurre da ATECO (visura) o da nome attività.
+
+Esempi:
+- "Casa di Riposo" → assistenza anziani, RSA
+- "Gubbio" + calcio → sportivo, FIGC
+- "Romeoauto" → automotive, concessionaria
+- Senza indizi → chiedi all'utente
+
+---
+
+## Fase 3 — Propone processo di revisione
+
+Francesco compila una bozza di `PROCESSO_REVISIONE.md` basata su:
+
+### Per ogni tipo società + mandato, la checklist base
+
+| Tipo | Mandato | Documenti da produrre | Frequenza |
+|------|---------|----------------------|-----------|
+| **ASP** | Revisore unico | Verifiche di cassa trimestrali + Verbale art. 14 annuale | Trimestrale |
+| **SRL** | Sindaco unico | Verbali periodici di verifica contabile + Relazione al bilancio | Trimestrale |
+| **SPA** | Collegio sindacale | Verbali periodici collegio + Relazione al bilancio (unitaria se anche rev. legale) | Trimestrale |
+| **SPA** | Collegio + Rev. legale separata | Verbali collegio + Relazione rev. legale + Relazione unitaria | Trimestrale |
+| **Sportiva** | Sindaco unico | Verbali periodici + FIGC/COVISOC + relazione sportiva | Trimestrale + FIGC |
+| **Cooperativa** | Revisore/Sindaco | Verbali periodici + Revisione coop (D.Lgs. 220/2002) | Trimestrale |
+
+### Aggiunte per settore specifico
+
+| Settore | Documenti extra |
+|---------|----------------|
+| **Assistenza anziani / RSA** | Accrediti, L.R. sanità, requisiti strutture |
+| **Calcio** | NOIF FIGC, covisoc, calciatori, campionato, parti correlate |
+| **Automotive** | Concessioni, autoriparazione, F24, inventario, riconciliazioni |
+| **Immobiliare** | Cedolare secca, IMU, contratti locazione |
+| **Commercio** | Registri IVA, e-commerce, obblighi camerali |
+
+### Struttura cartelle da creare
+
+Base comune (sempre):
+
+```
+Revisione/
+  PROCESSO_REVISIONE.md
+  LOG_AGENTI/
+  Verbali/
+  Documenti acquisiti/
+  Documenti da tenere/
+```
+
+Extra per tipo:
+
+| Se... | Aggiungi |
+|-------|----------|
+| ASP / ente pubblico | `verifica di cassa/` con sottocartelle anno |
+| Sportiva | Niente extra (usa Verbali/) |
+| Qualsiasi con libri sociali | `utilizzo pagine libro.xlsx` |
+
+### Bozza iniziale del PROCESSO_REVISIONE.md
 
 ```markdown
 # PROCESSO REVISIONE [NOME SOCIETA]
 
-Questo file è lo stato incrementale del lavoro di revisione. Va aggiornato a ogni ripresa significativa del lavoro. I dettagli storici delle singole esecuzioni vanno messi in `Revisione/LOG_AGENTI/`.
+Questo file è lo stato incrementale del lavoro di revisione.
+Va aggiornato a ogni ripresa significativa del lavoro.
+I dettagli storici delle singole esecuzioni vanno messi in
+`Revisione/LOG_AGENTI/`.
+
+## Identificazione
+
+- **Società**: [NOME]
+- **Tipo**: [TIPO] (sicurezza: alta/media/bassa)
+- **Mandato**: [MANDATO]
+- **Settore**: [SETTORE]
+- **Esercizio corrente**: [AAAA]
+
+## Calendario verifiche
+
+[Descrizione: ogni quanto si fanno le verifiche, cosa produrre.]
+
+| Periodo | Documento | Scadenza prevista | Stato |
+|---------|-----------|-------------------|-------|
+| Q1 | [tipo verbale] | [data] | da fare |
+| Q2 | [tipo verbale] | [data] | da fare |
+| Q3 | [tipo verbale] | [data] | da fare |
+| Q4/chiusura | [verbale annuale] | [data] | da fare |
 
 ## Stato al [YYYY-MM-DD]
 
-[Riassunto breve: cosa è stato fatto, cosa manca, stato generale.]
+[Nuova società. Struttura creata, nessun documento ancora prodotto.]
 
 ## File log collegati
 
-- [Log N]: `Revisione/LOG_AGENTI/YYYY-MM-DD_log_NNN_descrizione.md`
+(nesuno)
 
 ## Documenti completati
 
-[Per categoria:]
-
-[area documentale]:
-
-- `[percorso/documento]`
-- `[percorso/documento]`
-
-## Documenti da non modificare senza motivo
-
-- [file o categorie da non toccare]
-- Modelli e documenti di altre società (es. Valfabbrica/Magione) se presenti in cartella.
+(nesuno)
 
 ## Modelli corretti
 
-- [area documentale]: `[percorso/modello]`.
+[Se trovati durante scan, elencarli.]
+
+## Documenti da non modificare senza motivo
+
+- [Da compilare dopo prima sessione.]
 
 ## Mancanze aperte
 
-- [mancanza 1]
-- [mancanza 2]
+- Documenti non ancora acquisiti.
+- Calendario verifiche da definire con precisione.
+- [Altre mancanze specifiche.]
 
 ## Prossima ripresa lavoro
 
 Quando arrivano nuovi documenti:
-
-- Inserire i documenti nella cartella corretta sotto `Revisione/Documenti acquisiti/`.
-- Aggiornare i documenti interessati senza toccare quelli già validi se non necessario.
+- Inserire nella cartella corretta sotto `Documenti acquisiti/`.
+- Aggiornare i documenti interessati senza toccare quelli già validi.
 - Aggiornare la sezione Stato con data nuova.
-- Creare un nuovo file in `Revisione/LOG_AGENTI/` con numero progressivo, data, documenti letti, documenti creati/modificati, dati consolidati e mancanze residue.
+- Creare un nuovo file in `LOG_AGENTI/` con numero progressivo.
 
 ## Registro incrementale
 
-### Log NNN — YYYY-MM-DD
+### Log 001 — YYYY-MM-DD
 
 Fatto:
-
-- [cosa fatto]
+- Struttura revisione creata.
+- Processo di revisione definito e approvato.
+- Prima scansione documentale completata.
 
 Manca:
-
-- [cosa manca ancora]
+- (tutto, è l'inizio)
 ```
 
-Compila i campi noti. Segna `N.d.` dove non hai ancora il dato. Mai inventare. Il `Registro incrementale` si allunga a ogni sessione — mai cancellare log precedenti, solo aggiungere.
+---
+
+## Fase 4 — Presenta all'utente
+
+Francesco mostra la bozza e dice:
+
+> Ho analizzato [NOME SOCIETA].
+> Secondo me è una [TIPO] con mandato [MANDATO] nel settore [SETTORE].
+> Il processo di revisione che propongo prevede:
+> - [N] verifiche all'anno
+> - Documenti da produrre: [lista]
+> - Struttura cartelle: [lista]
+>
+> Il file PROCESSO_REVISIONE.md bozza è questo:
+> [mostra contenuto]
+>
+> Cosa vuoi cambiare? (Tipo? Mandato? Frequenza? Documenti? Altro?)
+
+Aspetta risposta. Applica le modifiche richieste.
+
+Poi:
+
+> PROCESSO_REVISIONE.md è corretto così? Confermi e salvo?
+
+Se sì → salva. Se no → ripeti.
+
+---
+
+## Fase 5 — Salva e inizia
+
+Dopo approvazione:
+
+1. Crea la struttura directory (se non esiste già)
+2. Crea `AGENTS.md` con regole base (se non esiste)
+3. Salva `PROCESSO_REVISIONE.md` approvato
+4. Crea `Date [NOME].xlsx` vuoto o con calendario base (se non esiste)
+5. Esegui preflight normativa (`commands/normativa.md#preflight`)
+6. Scrivi `LOG_AGENTI/` log 001 di inizializzazione
+7. Conferma all'utente: "Pronto. Prossimo passo: partire con la prima revisione."
+
+---
+
+## Note
+
+- Non sovrascrivere `PROCESSO_REVISIONE.md` se esiste già (sessione in corso).
+- Non inventare tipo società o mandato. Se non certo, chiedi.
+- Se l'utente dice "tipo X" ma i documenti dicono Y → fai notare la discrepanza.

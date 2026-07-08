@@ -1,66 +1,85 @@
-# commands/revisione — Revisione contabile completa
+# commands/revisione — Esecuzione sessione di revisione
 
-Flusso standard per revisione contabile su una societa.
+Francesco esegue una sessione di revisione seguendo il processo
+approvato in `PROCESSO_REVISIONE.md`. Ogni sessione produce documenti
+e aggiorna lo stato.
 
-Durante analisi, OCR, lettura fonti, controllo importi e ricerca normativa usa stile interno compresso tipo `caveman ultra`. Domande all'utente, documenti formali, log ufficiali e riepilogo finale restano leggibili.
+Durante analisi, OCR, lettura fonti, controllo importi e ricerca
+normativa usa stile interno compresso tipo `caveman ultra`. Domande
+all'utente, documenti formali, log ufficiali e riepilogo finale
+restano leggibili.
 
 ---
 
-## Fase 1 — Identificazione
+## Fase 1 — Carica contesto
 
-1. Identificare societa target.
-2. Estrarre contesto (vedi sez. Context Extraction sotto).
-3. Determinare tipo societario (ASP/SPA/SRL/sportiva/cooperativa).
-4. Determinare tipo di mandato (revisore legale / sindaco unico / collegio sindacale).
-5. Determinare settore e adempimenti extra.
+Prima di tutto, Francesco carica lo stato della società:
 
-## Fase 2 — Pianificazione
+1. Apri `Revisione/PROCESSO_REVISIONE.md` — stato, calendario, mancanze, modelli
+2. Apri `Date [NOME].xlsx` se esiste — scadenze verifiche
+3. Leggi ultimo log in `LOG_AGENTI/` — cosa fatto nell'ultima sessione
+4. Leggi `AGENTS.md` — regole specifiche per questa società
+5. Scansiona `Documenti acquisiti/` — nuovi documenti arrivati?
 
-6. Cosa serve fare oggi? (creare verbali? aggiornare calendario? OCR? check?)
-7. Cosa NON fare? (non toccare documenti firmati, non modificare modelli originali)
-8. Quanto tempo / quante iterazioni servono?
+Output dell'estrazione:
 
-## Fase 3 — Esecuzione
+- **Societa**: NOME, tipo, mandato, settore
+- **Stato attuale**: cosa c'è / cosa manca / cosa è da verificare
+- **Cosa è dovuto ora**: in base al calendario, quale documento scade?
+- **Modelli corretti**: quali file usare come template
+- **Sicurezza identificazione**: 100%? best guess?
 
-9. OCR su PDF scansionati -> MCP `docling.convert_to_markdown`.
-10. DOCX -> skill `docx`.
-11. XLSX -> skill `xlsx` (preservare schema).
-12. Mai inventare dati. Non certi -> `N.d.`.
+Se manca `PROCESSO_REVISIONE.md` → la società non è inizializzata.
+Chiama prima `francesco inizializza [societa]`.
+
+## Fase 2 — Pianifica sessione
+
+Basandoti su calendario + stato + nuovi documenti:
+
+1. **Cosa serve fare oggi?**
+   - Verbale di verifica periodica (trimestrale)?
+   - Verifica di cassa (ASP/enti pubblici)?
+   - Relazione al bilancio (annuale)?
+   - Aggiornamento calendario o Date*.xlsx?
+   - OCR su nuovi documenti acquisiti?
+   - Check/validazione generale?
+
+2. **Cosa NON fare?**
+   - Non toccare documenti firmati
+   - Non modificare modelli originali
+   - Non usare modelli di altre società
+
+3. Se non sai cosa dare priorità → chiedi all'utente.
+   "In base al calendario, il documento scaduto è [X]. Procedo con quello?"
+
+## Fase 3 — Esegui
+
+In base al tipo di documento da produrre:
+
+| Documento | Cosa usare | Dove salvare |
+|-----------|-----------|-------------|
+| **Verbale periodico / verifica contabile** | Modello da PROCESSO_REVISIONE.md o Verbali tipo/ | `Verbali/[ANNO]/` |
+| **Verifica di cassa** (ASP/ente pubblico) | Modello specifico cassa | `verifica di cassa/[ANNO]/` |
+| **Relazione al bilancio** | Modello relazione | `Verbali/[ANNO]/` |
+| **Scheletro futuro** | Copia modello con N.d. | `Verbali/[ANNO]/` |
+
+Strumenti:
+
+- OCR su PDF scansionati → MCP `docling.convert_to_markdown`
+- DOCX → skill `docx`
+- XLSX → skill `xlsx` (preservare schema)
+- Mai inventare dati. Non certi → `N.d.`
 
 ## Fase 4 — Triplo Check
 
 Vedi sez. Triplo Check sotto.
 
-## Fase 5 — Chiusura
+## Fase 5 — Chiudi
 
-13. Scrivere log in `LOG_AGENTI/`.
-14. Aggiornare `Revisione/PROCESSO_REVISIONE.md`.
-15. Validare apertura documenti prodotti.
-
----
-
-## Context Extraction
-
-### Cosa cercare nei documenti
-
-| Documento | Cosa ricavare |
-|-----------|---------------|
-| `AGENTS.md` | Regole specifiche per questa societa |
-| `Revisione/PROCESSO_REVISIONE.md` | Stato attuale, mancanze, log collegati |
-| Ultimo log in `LOG_AGENTI/` | Cosa e stato fatto nell'ultima sessione |
-| Verbali esistenti (.doc/.docx) | Tipo documento, composizione collegio, pattern |
-| `Date *.xlsx` | Calendario verifiche |
-| Bilanci / Visure | Tipo societario, dati dimensionali, ATECO |
-
-### Output dell'estrazione
-
-- **Societa**: NOME, tipo (ASP/SPA/SRL/etc.), settore ATECO
-- **Mandato**: revisore legale / sindaco unico / collegio sindacale
-- **Stato**: cosa c'e / cosa manca / cosa e da verificare
-- **Modelli**: quali file usare come template
-- **Sicurezza**: quanto e sicuro dell'identificazione (100%? best guess?)
-
-Se non e sicuro al 100%: "Tipo non documentato. Ipotesi: [TIPO] per [motivo]. Da verificare su visura/statuto."
+1. Scrivi log in `LOG_AGENTI/` con: data, documenti letti, creati/modificati, dati consolidati, mancanze residue
+2. Aggiorna `PROCESSO_REVISIONE.md`: nuovo stato, nuovo log nel registro incrementale, mancanze aggiornate
+3. Valida apertura documenti prodotti
+4. Se applicabile, aggiorna `Date [NOME].xlsx`
 
 ---
 
