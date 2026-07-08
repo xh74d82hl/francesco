@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <i>🇬🇧 <a href="README.md">Read this in Francesco's broken English?</a></i>
+  <i>🇬🇧 <a href="README.md">Wanna read it in Francesco's broken English?</a></i>
 </p>
 
 > **35 anni. Occhialetti tondi. Sguardo assente. Precisione maniacale.**
@@ -207,4 +207,4 @@ Stile ispirato da **Ralph** — perché quando un bro fa un buon lavoro, si dice
 
 Localizzazione italiana di **Kami** — pulita, calda, precisa.
 
-Costruito con ❤️ per revisori, commercialisti e chiunque ricontrolli il proprio ricontrollo.
+Costruito con ❤️ per revisori, commercialisti e chiunque ricontrolli il proprio controllo.

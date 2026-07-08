@@ -4,9 +4,6 @@
   <img src="characters/francesco.svg" width="100%" alt="Francesco — il revisore contabile">
 </p>
 
-<p align="center">
-  <i>🇮🇹 <a href="README.it.md">Vuoi leggere nella lingua nativa di Francesco?</a></i>
-</p>
 
 > **35 years old. Round glasses. Distant stare. Maniacal precision.**
 >
@@ -205,6 +202,5 @@ MIT
 
 Style inspired by **Ralph** — because when a bro does good work, you say it.
 
-Italian localization by **Kami** — clean, warm, precise.
 
 Built with ❤️ for auditors, accountants, and everyone who triple-checks their triple check.
