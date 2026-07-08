@@ -56,19 +56,19 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 
 ## Funzionalità
 
-| | Funzione | Cosa fa |
-|---|---|---|
-| 🎯 | **Flusso di Revisione** | Ciclo completo: estrazione contesto, pianificazione, esecuzione, triplo check, chiusura |
-| 📋 | **Validazione Documenti** | Incrocia dati, date, firme, importi tra tutte le fonti |
-| 📚 | **Archivio Normativo** | Database normativo locale costruito per giurisdizione, tipo società e settore. Funziona offline. |
-| 🔄 | **Triplo Check** | Esegui → verifica → riverifica → rileggi un altro file per sicurezza |
-| 🧠 | **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire giurisdizione, tipo società, mandato, stato revisione |
-| 🔌 | **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
-| 📝 | **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
-| 🌐 | **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
-| 📊 | **Controllo Bilancio** | Quadratura SP/CE, cross-foot, aggancio nota integrativa, scelte contabili |
-| 🔍 | **Benford / Anti-Manipolazione** | Test χ², Z per cifra, bias arrotondamento, importi duplicati, terminal-digit, clustering soglie |
-| 🏦 | **Riconciliazione Bancaria** | Abbina movimenti, classifica unreconciled, riconcilia saldo, incrocia cassa |
+| Funzione | Cosa fa |
+|---|---|
+| **Flusso di Revisione** | Ciclo completo: estrazione contesto, pianificazione, esecuzione, triplo check, chiusura |
+| **Validazione Documenti** | Incrocia dati, date, firme, importi tra tutte le fonti |
+| **Archivio Normativo** | Database normativo locale costruito per giurisdizione, tipo società e settore. Funziona offline. |
+| **Triplo Check** | Esegui → verifica → riverifica → rileggi un altro file per sicurezza |
+| **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire giurisdizione, tipo società, mandato, stato revisione |
+| **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
+| **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
+| **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
+| **Controllo Bilancio** | Quadratura SP/CE, cross-foot, aggancio nota integrativa, scelte contabili |
+| **Benford / Anti-Manipolazione** | Test χ², Z per cifra, bias arrotondamento, importi duplicati, terminal-digit, clustering soglie |
+| **Riconciliazione Bancaria** | Abbina movimenti, classifica unreconciled, riconcilia saldo, incrocia cassa |
 
 ---
 
@@ -77,18 +77,19 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 L'orchestratore (`load francesco`) esegue questo ciclo a ogni sessione:
 
 ```
-Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+Check frustrazione → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
 ```
 
-1. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
-2. **Cosa vuoi fare?** — se non hai ancora detto nulla, si presenta in poche parole e chiede cosa serve; conferma la sua comprensione prima di procedere
-3. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
-4. **Esegue** — lancia il comando scelto
-5. **Verifica output** — apre i file prodotti, controlla che il log sia stato scritto
-6. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
-7. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
+1. **Check frustrazione** — rileva frustrazione/imprecazioni (pattern IT + EN); 1-2 match → messaggio calma; 3+ consecutivi → salta, vai diretto
+2. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
+3. **Cosa vuoi fare?** — se non hai ancora detto nulla, si presenta e chiede cosa serve; conferma la comprensione prima di procedere
+4. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
+5. **Esegue** — lancia il comando scelto
+6. **Verifica output** — apre i file prodotti, controlla che il log sia stato scritto
+7. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
+8. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
 
-**Sub-skill** (nominando direttamente `francesco-bilancio` ecc.) saltano il punto 2 e vanno dritte al loro flusso — per quando sai già cosa fare.
+**Sub-skill** (nominando direttamente `francesco-bilancio` ecc.) saltano il punto 3 e vanno dritte al loro flusso — per quando sai già cosa fare.
 
 ### 1. Safety Preflight
 

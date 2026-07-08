@@ -57,7 +57,7 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 ## Features
 
 | Feature | What it means |
-|---|---|---|
+|---|---|
 | **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
 | **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
 | **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
@@ -77,18 +77,19 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 Orchestrator (`load francesco`) runs this loop every session:
 
 ```
-Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+Check frustration → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
 ```
 
-1. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
-2. **What to do?** — if you haven't said anything, introduces himself in a few words and asks what you need; confirms his understanding before proceeding
-3. **Picks the right command** — maps your request to a workflow
-4. **Executes** — runs the chosen command
-5. **Verifies output** — opens produced files, checks log was written
-6. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
-7. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
+1. **Frustration check** — detects frustration/cursing (IT + EN patterns); 1-2 hits → calm message; 3+ consecutive → skip, go straight to action
+2. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
+3. **What to do?** — if you haven't said anything, introduces himself and asks what you need; confirms understanding before proceeding
+4. **Picks the right command** — maps your request to a workflow
+5. **Executes** — runs the chosen command
+6. **Verifies output** — opens produced files, checks log was written
+7. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
+8. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
 
-**Sub-skills** (mentioning `francesco-bilancio` etc. directly) skip step 2 and go straight to their flow — for when you already know the task.
+**Sub-skills** (mentioning `francesco-bilancio` etc. directly) skip step 3 and go straight to their flow — for when you already know the task.
 
 ### 1. Safety Preflight
 
