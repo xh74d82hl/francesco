@@ -14,15 +14,36 @@
 
 ---
 
-## Francesco in 10 Seconds
+## Quick Start
 
-| If you say... | He does... |
+```bash
+# Load Francesco (orchestrator — shows menu, picks the right flow)
+load francesco
+
+# Or load a sub-skill directly when you know what you need:
+load francesco-bilancio    # Balance sheet checks
+load francesco-estratto    # Bank reconciliation
+load francesco-revisione   # Audit documentation
+```
+
+Francesco's orchestrator greets you, runs preflight checks, then shows what it can do. Say what you need — he picks the right workflow. Skip the orchestrator with a sub-skill when you already know the task.
+
+---
+
+## What Francesco Can Do
+
+| Say this... | He runs... |
 |---|---|
-| "What kind of company is this?" | ASP (IT)? GmbH (DE)? SAS (FR)? LLC (US)? Reads documents, identifies type and jurisdiction. |
-| "What mandate do I have?" | Legal auditor? Single auditor? Board? Every jurisdiction has its own rules. |
-| "Run an audit" | Identify → plan → execute → triple-check → log. Every time. |
-| "Check the docs" | Reads everything: data consistent? log up to date? gaps noted? |
-| "What regulations apply?" | Checks his per-country archive first. Not there? Searches the right sources — Normattiva (IT), Bundesanzeiger (DE), Légifrance (FR), SEC.gov (US) — saves locally. |
+| "revisione" / "audit" / "verbale" | Full audit session: identify → plan → exec → triple-check → close |
+| "check" / "controlla" | Validates docs: data, dates, signatures, logs |
+| "bilancio" / "quadratura" | Balance sheet: SP=CE ties, cross-foot, nota integrativa tie-out |
+| "benford" / "numeri truccati" | Anti-manipulation: Benford χ², round-number bias, duplicates, patterns |
+| "estratto conto" / "riconciliazione" | Bank reconciliation: match movements, catch discrepancies |
+| "inizializza" / "nuova societa" | New company setup: scan → identify → propose → approve |
+| "normativa" / "leggi" | Regulation archive by country/type/sector (builds offline) |
+| "triage" / "stato" | Quick company state scan |
+| "riepilogo" / "report" | Generates DOCX summary report |
+| "cosa posso fare" | Shows this table again |
 
 ---
 
@@ -49,6 +70,9 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 | 🔌 | **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
 | 📝 | **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
 | 🌐 | **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
+| 📊 | **Balance Check** | Quadratura SP/CE, cross-foot, nota integrativa tie-out, scelte contabili |
+| 🔍 | **Benford / Anti-Manipulation** | χ² test, Z per digit, round-number bias, duplicated amounts, terminal-digit, threshold clustering |
+| 🏦 | **Bank Reconciliation** | Match movements, categorize unreconciled, reconcile saldo, cross-check cassa |
 
 ---
 
@@ -173,16 +197,21 @@ Preserves existing `normative/` and `scripts/`. Safe for iterative development.
   commands/             — shared reusable instructions
     revisione.md        — full audit session flow
     check.md            — document validation
+    bilancio_check.md   — balance sheet checks + Benford/patterns
+    estratto_check.md   — bank reconciliation
     normativa.md        — regulation archive + auto-update
     triage.md           — quick company scan
     inizializza.md      — new company commissioning
-  skills/               — specialized skill entries
+    setup.md            — dependency install
+    riepilogo.md        — DOCX summary report
+    struttura.md        — directory structure validation
+  skills/               — specialized skill entries (direct load)
     francesco-revisione/
-      SKILL.md          — revision workflow
+      SKILL.md          — audit workflow
     francesco-bilancio/
-      SKILL.md          — balance checks (upcoming)
+      SKILL.md          — balance sheet checks + anti-manipulation
     francesco-estratto/
-      SKILL.md          — bank statement checks (upcoming)
+      SKILL.md          — bank reconciliation
   normative/            — per-company regulation archive (gitignored)
   scripts/              — local utility scripts (gitignored)
 ```

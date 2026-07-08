@@ -92,8 +92,27 @@ Se qualcosa blocca → FERMATI E CHIEDI. Mai procedere cieco.
 
 Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 
-| Se l'utente dice... | Carica comando... |
-|---------------------|-------------------|
+**Se l'utente non ha ancora espresso una richiesta precisa** → mostra la tabella di routing e chiedi:
+
+> "Cosa vuoi fare?"
+>
+> | Richiesta | Cosa fa |
+> |---|---|
+> | "revisione" / "audit" / "verbale" / "verifica cassa" | Produzione documenti revisione |
+> | "check" / "controlla" | Validazione documenti |
+> | "bilancio" / "quadratura" / "verifica voci" | Quadratura + scelte contabili |
+> | "benford" / "numeri truccati" | Test anti-manipolazione (Benford, pattern) |
+> | "estratto conto" / "riconciliazione" / "check banca" | Riconciliazione estratti conto |
+> | "inizializza" / "nuova societa" | Setup nuova societa |
+> | "normativa" / "leggi" | Archivio normativo per paese/tipo |
+> | "triage" / "stato" | Stato rapido societa |
+> | "riepilogo" / "report" | Report DOCX riassuntivo |
+> | "cosa posso fare" | Mostra di nuovo questa tabella |
+
+Dopo che l'utente sceglie, carica il comando corrispondente:
+
+| Se l'utente dice... | Carica |
+|---------------------|--------|
 | "revisione" / "audit" / "verbale" / "verifica cassa" | `commands/revisione.md` |
 | "check" / "controlla" / "verifica documenti" | `commands/check.md` |
 | "inizializza" / "nuova societa" / "setup" | `commands/inizializza.md` |
@@ -105,7 +124,7 @@ Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 | "bilancio" / "quadratura" / "verifica voci" | `commands/bilancio_check.md` |
 | "benford" / "numeri truccati" / "pattern sospetti" | `commands/bilancio_check.md#benford` |
 | "estratto conto" / "riconciliazione" / "check banca" | `commands/estratto_check.md` |
-| generico / "cosa posso fare" | Mostra tabella routing |
+| "cosa posso fare" / generico | Mostra tabella routing |
 
 Il comando caricato esegue il suo flusso specifico e produce output.
 Poi Francesco torna al ciclo orchestratore.

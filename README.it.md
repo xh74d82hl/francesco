@@ -14,15 +14,36 @@
 
 ---
 
-## Francesco in 10 Secondi
+## Avvio Rapido
 
-| Se gli chiedi... | Lui fa... |
+```bash
+# Carica Francesco (orchestratore — mostra menu, sceglie il flusso giusto)
+load francesco
+
+# O carica una sub-skill direttamente se sai già cosa fare:
+load francesco-bilancio    # Quadratura + Benford
+load francesco-estratto    # Riconciliazione bancaria
+load francesco-revisione   # Documenti di revisione
+```
+
+L'orchestratore ti saluta, fa i controlli preflight, poi mostra cosa sa fare. Dì cosa ti serve — sceglie lui il flusso. Salta l'orchestratore con una sub-skill se sai già il compito.
+
+---
+
+## Cosa Sa Fare Francesco
+
+| Se dici... | Lui fa... |
 |---|---|
-| "Che tipo di società è?" | ASP (IT)? GmbH (DE)? SAS (FR)? LLC (US)? Legge i documenti, identifica tipo e giurisdizione. |
-| "Che mandato ho?" | Revisore legale? Sindaco unico? Collegio? Ogni giurisdizione ha le sue regole. |
-| "Fammi una revisione" | Identifica → pianifica → esegue → triplo check → chiude. Sempre. |
-| "Controlla i documenti" | Legge tutto: dati coerenti? log aggiornato? lacune segnate? |
-| "Quali normative si applicano?" | Controlla prima l'archivio per paese. Se non c'è, cerca sulle fonti giuste — Normattiva (IT), Bundesanzeiger (DE), Légifrance (FR), SEC.gov (US) — salva in locale. |
+| "revisione" / "verbale" | Sessione revisione completa: identifica → pianifica → esegue → triplo check → chiude |
+| "check" / "controlla" | Valida documenti: dati, date, firme, log |
+| "bilancio" / "quadratura" | Quadratura SP/CE, cross-foot, aggancio nota integrativa |
+| "benford" / "numeri truccati" | Anti-manipolazione: Benford χ², bias arrotondamento, duplicati, pattern |
+| "estratto conto" / "riconciliazione" | Riconciliazione bancaria: abbina movimenti, trova incongruenze |
+| "inizializza" / "nuova societa" | Setup nuova società: scan → identifica → propone → approva |
+| "normativa" / "leggi" | Archivio normativo per paese/tipo/settore (funziona offline) |
+| "triage" / "stato" | Scansione rapida stato società |
+| "riepilogo" / "report" | Genera report DOCX riassuntivo |
+| "cosa posso fare" | Mostra di nuovo questa tabella |
 
 ---
 
@@ -49,6 +70,9 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 | 🔌 | **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
 | 📝 | **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
 | 🌐 | **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
+| 📊 | **Controllo Bilancio** | Quadratura SP/CE, cross-foot, aggancio nota integrativa, scelte contabili |
+| 🔍 | **Benford / Anti-Manipolazione** | Test χ², Z per cifra, bias arrotondamento, importi duplicati, terminal-digit, clustering soglie |
+| 🏦 | **Riconciliazione Bancaria** | Abbina movimenti, classifica unreconciled, riconcilia saldo, incrocia cassa |
 
 ---
 
@@ -173,16 +197,21 @@ Preserva `normative/` e `scripts/` esistenti. Sicura per sviluppo iterativo.
   commands/             — istruzioni riutilizzabili
     revisione.md        — sessione revisione completa
     check.md            — validazione documenti
+    bilancio_check.md   — controlli bilancio + Benford/pattern
+    estratto_check.md   — riconciliazione bancaria
     normativa.md        — archivio normativo + auto-aggiornamento
     triage.md           — scansione rapida società
     inizializza.md      — commissionamento nuova società
-  skills/               — skill specializzate
+    setup.md            — installazione dipendenze
+    riepilogo.md        — report DOCX riassuntivo
+    struttura.md        — validazione struttura directory
+  skills/               — skill specializzate (caricamento diretto)
     francesco-revisione/
       SKILL.md          — workflow revisione
     francesco-bilancio/
-      SKILL.md          — controlli bilancio (in arrivo)
+      SKILL.md          — controlli bilancio + anti-manipolazione
     francesco-estratto/
-      SKILL.md          — check estratti conto (in arrivo)
+      SKILL.md          — riconciliazione bancaria
   normative/            — archivio normativo per società (gitignorato)
   scripts/              — script di utilità locali (gitignorati)
 ```
