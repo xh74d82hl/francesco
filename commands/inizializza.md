@@ -41,65 +41,86 @@ Poi fa un primo scan veloce:
 Scansiona la directory della società per capire cosa c'è già.
 
 Cosa cercare:
-- Nome della cartella (indizio sul tipo: "ASP", "SPA", "SRL", "sportiva"?)
-- `Statuto/` o file statuto (PDF/DOCX) → tipo societario
-- `Visura/` o file visura → tipo, ATECO, dati camerali
-- `Bilanci/` → esercizi già depositati
-- `Verbali soci/` o `Verbali cda/` → governance
+- Nome della cartella (indizio su tipo e paese: "ASP", "GmbH", "SAS", "LLC", "Ltd"?)
+- `Statuto/`, `Statuten/`, `Statuts/`, `Bylaws/` o file equivalente (PDF/DOCX) → tipo societario
+- `Visura/`, `Handelsregister/`, `Registre du Commerce/`, `Certificate of Incorporation/` → tipo, codice attività, dati registro
+- `Bilanci/`, `Financial Statements/`, `Jahresabschluss/` → esercizi già depositati
+- `Verbali soci/`, `Meeting Minutes/`, `Protokolle/` → governance
 - `Revisione/` già esistente? Se sì → carica stato, non ri-inizializzare
-- `Documenti statutari/` → statuto, atto costitutivo, nomine
-- File `.xlsx` con nome "Date*" → calendario verifiche già esistente?
+- `Documenti statutari/`, `Legal Documents/`, `Corporate/` → statuto, atto costitutivo, nomine
+- File `.xlsx` con nome "Date*" o "Schedule*" → calendario verifiche già esistente?
+- Sede legale / registered address → indizio giurisdizione (se nei documenti)
 
 Output della scansione:
 
-| Indizio | Cosa rivela |
-|---------|-------------|
-| "ASP" nel nome | Ente pubblico, D.Lgs. 118/2011 art. 14 |
-| "SPA" / "S.P.A." nel nome | Società per azioni, Codice Civile |
-| "SRL" / "S.R.L." nel nome | Responsabilità limitata, Codice Civile |
-| "sportiva" / calcio / FIGC | Settore sportivo, D.Lgs. 36/2021, NOIF |
-| "cooperativa" / "coop" | D.Lgs. 220/2002 (Basevi) |
-| Bilanci depositati | Esercizi chiusi, dati dimensionali |
+| Indizio | Possibile giurisdizione | Cosa rivela |
+|---------|------------------------|-------------|
+| "ASP" / "Casa di Riposo" / "Comune" | Italia | Ente pubblico, D.Lgs. 118/2011 art. 14 |
+| "SPA" / "SRL" / "Società" | Italia | Codice Civile Italiano |
+| "GmbH" / "AG" / "e.V." | Germania / Austria | GmbHG, AktG, HGB, BGB |
+| "UG" (haftungsbeschränkt) | Germania | GmbHG semplificata, HGB |
+| "SAS" / "SARL" / "SA" / "EURL" | Francia | Code de Commerce |
+| "Sàrl" / "SA" / "SAS" | Svizzera | Code des Obligations (CO/OR) |
+| "Ltd" / "Limited" / "PLC" | UK / Irlanda | Companies Act 2006 |
+| "LLC" / "Inc" / "Corp" / "PLLC" | USA | State corporation law |
+| "SL" / "SA" / "SRL" / "Sociedad" | Spagna | Ley de Sociedades de Capital |
+| "sportiva" / "calcio" / "FIGC" | Italia | D.Lgs. 36/2021, NOIF |
+| "cooperativa" / "coop" / "eG" | Italia / Germania | Legge coop / GenG |
+| Bilanci / Financial Statements depositati | — | Esercizi chiusi, dati dimensionali |
 
 ---
 
 ## Fase 2 — Identifica
 
-### Tipo societario
+### Giurisdizione e tipo societario
+
+Determina prima la giurisdizione, poi il tipo specifico.
 
 Usa gli indizi della scansione. Se non certo:
 
 ```
-Tipo non documentato. Ipotesi: [TIPO] per [motivo].
-Da verificare su visura/statuto.
-Chiedi: "Che tipo di società è? (ASP/SPA/SRL/cooperativa/sportiva/altro)"
+Giurisdizione non documentata. Ipotesi: [PAESE] per [motivo].
+Da verificare su visura/statuto/certificate of incorporation.
+Chiedi: "Che paese e che tipo di società è? (IT-ASP / IT-SPA / DE-GmbH / FR-SAS / US-LLC / UK-Ltd / altro)"
 ```
 
 ### Mandato
 
 Cerca in:
 - `AGENTS.md` esistente
-- `Documenti statutari/` → nomine, delibere
-- `Revisione/Documenti da tenere/` → lettera incarico, attestazioni
+- `Documenti statutari/`, `Corporate/`, `Legal Documents/` → nomine, delibere
+- `Revisione/Documenti da tenere/` → lettera incarico, engagement letter, attestazioni
 - Nome cartella revisione, log esistenti
 
-Opzioni:
+Opzioni per paese:
 
-| Mandato | Indizi |
-|---------|--------|
-| **Revisore unico / Organo di revisione** | Ente pubblico (ASP, comune), D.Lgs. 118/2011 |
-| **Sindaco unico** | SRL, nomina singola, statuto |
-| **Collegio sindacale** | SPA, obbligo collegiale per legge |
-| **Revisore legale + Collegio** | SPA con revisione legale affidata al collegio o esterna |
+| Giurisdizione | Mandato | Indizi |
+|--------------|---------|--------|
+| **Italia** | Revisore unico / Organo di revisione | Ente pubblico (ASP, comune), D.Lgs. 118/2011 |
+| | Sindaco unico | SRL, nomina singola, statuto |
+| | Collegio sindacale | SPA, obbligo collegiale per legge |
+| | Revisore legale + Collegio | SPA con revisione legale affidata al collegio o esterna |
+| **Germania** | Abschlussprüfer (revisore legale) | GmbH/AG, nomina assembleare, HGB |
+| | Aufsichtsrat (consiglio di sorveglianza) | AG mitbestimmt, AktG |
+| | Prüfungsausschuss (comitato audit) | Quotate, bilanci consolidati |
+| **Francia** | Commissaire aux Comptes (revisore) | SAS/SARL/SA, obbligo per dimensione, Code de Commerce |
+| | Comité d'Audit | SA quotate, AMF |
+| **USA** | External Auditor (CPA firm) | Inc/LLC, engagement letter, PCAOB se quotata |
+| | Audit Committee | Public companies, SOX, SEC |
+| | Internal Auditor | Non obbligatorio ma best practice |
+| **UK** | Statutory Auditor | Ltd/PLC, Companies Act 2006, FRC |
+| | Audit Committee | PLC, UK Corporate Governance Code |
+| **Svizzera** | Organo di revisione (Ordentliche Prüfung) | SA/Sàrl, obbligo per dimensione, CO/OR |
+| | Organo di revisione (Eingeschränkte Prüfung) | Piccole-medie, CO/OR |
 
 ### Settore
 
-Dedurre da ATECO (visura) o da nome attività.
+Dedurre da codice attività (ATECO / NACE / NAICS / SIC / WZ) o da nome attività.
 
 Esempi:
-- "Casa di Riposo" → assistenza anziani, RSA
-- "Gubbio" + calcio → sportivo, FIGC
-- "Romeoauto" → automotive, concessionaria
+- "Casa di Riposo", "Pflegeheim", "Nursing Home", "Maison de Retraite" → assistenza anziani, healthcare
+- "Gubbio" + calcio, "FC Bayern", "Manchester United" → sportivo, calcio
+- "Autohaus", "Car Dealer", "Concessionaria" → automotive
 - Senza indizi → chiedi all'utente
 
 ---
@@ -108,26 +129,38 @@ Esempi:
 
 Francesco compila una bozza di `PROCESSO_REVISIONE.md` basata su:
 
-### Per ogni tipo società + mandato, la checklist base
+### Per ogni giurisdizione + tipo + mandato, la checklist base
 
-| Tipo | Mandato | Documenti da produrre | Frequenza |
-|------|---------|----------------------|-----------|
-| **ASP** | Revisore unico | Verifiche di cassa trimestrali + Verbale art. 14 annuale | Trimestrale |
-| **SRL** | Sindaco unico | Verbali periodici di verifica contabile + Relazione al bilancio | Trimestrale |
-| **SPA** | Collegio sindacale | Verbali periodici collegio + Relazione al bilancio (unitaria se anche rev. legale) | Trimestrale |
-| **SPA** | Collegio + Rev. legale separata | Verbali collegio + Relazione rev. legale + Relazione unitaria | Trimestrale |
-| **Sportiva** | Sindaco unico | Verbali periodici + FIGC/COVISOC + relazione sportiva | Trimestrale + FIGC |
-| **Cooperativa** | Revisore/Sindaco | Verbali periodici + Revisione coop (D.Lgs. 220/2002) | Trimestrale |
+| Giurisdizione | Tipo | Mandato | Documenti da produrre | Frequenza |
+|--------------|------|---------|----------------------|-----------|
+| **Italia** | ASP | Revisore unico | Verifiche di cassa trimestrali + Verbale art. 14 annuale | Trimestrale |
+| | SRL | Sindaco unico | Verbali periodici verifica contabile + Relazione al bilancio | Trimestrale |
+| | SPA | Collegio sindacale | Verbali periodici + Relazione al bilancio (unitaria se anche rev. legale) | Trimestrale |
+| | SPA | Collegio + Rev. legale separata | Verbali collegio + Relazione rev. legale + Relazione unitaria | Trimestrale |
+| | Sportiva | Sindaco unico | Verbali periodici + FIGC/COVISOC + relazione sportiva | Trimestrale + FIGC |
+| | Cooperativa | Revisore/Sindaco | Verbali periodici + Revisione coop (D.Lgs. 220/2002) | Trimestrale |
+| **Germania** | GmbH | Abschlussprüfer | Prüfungsbericht + Jahresabschluss test + Lagebericht | Annuale |
+| | AG | Abschlussprüfer | Prüfungsbericht + Konzernabschluss + Prüfungsausschuss report | Annuale / trimestrale se quotata |
+| | GmbH/AG | Aufsichtsrat | Sitzungsprotokolle + Berichte an HV | Trimestrale / semestrale |
+| **Francia** | SAS/SARL/SA | CAC (Commissaire aux Comptes) | Rapport général + Rapport spécial + vérification périodique | Annuale / trimestrale |
+| | SA | Comité d'Audit | Rapport comité + revue semestrale | Semestrale |
+| **USA** | Inc/LLC | External Auditor | Audit report + Financial statements + Management letter | Annuale (trimestrale se quotata SEC) |
+| | Public Inc | Auditor + Audit Committee | 10-K / 10-Q audit + SOX controls + PCAOB report | Annuale + trimestrale |
+| **UK** | Ltd | Statutory Auditor | Audit report + Financial statements + Directors' report | Annuale |
+| | PLC | Auditor + Audit Committee | Audit report + Corporate Governance statement + FRC compliance | Annuale + semestrale |
+| **Svizzera** | SA/Sàrl | Organo di revisione | Rapporto di revisione + revisione limitata/ordinaria | Annuale |
 
-### Aggiunte per settore specifico
+### Aggiunte per settore specifico (cross-country)
 
 | Settore | Documenti extra |
 |---------|----------------|
-| **Assistenza anziani / RSA** | Accrediti, L.R. sanità, requisiti strutture |
-| **Calcio** | NOIF FIGC, covisoc, calciatori, campionato, parti correlate |
-| **Automotive** | Concessioni, autoriparazione, F24, inventario, riconciliazioni |
-| **Immobiliare** | Cedolare secca, IMU, contratti locazione |
-| **Commercio** | Registri IVA, e-commerce, obblighi camerali |
+| **Healthcare / anziani** | Accrediti, licenze, requisiti strutture, normativa sanitaria locale |
+| **Calcio / sport** | Federation rules, licensing, covisoc / DFL / salary cap, parti correlate |
+| **Automotive** | Concessioni, autoriparazione, F24 / VAT, inventario, riconciliazioni |
+| **Immobiliare** | Contratti locazione, imposte locali, register |
+| **Commercio / e-commerce** | Registri IVA / VAT, privacy (GDPR / CCPA), obblighi registro |
+| **Finanziario** | Vigilanza, Basilea / Solvency, AML/KYC, reporting regolamentare |
+| **Non-profit** | Status fiscale, trasparenza, rendicontazione, donazioni |
 
 ### Struttura cartelle da creare
 
@@ -144,11 +177,15 @@ Revisione/
 
 Extra per tipo:
 
-| Se... | Aggiungi |
-|-------|----------|
-| ASP / ente pubblico | `verifica di cassa/` con sottocartelle anno |
-| Sportiva | Niente extra (usa Verbali/) |
-| Qualsiasi con libri sociali | `utilizzo pagine libro.xlsx` |
+| Giurisdizione | Se... | Aggiungi |
+|--------------|-------|----------|
+| Italia | ASP / ente pubblico | `verifica di cassa/` con sottocartelle anno |
+| Italia | Qualsiasi con libri sociali | `utilizzo pagine libro.xlsx` |
+| Germania | AG / GmbH | `Prüfungsberichte/` per anno |
+| Francia | SA / SAS | `Rapports CAC/` per anno |
+| USA | Public company | `SEC Filings/`, `SOX Controls/` |
+| UK | PLC | `Corporate Governance/`, `FRC Reports/` |
+| Qualsiasi | Con libri sociali / share register / member register | `share register.xlsx` o equivalente |
 
 ### Bozza iniziale del PROCESSO_REVISIONE.md
 
@@ -163,6 +200,7 @@ I dettagli storici delle singole esecuzioni vanno messi in
 ## Identificazione
 
 - **Società**: [NOME]
+- **Giurisdizione**: [IT / DE / FR / US / UK / CH / ...]
 - **Tipo**: [TIPO] (sicurezza: alta/media/bassa)
 - **Mandato**: [MANDATO]
 - **Settore**: [SETTORE]
@@ -170,14 +208,15 @@ I dettagli storici delle singole esecuzioni vanno messi in
 
 ## Calendario verifiche
 
-[Descrizione: ogni quanto si fanno le verifiche, cosa produrre.]
+[Descrizione: ogni quanto si fanno le verifiche, cosa produrre,
+in base a giurisdizione e mandato.]
 
 | Periodo | Documento | Scadenza prevista | Stato |
 |---------|-----------|-------------------|-------|
-| Q1 | [tipo verbale] | [data] | da fare |
-| Q2 | [tipo verbale] | [data] | da fare |
-| Q3 | [tipo verbale] | [data] | da fare |
-| Q4/chiusura | [verbale annuale] | [data] | da fare |
+| Q1 | [tipo documento] | [data] | da fare |
+| Q2 | [tipo documento] | [data] | da fare |
+| Q3 | [tipo documento] | [data] | da fare |
+| Q4/chiusura | [documento annuale] | [data] | da fare |
 
 ## Stato al [YYYY-MM-DD]
 

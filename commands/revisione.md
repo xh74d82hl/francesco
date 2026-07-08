@@ -42,7 +42,7 @@ Francesco apre i file della società scelta:
 Poi Francesco dice all'utente:
 
 > "Ho letto la situazione di [NOME].
-> Tipo: [TIPO]. Mandato: [MANDATO].
+> Giurisdizione: [PAESE]. Tipo: [TIPO]. Mandato: [MANDATO].
 > Ultima sessione: [DATA] — è stato fatto [RIASSUNTO].
 > In calendario, la prossima scadenza è [DOCUMENTO] del [DATA].
 > Mancanze aperte: [N].
@@ -75,22 +75,36 @@ L'utente sceglie (anche più di una). Francesco prende nota.
 
 ## Step 4 — Esegui
 
-In base al tipo di documento da produrre:
+In base al tipo di documento da produrre (seleziona in base a giurisdizione e mandato):
 
-| Documento | Strumento |
-|-----------|-----------|
-| Verbale periodico / verifica contabile | Modello da PROCESSO_REVISIONE.md + skill docx |
-| Verifica di cassa (ASP/ente pubblico) | Modello cassa + skill docx |
-| Relazione al bilancio | Modello relazione + skill docx |
-| Scheletro futuro | Copia modello con N.d. |
-| OCR su PDF | MCP docling |
-| Tabella XLSX | skill xlsx (preservare schema) |
+| Giurisdizione | Documento | Strumento |
+|--------------|-----------|-----------|
+| **Italia** | Verbale periodico / verifica contabile | Modello da PROCESSO_REVISIONE.md + skill docx |
+| | Verifica di cassa (ASP/ente pubblico) | Modello cassa + skill docx |
+| | Relazione al bilancio / Relazione unitaria | Modello relazione + skill docx |
+| **Germania** | Prüfungsbericht (audit report) | Modello + skill docx |
+| | Jahresabschluss test | Modello + skill docx |
+| | Sitzungsprotokoll (minutes) | Modello + skill docx |
+| **Francia** | Rapport général CAC | Modello + skill docx |
+| | Rapport spécial CAC | Modello + skill docx |
+| | Lettre de mission | Modello + skill docx |
+| **USA** | Audit report (PCAOB / AICPA) | Modello + skill docx |
+| | Management letter | Modello + skill docx |
+| | SOX controls report | Modello + skill docx |
+| **UK** | Audit report (ISA UK) | Modello + skill docx |
+| | Directors' report review | Modello + skill docx |
+| | Corporate Governance statement | Modello + skill docx |
+| **Svizzera** | Rapporto di revisione (ordinaria/limitata) | Modello + skill docx |
+| | Rapporto al consiglio | Modello + skill docx |
+| **Qualsiasi** | Scheletro futuro | Copia modello con N.d. |
+| | OCR su PDF | MCP docling |
+| | Tabella XLSX | skill xlsx (preservare schema) |
 
 Per ogni documento prodotto:
-1. Usa il modello corretto (da PROCESSO_REVISIONE.md o Verbali tipo/)
+1. Usa il modello corretto (da PROCESSO_REVISIONE.md o modelli specifici per paese)
 2. Compila con dati reali
 3. Se manca un dato → `N.d.` — mai inventare
-4. Salva nella cartella giusta (`Verbali/[ANNO]/`, `verifica di cassa/[ANNO]/`)
+4. Salva nella cartella giusta (es. `Verbali/[ANNO]/`, `verifica di cassa/[ANNO]/`, `Prüfungsberichte/[ANNO]/`, `Rapports CAC/[ANNO]/`)
 
 ---
 

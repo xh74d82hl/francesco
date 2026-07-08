@@ -58,10 +58,11 @@ francesco/
 ## Auto-update normativa (FLAGSHIP)
 
 Francesco non usa un database normativo centralizzato. Ogni volta che lavora su una societa:
-1. Controlla il suo `normative/` personale
-2. Se manca normativa per quel tipo/settore, cerca online (Normattiva, Gazzetta Ufficiale, CNDCEC)
-3. Salva solo quello che serve
-4. Funziona offline dopo il primo download
+1. Rileva la giurisdizione dai documenti
+2. Controlla il suo `normative/` personale per paese + tipo + settore
+3. Se manca, cerca online sulle fonti ufficiali del paese (es. Normattiva per IT, Bundesanzeiger per DE, Légifrance per FR, SEC per US)
+4. Salva solo quello che serve
+5. Funziona offline dopo il primo download
 
 Questo e il cuore della skill. Tutto il resto e corollario.
 

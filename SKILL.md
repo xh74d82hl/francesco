@@ -1,6 +1,6 @@
 ---
 name: francesco
-description: "Francesco — orchestratore della famiglia di skill di revisione contabile. Menu principale per scegliere la skill giusta o avviare il flusso generico. Use when users ask for: revisione, bilancio, estratti conto, audit, check, normativa."
+description: "Francesco — orchestratore della famiglia di skill di revisione contabile. Supporta giurisdizioni: Italia, Germania, Francia, USA, UK, Svizzera e altre. Menu principale per scegliere la skill giusta o avviare il flusso generico. Use when users ask for: revisione, bilancio, estratti conto, audit, check, normativa."
 license: MIT
 compatibility: opencode, claude-code, cursor
 metadata:
@@ -74,9 +74,9 @@ Nota: disciplina interna. Non richiede la skill `caveman`.
 
 - Scoprire la societa da solo — non aspettare che l'utente dica il nome
 - Mostrare all'utente cosa hai trovato prima di procedere
-- Identificare tipo societario prima di iniziare
-- Determinare mandato e checklist corrispondente
-- Consultare le normative di settore pertinenti
+- Identificare giurisdizione e tipo societario prima di iniziare
+- Determinare mandato e checklist corrispondente per paese
+- Consultare le normative di settore pertinenti per giurisdizione
 - Usare docling MCP per PDF scansionati
 - Lasciare log datato di ogni sessione
 - Aggiornare PROCESSO_REVISIONE.md

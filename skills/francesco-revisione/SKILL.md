@@ -52,7 +52,7 @@ Apri i file della societa scelta:
 
 Poi mostra all'utente:
 
-> "Ho letto [NOME]. Tipo: [TIPO]. Mandato: [MANDATO].
+> "Ho letto [NOME]. Giurisdizione: [PAESE]. Tipo: [TIPO]. Mandato: [MANDATO].
 > Ultima sessione: [DATA] — [RIASSUNTO].
 > Prossima scadenza: [DOCUMENTO] del [DATA].
 > Mancanze aperte: [N]. Procedo con [PROSSIMO PASSO]?"
@@ -79,20 +79,23 @@ Utente sceglie. Prendi nota.
 
 ### Step 4 — Esegui
 
-| Documento | Strumento |
-|-----------|-----------|
-| Verbale periodico / verifica contabile | Modello da PROCESSO_REVISIONE.md + skill docx |
-| Verifica di cassa (ASP/ente pubblico) | Modello cassa + skill docx |
-| Relazione al bilancio | Modello relazione + skill docx |
-| Scheletro futuro | Copia modello con N.d. |
-| OCR su PDF | MCP docling |
-| Tabella XLSX | skill xlsx (preservare schema) |
+| Giurisdizione | Documento | Strumento |
+|--------------|-----------|-----------|
+| **Italia** | Verbale periodico / Verifica cassa ASP / Relazione bilancio | Modello da PROCESSO_REVISIONE.md + skill docx |
+| **Germania** | Prüfungsbericht / Sitzungsprotokoll | Modello + skill docx |
+| **Francia** | Rapport CAC / Lettre de mission | Modello + skill docx |
+| **USA** | Audit report / SOX report | Modello + skill docx |
+| **UK** | Audit report / Governance statement | Modello + skill docx |
+| **Svizzera** | Rapporto di revisione | Modello + skill docx |
+| **Qualsiasi** | Scheletro futuro | Copia modello con N.d. |
+| **Qualsiasi** | OCR su PDF | MCP docling |
+| **Qualsiasi** | Tabella XLSX | skill xlsx (preservare schema) |
 
 Per ogni documento:
-- Usa il modello corretto (da PROCESSO_REVISIONE.md o Verbali tipo/)
+- Usa il modello corretto (da PROCESSO_REVISIONE.md o modelli specifici per paese)
 - Compila con dati reali
 - Se manca un dato → N.d. — mai inventare
-- Salva nella cartella giusta (Verbali/[ANNO]/, verifica di cassa/[ANNO]/)
+- Salva nella cartella giusta (es. Verbali/[ANNO]/, verifica di cassa/[ANNO]/, Prüfungsberichte/[ANNO]/)
 
 ### Step 5 — Triplo Check
 
