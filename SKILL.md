@@ -55,7 +55,7 @@ Poi prosegue con preflight.
 Ogni sessione segue questo ciclo. Sempre.
 
 ```
-Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+Check frustration → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
 ```
 
 ---
