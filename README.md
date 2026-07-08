@@ -1,4 +1,8 @@
-# Francesco   <sub>🇮🇹 <a href="README.it.md">Parli solo rabbia e salsicce? Clicca qui.</a></sub>
+# Francesco
+
+<p align="center">
+  <i>🇮🇹 <a href="README.it.md">Parli solo rabbia e salsicce? Clicca qui.</a></i>
+</p>
 
 <p align="center">
   <img src="characters/francesco.svg" width="100%" alt="Francesco — il revisore contabile">
