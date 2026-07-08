@@ -1,4 +1,11 @@
-# commands/normativa — Archivio normativo personale + auto-aggiornamento
+# commands/normativa — Archivio normativo + ricerca per giurisdizione
+
+**Chiamato da:** orchestratore `SKILL.md` (preflight), `commands/inizializza.md`.
+**Standalone:** preflight rapido se chiamato diretto.
+
+Costruisce e aggiorna l'archivio normativo locale per paese/tipo/settore.
+Usa fonti ufficiali del paese di competenza.
+Salva in `normative/` dentro la directory societa.
 
 ## Il problema
 

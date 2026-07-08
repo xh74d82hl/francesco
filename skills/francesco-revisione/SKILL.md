@@ -13,11 +13,11 @@ metadata:
 
 # francesco-revisione
 
-Esegue revisione contabile. Scopre la societa, analizza, propone,
-esegue con triplo check, chiude con log. Tutto interattivo.
+Esegue revisione contabile. Usato dall'orchestratore `SKILL.md`.
+Se chiamato diretto, carica preflight da `SKILL.md` prima.
 
 > Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
-> Carica SEMPRE il preflight di SKILL.md prima di iniziare.
+> Dopo esecuzione, torna al ciclo orchestratore per verifica + triplo check + chiusura.
 
 ---
 

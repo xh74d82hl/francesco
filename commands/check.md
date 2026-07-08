@@ -1,6 +1,18 @@
 # commands/check — Validazione documenti
 
-Flusso per verificare la documentazione di una società.
+**Chiamato da:** orchestratore `SKILL.md` o da `commands/revisione.md`.
+**Standalone:** preflight rapido se chiamato diretto.
+
+Verifica documenti, dati, log, struttura.
+Output: report OK / Warning / Bloccante.
+
+---
+
+## Preflight rapido (solo se standalone)
+
+Skip se chiamato da orchestratore/revisione. Altrimenti:
+1. `Revisione/` esiste? → no: fermati.
+2. Carica PROCESSO_REVISIONE.md.
 
 ---
 

@@ -1,6 +1,17 @@
 # commands/triage — Scansione rapida società
 
-Per quando l'utente vuole capire in 10 secondi in che stato è una società.
+**Chiamato da:** orchestratore `SKILL.md`.
+**Standalone:** preflight rapido se chiamato diretto.
+
+Stato societa in 10 secondi: ultima sessione, mancanze, prossimo passo.
+
+---
+
+## Preflight rapido (solo se standalone)
+
+Skip se chiamato da orchestratore. Altrimenti:
+1. `Revisione/` e `PROCESSO_REVISIONE.md` esistono? → no: fermati.
+2. Carica PROCESSO_REVISIONE.md.
 
 ---
 

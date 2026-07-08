@@ -1,4 +1,9 @@
-# commands/inizializza — Commissionamento revisione: analisi + proposta
+# commands/inizializza — Setup nuova societa
+
+**Chiamato da:** orchestratore `SKILL.md` (quando societa non inizializzata).
+**Standalone:** preflight rapido se chiamato diretto.
+
+Scopre, analizza, propone processo, fa approvare, salva struttura + log.
 
 Francesco non impone un template fisso. Scopre la società, la capisce,
 propone un processo di revisione su misura, lo fa approvare dall'utente,

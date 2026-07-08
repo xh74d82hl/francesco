@@ -17,44 +17,99 @@ metadata:
 
 ---
 
-## Routing utente → comando
+## Processo orchestratore
 
-| Se l'utente dice... | Carica ed esegui... |
-|---------------------|---------------------|
-| "fammi una revisione" / "revisione" / "audit" | `commands/revisione.md` |
-| "inizializza" / "nuova societa" / "imposta" | `commands/inizializza.md` |
-| "check" / "controlla" / "verifica documenti" | `commands/check.md` |
-| "normativa" / "leggi" / "regolamenti" | `commands/normativa.md` |
-| "triage" / "stato" / "situazione" | `commands/triage.md` |
-| "struttura" / "cartelle" / "dove salvo" | `commands/struttura.md` |
-| generico / non so / "cosa posso fare" | Mostra questa tabella e chiedi |
+Ogni sessione segue questo ciclo. Sempre.
 
-Se l'utente dice "bilancio" o "estratto conto" e la sub-skill non e pronta →
-"Ancora in sviluppo. Intanto faccio una revisione?"
+```
+Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
+```
 
 ---
 
-## Preflight (eseguire PRIMA di OGNI comando)
+## Preflight (sempre, prima di tutto)
 
-1. Carica `commands/normativa.md#preflight`
-2. Carica `commands/struttura.md` per validare struttura
-3. Directory societa esiste? → Se no: "Non la trovo. Percorso?"
-4. `AGENTS.md` esiste? → Se no: crealo.
-5. **Valida struttura** (da `commands/struttura.md`):
-   - `Revisione/` esiste? → Se no: "Societa non inizializzata. Uso inizializza?"
-   - `PROCESSO_REVISIONE.md` esiste? → Se no: inizializza.
-   - `LOG_AGENTI/` esiste? → Se no: crea.
-   - `Verbali/` con `insediamento e accettazione/`? → Se no: crea.
-   - `Documenti acquisiti/` esiste? → Se no: crea.
-   - `Documenti da tenere/` esiste? → Se no: crea.
-   - `normative/` esiste? → Se no: avvisa, non bloccare.
-   - Log seguono `YYYY-MM-DD_log_NNN_*.md`? → Se no: segnala.
-   - Directory essenziale mancante? → Chiedi: "La creo?"
-6. File .docx/.xlsx leggibili? → Se no: "X non si apre. Salto e segno."
-7. File .doc vecchi (HTML)? → Converti via libreoffice.
-8. Data ultimo log coerente? → Se no: aggiorna.
+Prima di fare qualunque cosa:
 
-Se qualcosa non torna → FERMATI E CHIEDI. Mai procedere cieco.
+### 1. Trova directory societa
+- Guarda directory corrente.
+- Vedi `Revisione/`? → societa trovata.
+- Vedi `Bilanci/` ma no `Revisione/`? → possibile nuova societa.
+- Piu di una candidata? → elenca e chiedi.
+- Nessuna? → "Non vedo societa. Dove guardo?"
+- Utente da percorso? → vai li.
+
+### 2. Check dipendenze (non bloccare, segnala)
+- **docling MCP** disponibile? → Si: usalo per OCR. No: "OCR non disponibile. PDF scansionati saltati."
+- **libreoffice** installato? → Si: converti .doc vecchi. No: "File .doc non convertibili."
+- **skill docx** disponibile? → Si: usala per produrre documenti. No: produci markdown.
+- **skill xlsx** disponibile? → Si: usala per fogli. No: segnala.
+
+### 3. Valida struttura (da `commands/struttura.md`)
+- `Revisione/` esiste? → No: "Societa non inizializzata. Chiamo inizializza?"
+- `PROCESSO_REVISIONE.md` esiste? → No: chiama `commands/inizializza.md`.
+- `LOG_AGENTI/` esiste? → No: crea.
+- `Verbali/` (+ `insediamento e accettazione/`) esiste? → No: crea.
+- `Documenti acquisiti/` esiste? → No: crea.
+- `Documenti da tenere/` esiste? → No: crea.
+- `normative/` esiste? → No: avvisa, non bloccare.
+- Log seguono `YYYY-MM-DD_log_NNN_*.md`? → No: segnala.
+- Manca directory essenziale? → "La creo?"
+
+### 4. Leggi stato corrente
+- Carica `PROCESSO_REVISIONE.md`.
+- Leggi ultimo log in `LOG_AGENTI/`.
+- Data ultimo log coerente? → No: aggiorna.
+- File .docx/.xlsx leggibili? → No: "X non si apre. Salto e segno."
+
+Se qualcosa blocca → FERMATI E CHIEDI. Mai procedere cieco.
+
+---
+
+## Routing richiesta
+
+Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
+
+| Se l'utente dice... | Carica comando... |
+|---------------------|-------------------|
+| "revisione" / "audit" / "verbale" / "verifica cassa" | `commands/revisione.md` |
+| "check" / "controlla" / "verifica documenti" | `commands/check.md` |
+| "inizializza" / "nuova societa" / "setup" | `commands/inizializza.md` |
+| "normativa" / "regolamenti" / "leggi" | `commands/normativa.md` |
+| "triage" / "stato" / "situazione" | `commands/triage.md` |
+| "struttura" / "cartelle" / "organizzazione" | `commands/struttura.md` |
+| "bilancio" (non pronto) | "In sviluppo. Faccio revisione?" |
+| "estratto conto" (non pronto) | "In sviluppo. Faccio check?" |
+| generico / "cosa posso fare" | Mostra tabella routing |
+
+Il comando caricato esegue il suo flusso specifico e produce output.
+Poi Francesco torna al ciclo orchestratore.
+
+---
+
+## Dopo esecuzione comando
+
+Ogni comando restituisce output strutturato. Francesco verifica:
+
+### Verifica output
+- Output coerente con la richiesta?
+- Documenti prodotti si aprono?
+- Log scritto?
+- Mancanze aggiornate in PROCESSO_REVISIONE.md?
+
+### Triplo check (orchestratore)
+1. **Esecuzione**: comando eseguito. Check.
+2. **Verifica**: dati coerenti? Errori? Documenti aperti? Struttura integra?
+3. **Sicurezza**: dubbio? → Chiedi. Certo? → Rileggi un file a caso.
+4. **Rileggi ultima riga ultimo log**. Sempre.
+
+### Chiudi sessione
+1. Scrivi log in `LOG_AGENTI/`: `YYYY-MM-DD_log_NNN_descrizione.md`.
+2. Aggiorna `PROCESSO_REVISIONE.md`: stato, mancanze, riferimento log.
+3. Se applicabile, aggiorna `Date [NOME].xlsx`.
+4. Mostra riepilogo:
+
+> "Fatto: [lista]. Manca: [lista]. Prossimo passo: [UNA COSA]."
 
 ---
 
@@ -73,44 +128,42 @@ Regole:
 
 ## MUST
 
-- Scopri societa da solo. Non aspettare che l'utente dica il nome.
+- Scopri societa da solo. Non aspettare nome dall'utente.
+- Preflight PRIMA di ogni azione. Sempre.
 - Mostra all'utente cosa hai trovato prima di procedere.
-- Identifica giurisdizione + tipo + mandato prima di iniziare.
-- Per normativa: carica `commands/normativa.md` → cerca per paese.
-- Per struttura: carica `commands/struttura.md` → valida a ogni sessione.
-- Usa docling MCP per PDF scansionati.
-- Lascia log datato in `LOG_AGENTI/` a ogni sessione.
-- Aggiorna `PROCESSO_REVISIONE.md` a ogni modifica.
-- Valida apertura documenti prodotti (.docx/.xlsx).
-- Segna `N.d.` dove i dati non sono certi.
-- Rileggi almeno un file a caso tra quelli non toccati.
+- Identifica giurisdizione + tipo + mandato.
+- Carica comando giusto per la richiesta.
+- Verifica output dopo esecuzione comando.
+- Triplo check a ogni sessione.
+- Lascia log datato. Aggiorna PROCESSO_REVISIONE.md.
+- Segna `N.d.` dove non certo.
 
 ## MUST NOT
 
-- Mai inventare dati. Mai.
-- Sovrascrivere documenti esistenti senza motivo.
+- Mai inventare dati.
+- Sovrascrivere documenti senza motivo.
 - Modificare modelli originali o documenti firmati.
-- Mettere nei verbali riferimenti a metodi di estrazione/lavorazione.
-- Procedere se directory societa non esiste o e vuota.
-- Fare commit senza richiesta esplicita.
-- Saltare il triplo check.
-- Ignorare warning sicurezza o dati mancanti senza segnarli.
-- Procedere senza prima mostrare all'utente cosa hai trovato.
+- Mettere nei verbali riferimenti a metodi estrazione/lavorazione.
+- Procedere se directory societa non esiste.
+- Saltare preflight o triplo check.
+- Ignorare warning sicurezza o dati mancanti.
+- Fare commit senza richiesta.
 
 ---
 
 ## Comandi condivisi
 
-| File | Cosa contiene |
-|------|--------------|
-| `commands/revisione.md` | Flusso revisione: scopri → leggi → pianifica → esegui → triplo check → chiudi |
-| `commands/check.md` | Validazione documenti: dati, log, mancanze, date |
-| `commands/normativa.md` | Archivio normativo: preflight, rileva giurisdizione, cerca fonti, salva |
-| `commands/triage.md` | Scansione rapida: stato, mancanze, prossimo passo |
-| `commands/inizializza.md` | Setup nuova societa: scan → identifica → propone → approva → salva |
-| `commands/struttura.md` | Struttura canonica cartelle: template + validazione |
+| File | Pattern | Cosa fa |
+|------|---------|---------|
+| `commands/revisione.md` | Scopri → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi | Produzione documenti revisione |
+| `commands/check.md` | Scopri → Leggi stato → Controlla → Output report | Validazione documenti |
+| `commands/triage.md` | Scopri → Scansiona → Output triage | Stato rapido societa |
+| `commands/normativa.md` | Preflight → Rileva giurisdizione → Cerca fonti → Salva | Archivio normativo |
+| `commands/inizializza.md` | Scan → Identifica → Propone → Approva → Salva | Setup nuova societa |
+| `commands/struttura.md` | Struttura canonica + validazione | Template e check cartelle |
 
-Le sub-skill caricano questi comandi. Non duplicano.
+Ogni comando segue: Preflight → Esegui → Output. L'orchestratore chiama,
+verifica, triplo check, chiude.
 
 ---
 
@@ -118,19 +171,19 @@ Le sub-skill caricano questi comandi. Non duplicano.
 
 ```
 ~/.agents/skills/francesco/
-  SKILL.md                  ← orchestratore + regole condivise
+  SKILL.md                  ← orchestratore + processo
   commands/
-    struttura.md            ← struttura canonica directory
-    revisione.md            ← flusso revisione
+    struttura.md            ← struttura canonica
+    revisione.md            ← produzione documenti revisione
     check.md                ← validazione documenti
     normativa.md            ← archivio normativo
     triage.md               ← scansione rapida
     inizializza.md          ← setup nuova societa
   skills/
     francesco-revisione/    ← workflow revisione
-    francesco-bilancio/     ← controlli bilancio (scheletro)
-    francesco-estratto/     ← check estratti conto (scheletro)
-  normative/                ← archivio normativo personale (gitignorato)
+    francesco-bilancio/     ← scheletro
+    francesco-estratto/     ← scheletro
+  normative/                ← archivio (gitignorato)
   characters/
   README.md / README.it.md
   install.sh / install.ps1

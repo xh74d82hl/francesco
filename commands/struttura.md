@@ -1,4 +1,10 @@
-# commands/struttura — Struttura canonica directory revisione
+# commands/struttura — Struttura canonica directory + validazione
+
+**Chiamato da:** orchestratore `SKILL.md` (preflight), `commands/inizializza.md`.
+**Standalone:** caricato come riferimento, non eseguito da solo.
+
+Definisce la struttura cartelle canonica e le regole di validazione.
+Template unico per tutte le societa.
 
 Template unico per tutte le societa. Francesco crea all'inizializzazione
 e verifica a ogni sessione. Variazioni solo per giurisdizione/tipo.

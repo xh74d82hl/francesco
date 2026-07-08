@@ -1,12 +1,22 @@
-# commands/revisione — Sessione di revisione step by step
+# commands/revisione — Produzione documenti revisione
 
-Francesco non sa su che società lavorare. Scopre, identifica,
-propone, interagisce. Ogni passo è un passaggio con l'utente.
+**Chiamato da:** orchestratore `SKILL.md` dopo preflight.
+**Standalone:** se chiamato diretto, fa preflight rapido all'inizio.
 
-Durante analisi, OCR, lettura fonti, controllo importi e ricerca
-normativa usa stile interno compresso tipo `caveman ultra`.
-Domande all'utente, documenti formali, log ufficiali e riepilogo
-finale restano leggibili.
+Produce documenti di revisione per paese/tipo/mandato.
+Usa modelli da PROCESSO_REVISIONE.md o da cartella modelli.
+
+Token: stile compresso durante analisi/OCR/controlli.
+Leggibile per domande, log, riepilogo.
+
+---
+
+## Preflight rapido (solo se standalone)
+
+Skip se chiamato da orchestratore. Altrimenti:
+1. `Revisione/` esiste? → no: "Societa non inizializzata."
+2. `PROCESSO_REVISIONE.md` esiste? → no: "Usa inizializza prima."
+3. Carica stato: PROCESSO_REVISIONE.md + ultimo log.
 
 ---
 
@@ -113,6 +123,7 @@ Per ogni documento prodotto:
 ### 1° giro — Esecuzione
 
 Fai il lavoro. Documenti, log, stato. Tutto senza fretta.
+Opzionale: carica `commands/check.md` per un check formale.
 
 ### 2° giro — Verifica
 
@@ -159,6 +170,13 @@ Poi Francesco dice:
 > - [mancanza 2]
 >
 > Prossimo passo consigliato: [UNA COSA]."
+
+---
+
+Output prodotto. Francesco torna al ciclo orchestratore per:
+- Verifica output
+- Triplo check orchestratore
+- Chiusura sessione (log + aggiornamento PROCESSO_REVISIONE.md)
 
 ---
 
