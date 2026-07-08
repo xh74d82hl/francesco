@@ -29,52 +29,64 @@ Flusso per creare la struttura di revisione da zero per una nuova societa.
 
 ## Template PROCESSO_REVISIONE.md
 
-Questo è il file che Francesco crea e mantiene per ogni società. Va aggiornato a ogni sessione sostanziale (revisione, check, triage).
+Basato sul lavoro reale sulla società ASP Casa di Riposo Mosca. Ogni società avrà il suo, ma la struttura portante è questa.
 
 ```markdown
-# Processo di Revisione — [NOME SOCIETA]
+# PROCESSO REVISIONE [NOME SOCIETA]
 
-## Dati Identificativi
+Questo file è lo stato incrementale del lavoro di revisione. Va aggiornato a ogni ripresa significativa del lavoro. I dettagli storici delle singole esecuzioni vanno messi in `Revisione/LOG_AGENTI/`.
 
-- **Societá**: [NOME]
-- **Tipo**: [ASP / SPA / SRL / cooperativa / sportiva / N.d.]
-- **Settore ATECO**: [codice] — [descrizione]
-- **Mandato**: [revisore legale / sindaco unico / collegio sindacale]
-- **Esercizio in corso**: [AAAA]
-- **Data apertura revisione**: [YYYY-MM-DD]
+## Stato al [YYYY-MM-DD]
 
-## Stato Documentazione
+[Riassunto breve: cosa è stato fatto, cosa manca, stato generale.]
 
-| Area | Stato | Ultimo aggiornamento |
-|------|-------|----------------------|
-| Verifiche di cassa | [completo / parziale / da iniziare] | [data] |
-| Verbali art. 14 | [completo / parziale / da iniziare] | [data] |
-| Verbali insediamento | [completo / parziale / da iniziare] | [data] |
-| Documenti acquisiti | [completo / parziale / da iniziare] | [data] |
+## File log collegati
 
-## Log Sessioni
+- [Log N]: `Revisione/LOG_AGENTI/YYYY-MM-DD_log_NNN_descrizione.md`
 
-| Data | Cosa fatto | Chi | Note |
-|------|-----------|-----|------|
-| [YYYY-MM-DD] | [riassunto] | Francesco | [link log] |
+## Documenti completati
 
-## Mancanze Aperte
+[Per categoria:]
 
-- [ ] [descrizione mancanza] — [prioritá: alta/media/bassa]
-- [ ] [prossima mancanza]
+[area documentale]:
 
-## Dati Dimensionali (da aggiornare a ogni esercizio)
+- `[percorso/documento]`
+- `[percorso/documento]`
 
-| Dato | 2022 | 2023 | 2024 |
-|------|------|------|------|
-| Totale attivo | N.d. | N.d. | N.d. |
-| Totale ricavi | N.d. | N.d. | N.d. |
-| Dipendenti medi | N.d. | N.d. | N.d. |
-| Note | | | |
+## Documenti da non modificare senza motivo
 
-## Note Generali
+- [file o categorie da non toccare]
+- Modelli e documenti di altre società (es. Valfabbrica/Magione) se presenti in cartella.
 
-- [annotazioni libere]
+## Modelli corretti
+
+- [area documentale]: `[percorso/modello]`.
+
+## Mancanze aperte
+
+- [mancanza 1]
+- [mancanza 2]
+
+## Prossima ripresa lavoro
+
+Quando arrivano nuovi documenti:
+
+- Inserire i documenti nella cartella corretta sotto `Revisione/Documenti acquisiti/`.
+- Aggiornare i documenti interessati senza toccare quelli già validi se non necessario.
+- Aggiornare la sezione Stato con data nuova.
+- Creare un nuovo file in `Revisione/LOG_AGENTI/` con numero progressivo, data, documenti letti, documenti creati/modificati, dati consolidati e mancanze residue.
+
+## Registro incrementale
+
+### Log NNN — YYYY-MM-DD
+
+Fatto:
+
+- [cosa fatto]
+
+Manca:
+
+- [cosa manca ancora]
 ```
 
-Compila i campi noti. Segna `N.d.` dove non hai ancora il dato. Mai inventare.
+Compila i campi noti. Segna `N.d.` dove non hai ancora il dato. Mai inventare. Il `Registro incrementale` si allunga a ogni sessione — mai cancellare log precedenti, solo aggiungere.
