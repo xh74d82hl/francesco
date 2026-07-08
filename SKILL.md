@@ -31,6 +31,20 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 
 Prima di fare qualunque cosa:
 
+### 0. Setup dipendenze (prima esecuzione)
+
+Se `~/.agents/skills/francesco/.francesco-setup` non esiste:
+> "Prima esecuzione di Francesco. Vuoi configurare le dipendenze?
+> (OCR, MCP docling, skill docx/xlsx)
+>
+> Carica `commands/setup.md` per il setup guidato."
+
+Se utente dice si → carica `commands/setup.md`, esegui.
+Se utente dice no → crea comunque `.francesco-setup` per non chiedere piu,
+ma segnala: "OCR, docx e xlsx potrebbero non funzionare senza setup."
+
+Poi prosegui con preflight normale.
+
 ### 1. Trova directory societa
 - Guarda directory corrente.
 - Vedi `Revisione/`? → societa trovata.
@@ -78,6 +92,8 @@ Dopo preflight, Francesco capisce cosa serve e carica il comando giusto.
 | "normativa" / "regolamenti" / "leggi" | `commands/normativa.md` |
 | "triage" / "stato" / "situazione" | `commands/triage.md` |
 | "struttura" / "cartelle" / "organizzazione" | `commands/struttura.md` |
+| "setup" / "configura" / "installa dipendenze" | `commands/setup.md` |
+| "riepilogo" / "report" / "stato documento" | `commands/riepilogo.md` |
 | "bilancio" (non pronto) | "In sviluppo. Faccio revisione?" |
 | "estratto conto" (non pronto) | "In sviluppo. Faccio check?" |
 | generico / "cosa posso fare" | Mostra tabella routing |
@@ -161,6 +177,8 @@ Regole:
 | `commands/normativa.md` | Preflight → Rileva giurisdizione → Cerca fonti → Salva | Archivio normativo |
 | `commands/inizializza.md` | Scan → Identifica → Propone → Approva → Salva | Setup nuova societa |
 | `commands/struttura.md` | Struttura canonica + validazione | Template e check cartelle |
+| `commands/setup.md` | Check Python → uv → docling → MCP → skill docx/xlsx | Setup prima esecuzione |
+| `commands/riepilogo.md` | Leggi stato → Genera DOCX | Report riassuntivo revisione |
 
 Ogni comando segue: Preflight → Esegui → Output. L'orchestratore chiama,
 verifica, triplo check, chiude.
@@ -174,11 +192,15 @@ verifica, triplo check, chiude.
   SKILL.md                  ← orchestratore + processo
   commands/
     struttura.md            ← struttura canonica
-    revisione.md            ← produzione documenti revisione
+    revisione.md            ← flusso revisione
     check.md                ← validazione documenti
     normativa.md            ← archivio normativo
     triage.md               ← scansione rapida
     inizializza.md          ← setup nuova societa
+    setup.md                ← installazione dipendenze
+    riepilogo.md            ← report DOCX riassuntivo
+  scripts/
+    docling-server.py       ← MCP server per OCR
   skills/
     francesco-revisione/    ← workflow revisione
     francesco-bilancio/     ← scheletro

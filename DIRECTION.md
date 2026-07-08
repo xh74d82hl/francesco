@@ -92,4 +92,7 @@ Fatto. Il README ha tagline ironica, sezioni chiare, spiega l'archivio personale
 - Vendere su skills.sh
 - Raccogliere feedback da utenti reali
 - Aggiungere backward compatibility con eventuale skill `revisione` se esiste
+- `commands/setup.md` — setup dipendenze da testare su macchina pulita
+- `commands/riepilogo.md` — report DOCX da testare
+- `scripts/docling-server.py` — MCP server embedded
 - Eventuali altri sub-comandi su richiesta

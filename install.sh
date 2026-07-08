@@ -141,7 +141,6 @@ dev_copy() {
   rsync -a \
     --exclude='.git' \
     --exclude='normative/' \
-    --exclude='scripts/' \
     "$SCRIPT_DIR/" "$dest/"
   # Also dev-copy each sub-skill
   for skill_dir in "$SCRIPT_DIR/skills/"*/; do
@@ -153,7 +152,7 @@ dev_copy() {
     ok "dev-copied $name to $sdest"
   done
   ok "dev-copied francesco to $dest"
-  info "preserved existing normative/ and scripts/"
+  info "preserved existing normative/"
 }
 
 main() {

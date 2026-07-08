@@ -143,5 +143,8 @@ Poi:
 | Check documenti | `francesco/commands/check.md` |
 | Normativa + ricerca fonti | `francesco/commands/normativa.md` |
 | Setup nuova societa | `francesco/commands/inizializza.md` |
+| Setup dipendenze | `francesco/commands/setup.md` |
+| Report DOCX riepilogo | `francesco/commands/riepilogo.md` |
 
 Tutti i comandi stanno in `francesco/commands/`.
+Script MCP server in `francesco/scripts/docling-server.py`.
