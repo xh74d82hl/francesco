@@ -36,14 +36,22 @@ Se non sai quale usare → dimmi cosa vuoi fare e ti indirizzo.
 Prima di qualsiasi operazione su una societa, OGNI skill deve:
 
 1. Caricare `commands/normativa.md#preflight` (nella directory principale `francesco`)
-2. La directory societa esiste? Se no → "Non trovo la societa. Mi dai il percorso?"
-3. `AGENTS.md` esiste? Se no → lo crea.
-4. `Revisione/PROCESSO_REVISIONE.md` esiste?
-   - Se no → la societa non e inizializzata. Usa il comando `inizializza` (da `commands/inizializza.md`).
-   - Se si → leggilo.
-5. I file `.docx` / `.xlsx` sono leggibili? Se no → "Il file X non si apre. Lo salto e segno."
-6. Ci sono file `.doc` vecchi formato HTML? Converti via libreoffice.
-7. La data dell'ultimo log e coerente? Se no → aggiorna.
+2. Caricare `commands/struttura.md` per la struttura canonica
+3. La directory societa esiste? Se no → "Non trovo la societa. Mi dai il percorso?"
+4. `AGENTS.md` esiste? Se no → lo crea.
+5. **Validare struttura cartelle** contro la canonica in `commands/struttura.md`:
+   - Esiste `Revisione/`? Se no → societa non inizializzata.
+   - Esiste `Revisione/PROCESSO_REVISIONE.md`? Se no → inizializza.
+   - Esiste `Revisione/LOG_AGENTI/`? Se no → crea.
+   - Esiste `Revisione/Verbali/` (con almeno `insediamento e accettazione/`)? Se no → crea.
+   - Esiste `Revisione/Documenti acquisiti/`? Se no → crea.
+   - Esiste `Revisione/Documenti da tenere/`? Se no → crea.
+   - Esiste `normative/`? Se no → avvisa ma non blocca.
+   - I log seguono la convenzione `YYYY-MM-DD_log_NNN_*.md`? Se no → segnala.
+   - Se manca una directory essenziale → chiedi all'utente se crearla.
+6. I file `.docx` / `.xlsx` sono leggibili? Se no → "Il file X non si apre. Lo salto e segno."
+7. Ci sono file `.doc` vecchi formato HTML? Converti via libreoffice.
+8. La data dell'ultimo log e coerente? Se no → aggiorna.
 
 Se qualcosa non torna, fermati e chiedi. Non procedere in automatico.
 
@@ -109,6 +117,7 @@ Le skill specializzate caricano le istruzioni operative da `commands/`:
 | `commands/normativa.md` | Preflight + archivio normativo |
 | `commands/triage.md` | Scansione rapida societa |
 | `commands/inizializza.md` | Commissionamento nuova societa |
+| `commands/struttura.md` | Struttura canonica directory + validazione |
 
 Le sub-skill (es. `francesco-revisione`) referenziano questi comandi
 condivisi invece di duplicarli.
@@ -120,7 +129,13 @@ condivisi invece di duplicarli.
 ```
 ~/.agents/skills/francesco/
   SKILL.md              — questo file (orchestratore + regole condivise)
-  commands/             — istruzioni riutilizzabili
+  commands/
+    struttura.md       — struttura canonica directory revisione
+    revisione.md       — esecuzione sessione di revisione
+    check.md           — validazione documenti
+    normativa.md       — preflight + archivio normativo
+    triage.md          — scansione rapida societa
+    inizializza.md     — commissionamento nuova societa
   skills/               — skill specializzate
     francesco-revisione/
       SKILL.md

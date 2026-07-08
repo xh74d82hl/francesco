@@ -121,6 +121,10 @@ Rileggi tutto. Controlla:
 - Date coerenti? Nomi scritti giusti?
 - Importi combaciano con le fonti?
 - Riferimenti incrociati tornano?
+- **Struttura cartelle ancora integra?** I nuovi documenti salvati
+  sono nella cartella giusta? (es. verbale in `Verbali/[ANNO]/`,
+  non sparpagliato nella root). Usa `commands/struttura.md` come riferimento.
+- **Convenzioni nomi rispettate?** Log segue `YYYY-MM-DD_log_NNN_*.md`?
 
 Se trovi un errore, correggi e ricomincia il 2° giro da capo.
 

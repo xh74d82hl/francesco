@@ -164,28 +164,40 @@ Francesco compila una bozza di `PROCESSO_REVISIONE.md` basata su:
 
 ### Struttura cartelle da creare
 
+Francesco segue la struttura canonica definita in `commands/struttura.md`.
+Qui il riepilogo:
+
 Base comune (sempre):
 
 ```
-Revisione/
-  PROCESSO_REVISIONE.md
-  LOG_AGENTI/
-  Verbali/
-  Documenti acquisiti/
-  Documenti da tenere/
+<NOME_SOCIETA>/
+  AGENTS.md
+  Bilanci/
+  Documenti statutari/
+  Documenti appunti/
+  Pratiche varie/
+  normative/
+  Revisione/
+    PROCESSO_REVISIONE.md
+    Date <NOME>.xlsx
+    LOG_AGENTI/
+    Verbali/
+      insediamento e accettazione/
+    Documenti acquisiti/
+    Documenti da tenere/
 ```
 
-Extra per tipo:
+Extra per giurisdizione/tipo (vedi `commands/struttura.md` per dettagli):
 
 | Giurisdizione | Se... | Aggiungi |
 |--------------|-------|----------|
-| Italia | ASP / ente pubblico | `verifica di cassa/` con sottocartelle anno |
+| Italia | ASP / ente pubblico | `verifica di cassa/` con sottocartelle anno + Modelli/ |
 | Italia | Qualsiasi con libri sociali | `utilizzo pagine libro.xlsx` |
 | Germania | AG / GmbH | `Prüfungsberichte/` per anno |
 | Francia | SA / SAS | `Rapports CAC/` per anno |
 | USA | Public company | `SEC Filings/`, `SOX Controls/` |
 | UK | PLC | `Corporate Governance/`, `FRC Reports/` |
-| Qualsiasi | Con libri sociali / share register / member register | `share register.xlsx` o equivalente |
+| Qualsiasi | Con libro soci / share register | `share register.xlsx` in Revisione |
 
 ### Bozza iniziale del PROCESSO_REVISIONE.md
 
