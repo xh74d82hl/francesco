@@ -23,7 +23,7 @@ After installation, invoke Francesco by name:
 > **`/francesco-estratto`** — bank reconciliation
 > **`/francesco-revisione`** — audit documentation
 
-The orchestrator greets you, runs preflight, then asks what you need in a few words. Say **"cosa posso fare"** or tell him directly — he picks the right workflow. Sub-skills skip the menu and go straight to work.
+The orchestrator greets you, runs preflight, then asks what you need. Tell him directly — he picks the right workflow. Sub-skills skip the menu and go straight to work.
 
 ---
 
@@ -40,7 +40,6 @@ The orchestrator greets you, runs preflight, then asks what you need in a few wo
 | "normativa" / "leggi" | Regulation archive by country/type/sector (builds offline) |
 | "triage" / "stato" | Quick company state scan |
 | "riepilogo" / "report" | Generates DOCX summary report |
-| "cosa posso fare" | Shows this table again |
 
 ---
 
@@ -57,19 +56,19 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 
 ## Features
 
-| | Feature | What it means |
+| Feature | What it means |
 |---|---|---|
-| 🎯 | **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
-| 📋 | **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
-| 📚 | **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
-| 🔄 | **Triple Check** | Execute → verify → re-verify → read one more file just in case |
-| 🧠 | **Context Extraction** | Scans existing docs to reconstruct jurisdiction, company type, mandate, audit state |
-| 🔌 | **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
-| 📝 | **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
-| 🌐 | **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
-| 📊 | **Balance Check** | Quadratura SP/CE, cross-foot, nota integrativa tie-out, scelte contabili |
-| 🔍 | **Benford / Anti-Manipulation** | χ² test, Z per digit, round-number bias, duplicated amounts, terminal-digit, threshold clustering |
-| 🏦 | **Bank Reconciliation** | Match movements, categorize unreconciled, reconcile saldo, cross-check cassa |
+| **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
+| **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
+| **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
+| **Triple Check** | Execute → verify → re-verify → read one more file just in case |
+| **Context Extraction** | Scans existing docs to reconstruct jurisdiction, company type, mandate, audit state |
+| **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
+| **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
+| **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
+| **Balance Check** | Quadratura SP/CE, cross-foot, nota integrativa tie-out, scelte contabili |
+| **Benford / Anti-Manipulation** | χ² test, Z per digit, round-number bias, duplicated amounts, terminal-digit, threshold clustering |
+| **Bank Reconciliation** | Match movements, categorize unreconciled, reconcile saldo, cross-check cassa |
 
 ---
 
@@ -201,7 +200,7 @@ Preserves existing `normative/` and `scripts/`. Safe for iterative development.
 ~/.agents/skills/francesco/
   SKILL.md              — orchestrator (shared rules + menu)
   README.md             — this file (English)
-  README.it.md          — Italian version 🇮🇹
+  README.it.md          — Italian version
   install.sh            — installer for Linux/macOS
   install.ps1           — installer for Windows
   DIRECTION.md          — roadmap

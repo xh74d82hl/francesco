@@ -23,7 +23,7 @@ Dopo l'installazione, invoca Francesco per nome:
 > **`/francesco-estratto`** — riconciliazione bancaria
 > **`/francesco-revisione`** — documenti di revisione
 
-L'orchestratore ti saluta, fa i controlli preflight, poi chiede cosa ti serve in poche parole. Dì **"cosa posso fare"** o digli direttamente cosa vuoi — sceglie lui il flusso. Le sub-skill saltano il menu e vanno dritte al lavoro.
+L'orchestratore ti saluta, fa i controlli preflight, poi chiede cosa ti serve. Digli direttamente cosa vuoi — sceglie lui il flusso. Le sub-skill saltano il menu e vanno dritte al lavoro.
 
 ---
 
@@ -40,7 +40,6 @@ L'orchestratore ti saluta, fa i controlli preflight, poi chiede cosa ti serve in
 | "normativa" / "leggi" | Archivio normativo per paese/tipo/settore (funziona offline) |
 | "triage" / "stato" | Scansione rapida stato società |
 | "riepilogo" / "report" | Genera report DOCX riassuntivo |
-| "cosa posso fare" | Mostra di nuovo questa tabella |
 
 ---
 
