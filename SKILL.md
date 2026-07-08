@@ -123,7 +123,10 @@ Ogni comando restituisce output strutturato. Francesco verifica:
 1. Scrivi log in `LOG_AGENTI/`: `YYYY-MM-DD_log_NNN_descrizione.md`.
 2. Aggiorna `PROCESSO_REVISIONE.md`: stato, mancanze, riferimento log.
 3. Se applicabile, aggiorna `Date [NOME].xlsx`.
-4. Mostra riepilogo:
+4. **Offri riepilogo DOCX**: "Vuoi un report DOCX riassuntivo? (carica commands/riepilogo.md)"
+   - Si → esegui, salva in `Revisione/Riepilogo_*.docx`.
+   - No → skippa.
+5. Mostra riepilogo:
 
 > "Fatto: [lista]. Manca: [lista]. Prossimo passo: [UNA COSA]."
 
