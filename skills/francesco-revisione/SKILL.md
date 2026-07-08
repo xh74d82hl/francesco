@@ -55,7 +55,7 @@ Poi mostra all'utente:
 > "Ho letto [NOME]. Tipo: [TIPO]. Mandato: [MANDATO].
 > Ultima sessione: [DATA] — [RIASSUNTO].
 > Prossima scadenza: [DOCUMENTO] del [DATA].
-> Manncanze aperte: [N]. Procedo con [PROSSIMO PASSO]?"
+> Mancanze aperte: [N]. Procedo con [PROSSIMO PASSO]?"
 
 Se `PROCESSO_REVISIONE.md` non esiste:
 

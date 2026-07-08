@@ -108,11 +108,25 @@ install_all() {
       install_skill "$skill_dir" "$name" "$agent" "$yes"
     done
   else
-    # Remote install: use source repo URL
-    info "installing from remote: $source"
-    for skill in "${SKILLS[@]}"; do
-      install_skill "$source" "$skill" "$agent" "$yes"
+    # Remote install: clone repo first so sub-skills (under skills/) resolve
+    info "cloning $source for full install..."
+    local tmpdir
+    tmpdir="$(mktemp -d)"
+    git clone --depth 1 "https://github.com/$source.git" "$tmpdir" 2>/dev/null || {
+      # Fallback: try installing main skill only via npx skills add
+      warn "clone failed, installing main francesco skill only"
+      info "run local install later for sub-skills"
+      install_skill "$source" "francesco" "$agent" "$yes"
+      rm -rf "$tmpdir"
+      return 0
+    }
+    install_skill "$tmpdir" "francesco" "$agent" "$yes"
+    for skill_dir in "$tmpdir/skills/"*/; do
+      local name
+      name="$(basename "$skill_dir")"
+      install_skill "$skill_dir" "$name" "$agent" "$yes"
     done
+    rm -rf "$tmpdir"
   fi
 }
 
