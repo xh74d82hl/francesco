@@ -4,40 +4,55 @@
 
 > *"Se devi fare una cosa, falla bene. Poi ricontrolla. Poi falla controllare a qualcun altro. Poi ricontrolla ancora. Poi dormici sopra e ricontrolla domattina."*
 
-**Francesco non e l'intern.** Ha 35 anni, occhialetti tondi, capelli che hanno smesso di ascoltarlo, cravatta storta, una calcolatrice gigante che non lascia mai. Non e un genio. Non cerca di esserlo. Ma e preciso, ostinato, e non si ferma finche ogni numero non torna.
+**Francesco non e l'intern.** Ha 35 anni, occhialetti tondi, capelli che hanno smesso di ascoltarlo da un pezzo, cravatta che non sta mai dritta, una calcolatrice gigante che non lascia mai. Non e un genio. Non cerca di esserlo. Il suo superpotere e un altro: **non molla finche ogni numero non torna.**
 
-**Tre volte. Poi altre due.**
+Tre volte. Poi altre due.
 
 ---
 
-## Che problema risolve
+## Il problema
 
-Hai 4 societa. Ognuna con documenti sparsi, modelli diversi, normative diverse, calendari incompleti. Ogni volta che riprendi in mano un lavoro devi ricostruire da capo cosa e stato fatto. Un casino.
+Hai 4 societa. Ognuna con documenti sparsi, modelli diversi, calendari incompleti, normative da settori diversi. Ogni trimestre devi ricostruire da capo cosa e stato fatto. Un casino.
 
-Francesco e l'uomo che assumi per mettere ordine. Non fa domande stupide. Controlla tutto due volte (anzi 50). Ti dice quando non ha capito. E poi ricontrolla.
+Francesco e l'uomo che assumi per non pensarci piu. Entra, legge tutto, si fa un quadro, e ogni volta che apri un file sai esattamente:
 
-## Cosa fa Francesco
-
-| Cosa | Come |
-|------|------|
-| **Identifica la societa** | Asp? SPA? SRL? Sportiva? Se non trova documenti, fa un best guess e te lo dice chiaro. |
-| **Fa routing del mandato** | Revisore legale? Sindaco unico? Collegio Sindacale? Ogni tipo ha i suoi adempimenti. |
-| **Stila gli extra per settore** | RSA, automotive, calcio, immobiliare — ogni settore ha compliance aggiuntive. |
-| **Tiene un archivio normativo** | Norme, decreti, regolamenti in markdown. Con fonte e data. Aggiornabile su richiesta. |
-| **Lascia traccia di tutto** | Ogni sessione produce log datato. Il prossimo (o tu tra 6 mesi) sa esattamente a che punto siete. |
-| **Non inventa mai dati** | Se non lo sa, scrive `N.d.` |
+- che tipo di societa e
+- che mandato hai
+- quali adempimenti servono
+- cosa manca
+- cosa e stato gia fatto
 
 ## Per chi e
 
-Per **revisori contabili, sindaci unici, collegi sindacali** che seguono piu societa e non vogliono ricominciare da capo ogni trimestre.
+Per **revisori contabili, sindaci unici, collegi sindacali** che seguono piu societa e non vogliono ricominciare da capo ogni 3 mesi.
+
+---
+
+## Cosa fa
+
+| Questione | Come Francesco la gestisce |
+|-----------|---------------------------|
+| **"Che tipo di societa e?"** | Asp? SPA? SRL? Sportiva? Se non trova documenti, fa un best guess e te lo dice chiaro. |
+| **"Che mandato ho?"** | Revisore legale? Sindaco unico? Collegio Sindacale? Ogni tipo ha checklist diverse. |
+| **"Il settore ha cose extra?"** | RSA, automotive, calcio, immobiliare, manifatturiero — Francesco cerca e tiene traccia di tutto. |
+| **"Le norme sono cambiate?"** | Archivio normativo in markdown, aggiornabile su richiesta. Non un database — file leggibili con fonte e data. |
+| **"Dov eravamo rimasti?"** | Log datato di ogni sessione. Il prossimo (o tu tra 6 mesi) apre il file e sa esattamente. |
+| **"E se non ho i dati?"** | `N.d.` — Francesco non inventa mai nulla. |
+
+---
 
 ## Come si usa
 
-```
+```bash
 /usare francesco
 ```
 
-Poi segui la checklist. Francesco ti guida passo passo: identifica la societa -> determina il mandato -> consulta la normativa -> lavora sui documenti -> lascia traccia.
+Poi segui la checklist. Francesco fa il resto:
+1. Identifica la societa
+2. Determina il mandato
+3. Consulta la normativa (se serve)
+4. Lavora sui documenti
+5. Lascia traccia di tutto
 
 ---
 
@@ -45,51 +60,47 @@ Poi segui la checklist. Francesco ti guida passo passo: identifica la societa ->
 
 ```
 ~/.agents/skills/francesco/
-  SKILL.md              — il cuore: workflow revisione + routing + normativa
+  SKILL.md              — workflow revisione + routing + normativa
   characters/
-    francesco.svg       — avatar
-  normative/            — archivio normativo (locale, fuori dal git repo)
-    INDICE.md           — indice dell'archivio
-    societa/            — normativa per tipo societario
-    settori/            — normativa per settore merceologico
-    paese/              — framework normativo paese
-    aggiornamento.md    — log degli aggiornamenti
-  DIRECTION.md          — roadmap e note di sviluppo
+    francesco.svg       — non e bello, ma e Francesco
+  normative/            — archivio regolatorio (locale, fuori dal git)
+    INDICE.md           — indice completo
+    societa/            — per tipo: ASP, SPA, SRL, cooperativa, sportiva
+    settori/            — per settore: RSA, automotive, calcio, immobiliare, manifatturiero, commercio
+    paese/              — framework Italia e Codice Civile
+    aggiornamento.md
+  DIRECTION.md          — dove vuole andare Francesco
+  README.md             — questo file
 ```
 
----
+## Cosa finisce nel git
 
-## Cosa c'e nel git repo
+Solo la skill: `SKILL.md`, `README.md`, avatar, direzione.
 
-Solo `SKILL.md`, `README.md`, `characters/`, `DIRECTION.md`. Roba che ha senso versionare.
-
-L'archivio normativo (`normative/`) e locale perche:
-- Non vuoi fare PR per aggiornare un D.Lgs.
-- Ogni skill ha bisogno delle proprie societa
-- Markdown versionabile localmente senza casino
+L'archivio normativo e locale. Perche dovresti fare una PR per aggiornare un D.Lgs.?
 
 ---
 
-## Il credo
+## Crediti
 
-| Principio | Perche |
-|-----------|--------|
-| Mai inventare dati | Se non lo sai, scrivi `N.d.` |
-| Lascia traccia | Ogni sessione ha un log datato |
+Stile ispirato al lavoro di **Ralph** — perche quando un bro fa un buon lavoro, si dice.
+Struttura tecnica da **Kami** — chiarezza prima di tutto.
+
+---
+
+## Il credo di Francesco
+
+| Principio | Perche ci credo |
+|-----------|-----------------|
+| Mai inventare dati | Se non lo sai, `N.d.` e meglio di una bugia |
+| Lascia traccia | Ogni sessione ha un log. Sempre. |
 | Separa formale da tecnico | I verbali sono dei clienti. I log sono tuoi. |
-| Chiedi se non capisci | Francesco fa domande. Ma solo quelle necessarie. |
+| Chiedi se non capisci | Le domande giuste non sono mai stupide |
 | Ricontrolla | 50 volte. Poi altre 2. |
 
 ---
 
-## Riconoscimenti
-
-Stile rubato a [Ralph](https://github.com/nicedoc/ralph) — perche i tool migliori hanno una personalita.
-Struttura tecnica da Kami — perche la chiarezza vince.
-
----
-
 <div align="center">
-  <img src="characters/francesco.svg" width="200" alt="Francesco">
+  <img src="characters/francesco.svg" width="180" alt="Francesco">
   <p><em>"Ho ricontrollato. Tutto ok. Ora ricontrollo ancora."</em></p>
 </div>
