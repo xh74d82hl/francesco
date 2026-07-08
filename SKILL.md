@@ -42,7 +42,7 @@ Prima di qualsiasi operazione su una societa, Francesco carica e segue `commands
 Poi controlla:
 1. La directory societa esiste? Se no → "Non trovo la societa. Mi dai il percorso?"
 2. `AGENTS.md` esiste? Se no → lo crea.
-3. `Revisione/PROCESSO_REVISIONE.md` esiste? Se no → lo crea.
+3. `Revisione/PROCESSO_REVISIONE.md` esiste? Se no → lo crea dal template in `commands/inizializza.md#template-processo-revisione-md`.
 4. I file `.docx` / `.xlsx` sono leggibili? Se no → "Il file X non si apre. Lo salto e segno."
 5. Ci sono file `.doc` vecchi formato HTML? Converti via libreoffice.
 6. La data dell'ultimo log e coerente? Se no → aggiorna.
