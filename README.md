@@ -1,95 +1,203 @@
 # Francesco
 
-**35 anni. Occhialetti tondi. Sguardo assente. Precisione maniacale.**
+<p align="center">
+  <img src="characters/francesco.svg" width="280" alt="Francesco — il revisore contabile">
+</p>
 
-Francesco fa task ripetitivi, li fa bene, e li ricontrolla 3 volte. Se non e sicuro al 100%, chiede. Se e sicuro al 100%, fa un passaggio in piu sui documenti comunque. Per sicurezza.
+<p align="center">
+  <i>🇮🇹 <a href="README.it.md">Vuoi leggere nella lingua nativa di Francesco?</a></i>
+</p>
 
-Non e un genio. Non cerca di esserlo. E la versione ideale del robot umano: esegue, controlla, esegue ancora, non si ferma finche ogni numero non torna.
-
-> *"N.d. e meglio di una bugia. Il dubbio e meglio di una certezza frettolosa."*
-
----
-
-## Il problema
-
-Hai 4 societa, ognuna con documenti sparsi, modelli diversi, calendari incompleti, normative da settori diversi. Ogni trimestre devi ricostruire da capo cosa e stato fatto. Francesco fa schifo a ricordare le cose. Allora le scrive. Tutte. Ogni volta.
-
-Entra, legge tutto, si fa un quadro, e quando apri un file sai esattamente:
-
-- che tipo di societa e
-- che mandato hai
-- cosa serve
-- cosa manca
-- cosa e stato controllato
-- quante volte e stato ricontrollato
-
-## Per chi e
-
-Per revisori, sindaci, collegi sindacali che non vogliono ricominciare da capo ogni 3 mesi.
+> **35 years old. Round glasses. Distant stare. Maniacal precision.**
+>
+> Francesco is not a genius. He doesn't try to be. He's the human robot you hire when the numbers must check out — three times, minimum.
 
 ---
 
-## Cosa fa
+## Francesco in 10 Seconds
 
-| "Francesco..." | Lui risponde |
-|----------------|--------------|
-| "Che tipo di societa e?" | Asp? SPA? SRL? Sportiva? Se non trova documenti, fa un'ipotesi e te la scrive chiara. |
-| "Che mandato ho?" | Revisore legale? Sindaco unico? Collegio? Ogni mandato ha la sua checklist. |
-| "Il settore ha extra?" | RSA, automotive, calcio, immobiliare — Francesco cerca, salva, e non dimentica. |
-| "Le norme?" | Archivio in markdown. Fonte, data, note. Aggiornabile. Leggibile. Senza database. |
-| "Dove eravamo?" | Log datato di ogni sessione. Apri e sai. Anche tra 6 mesi. Anche tra 2 anni. |
-| "E se mancano dati?" | `N.d.` — punto. Francesco non inventa. |
-
----
-
-## Il triplo check
-
-Il workflow di Francesco e semplice: fa, verifica, e se non e sicuro chiede. Se e sicuro, rifa un giro comunque.
-
-**1° giro**: esegue.
-**2° giro**: rilegge, controlla date nomi importi riferimenti.
-**3° giro**: valuta. Se ha dubbi -> chiede. Se e sicuro -> rilegge tutto un'altra volta.
-
-Poi salva e rilegge l'ultima riga dell'ultimo log. Per sicurezza.
+| If you say... | He does... |
+|---|---|
+| "What kind of company is this?" | ASP? SPA? SRL? Reads documents, tells you. Not sure? He guesses and marks it. |
+| "What mandate do I have?" | Legal auditor? Single auditor? Board? Every mandate has its own checklist. |
+| "Run an audit" | Identify → plan → execute → triple-check → log. Every time. |
+| "Check the docs" | Reads everything: data consistent? log up to date? gaps noted? |
+| "What regulations apply?" | Checks his personal archive first. Not there? Searches official sources, saves locally. |
 
 ---
 
-## Come si usa
+## Why Francesco Exists
+
+Every audit produces the same pain:
+- **Spreadsheets with missing quarters**
+- **Signatures that don't match dates**
+- **"I'm sure I saved that file"** (you didn't)
+
+Francesco is purpose-built for one job: **audit documentation, done right, every time.** He doesn't get bored, doesn't rush, and triple-checks everything — including his own triple check.
+
+---
+
+## Features
+
+| | Feature | What it means |
+|---|---|---|
+| 🎯 | **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
+| 📋 | **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
+| 📚 | **Personal Archive** | Local regulation database built per-company, per-sector. Works offline. |
+| 🔄 | **Triple Check** | Execute → verify → re-verify → read one more file just in case |
+| 🧠 | **Context Extraction** | Scans existing docs to reconstruct company type, mandate, audit state |
+| 🔌 | **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
+| 📝 | **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
+| 🌐 | **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
+
+---
+
+## How It Works
+
+### 1. Safety Preflight
+
+Before touching anything, Francesco:
+1. Checks if the company directory exists
+2. Creates `AGENTS.md` if missing
+3. Creates `Revisione/PROCESSO_REVISIONE.md` if missing
+4. Tests file readability (`.docx`, `.xlsx`, scanned PDFs)
+5. Verifies last log date is coherent
+
+If something doesn't add up, he stops and asks. Never proceeds blind.
+
+### 2. Audit Flow
 
 ```
-/usare francesco
+Identify  →  Plan  →  Execute  →  Triple-Check  →  Close
+  │           │          │             │              │
+  │           │          │             │              ├─ Write dated log
+  │           │          │             │              ├─ Update PROCESSO_REVISIONE.md
+  │           │          │             │              └─ Validate output files
+  │           │          │             │
+  │           │          │             └─ 1st: execute
+  │           │          │                2nd: verify everything
+  │           │          │                3rd: if doubt → ask; if sure → do it again
+  │           │          │                4th: re-read last log line
+  │           │          │
+  │           │          └─ OCR? docling. DOCX? docx skill. XLSX? xlsx skill.
+  │           │
+  │           └─ What needs doing today? What NOT to touch?
+  │
+  └─ Company type? Mandate? Sector? ATECO?
 ```
 
-Poi Francesco segue la sua scaletta: identifica -> determina -> consulta -> esegue -> controlla 3 volte -> lascia traccia.
+### 3. Personal Normative Archive
+
+Francesco doesn't keep every law in his head. On every job:
+
+1. Checks `normative/` for existing regulation by company type + sector
+2. Complete → proceed. Missing → search Normattiva, Gazzetta Ufficiale, CNDCEC
+3. Saves locally. Next time it's there. Works offline.
+
+> No central database. No PRs to update a D.Lgs. His stuff. Local. Updated when needed.
 
 ---
 
-## La struttura
+## Token Discipline
+
+During analysis, OCR, source reading, and intermediate checks, Francesco writes in compressed `caveman ultra` style — short phrases, no narrative fluff, preserve all numbers/dates/names/references.
+
+**Full readability reserved for:** user questions, critical warnings, official logs, formal documents, and final summary.
+
+---
+
+## What People Say
+
+> *"N.d. is better than a lie. Doubt is better than a rushed certainty."*
+> — Francesco, every single session
+
+---
+
+## Installation
+
+```bash
+# Auto-detect (recommended)
+bash <(curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh) xh74d82hl/francesco
+
+# Via npx skills, explicit agent
+npx skills add xh74d82hl/francesco --global --skill francesco --agent opencode
+
+# Manual
+git clone https://github.com/xh74d82hl/francesco.git ~/.agents/skills/francesco
+```
+
+Replace `opencode` with `claude-code`, `cursor`, or your harness of choice.
+
+### Flags
+
+| Flag | What it does |
+|---|---|
+| `--agent <name>` | Target a specific harness |
+| `--yes` | Skip prompts (only when 1 agent detected) |
+| `--list` | Show detected harnesses |
+| `--dev-copy` | Copy local files for testing |
+
+### Windows
+
+```powershell
+irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
+# Then if needed:
+.\install.ps1 xh74d82hl/francesco
+```
+
+### Dev Copy
+
+```bash
+bash install.sh --dev-copy --target ~/.agents/skills
+```
+
+Preserves existing `normative/` and `scripts/`. Safe for iterative development.
+
+---
+
+## Structure
 
 ```
 ~/.agents/skills/francesco/
-  SKILL.md              — tutto quello che Francesco sa fare
+  SKILL.md              — routing + brain
+  README.md             — this file (English)
+  README.it.md          — Italian version 🇮🇹
+  install.sh            — installer for Linux/macOS
+  install.ps1           — installer for Windows
+  DIRECTION.md          — roadmap
   characters/
-    francesco.svg       — non e bello, ma e lui
-  normative/            — norme e regolamenti (locale, fuori dal git)
-  DIRECTION.md          — dove sta andando
+    francesco.svg       — the face
+  commands/
+    revisione.md        — full audit workflow
+    check.md            — document validation
+    normativa.md        — regulation archive + auto-update
+    triage.md           — quick company scan
+    inizializza.md      — new company setup
+  normative/            — per-company regulation archive (gitignored)
+  scripts/              — local utility scripts (gitignored)
 ```
 
-## Cosa finisce nel git
+---
 
-Solo la skill e il README. Le norme no, perche Francesco non vuole fare PR per aggiornare un D.Lgs.
+## Requirements
+
+- **OpenCode**, **Claude Code**, **Cursor**, or compatible agent
+- `npx` available in PATH
+- Optional: `docling` MCP for scanned PDFs
+- Optional: LibreOffice for legacy `.doc` files
 
 ---
 
-## Crediti
+## License
 
-Stile da **Ralph** — perche quando un bro fa un buon lavoro, si dice.
-Struttura da **Kami** e **farmage/opencode-skills** — le skill migliori hanno uno scheletro solido.
-Il resto e roba di Francesco. Il triplo check e farina del suo sacco.
+MIT
 
 ---
 
-<div align="center">
-  <img src="characters/francesco.svg" width="180" alt="Francesco">
-  <p><em>"Ho controllato. Tutto ok. Controllo ancora."</em></p>
-</div>
+## Credits
+
+Style inspired by **Ralph** — because when a bro does good work, you say it.
+
+Italian localization by **Kami** — clean, warm, precise.
+
+Built with ❤️ for auditors, accountants, and everyone who triple-checks their triple check.

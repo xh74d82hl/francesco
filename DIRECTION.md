@@ -1,6 +1,7 @@
 # DIRECTION — Skill Francesco
 
 Salvato il 2026-07-08 durante sessione di refactoring.
+Ultimo aggiornamento: 2026-07-08 — split commands/ completato, installer selettivo, README Ralph.
 
 ## Concept
 
@@ -22,29 +23,51 @@ Francesco e un container. Ogni sub-comando e un file in `commands/`:
 francesco/
   SKILL.md                — entry point con routing
   DIRECTION.md            — questo file
+  README.md               — marketing in stile Ralph
+  install.sh              — auto-detect installer
   characters/
     francesco.svg         — avatar / logo
   commands/
-    revisione.md          — gestione documenti revisione (ex skill revisione)
-    check.md              — validazione, controllo documenti
-    normativa.md          — consultazione archivio normativo
-  normative/              — database normativo di riferimento
-  scripts/                — utility script
+    revisione.md          — revisione contabile completa
+    check.md              — validazione documenti
+    normativa.md          — consultazione + auto-aggiornamento archivio
+    triage.md             — scansione rapida societa
+    inizializza.md        — setup nuova societa
+  normative/              — archivio personale (gitignorato, costruito dall'agente)
+  scripts/                — utility script locali
 ```
 
-Ogni sub-comando ha:
-- `name`: nome del comando
-- `description`: cosa fa
-- `when_to_call`: quando usarlo
-- `outcome_contract`: cosa produce
+## Stato sub-comandi
 
-## Origine dei sub-comandi
+| Sub-comando | Stato |
+|-------------|-------|
+| `revisione` | Completato |
+| `check` | Completato |
+| `normativa` | Completato (con preflight + auto-update) |
+| `triage` | Completato |
+| `inizializza` | Completato |
 
-| Sub-comando | Ereditato da | Stato |
-|-------------|--------------|-------|
-| `revisione` | skill `revisione` (precedente) | Da migrare |
-| `check` | nuovo | Da creare |
-| `normativa` | nuovo (parte dall'archivio normativo) | Da creare |
+## Auto-update normativa (FLAGSHIP)
+
+Francesco non usa un database normativo centralizzato. Ogni volta che lavora su una societa:
+1. Controlla il suo `normative/` personale
+2. Se manca normativa per quel tipo/settore, cerca online (Normattiva, Gazzetta Ufficiale, CNDCEC)
+3. Salva solo quello che serve
+4. Funziona offline dopo il primo download
+
+Questo e il cuore della skill. Tutto il resto e corollario.
+
+## Installazione
+
+Installer pubblico:
+1. Rileva harness installati
+2. Se uno solo, usa quello
+3. Se piu di uno, chiede o richiede `--agent`
+4. Chiama `npx skills add <source> --global --skill francesco --agent <agent>`
+
+Non usare installazione globale bare come default, perche puo creare cartelle/symlink per troppi agenti.
+
+`--dev-copy` resta solo per test locale e non deve cancellare `normative/` o `scripts/`.
 
 ## Personaggio
 
@@ -53,18 +76,11 @@ Colori: blu scuro, verde acido, carta da pacchi.
 
 ## README stile Ralph
 
-Il README del git repo deve copiare lo stile di Ralph:
-- Divertente ma professionale
-- Tagline ironica
-- Sezioni chiare con emoji
-- "Outcome Contract"
-- Esempi d'uso
-- Sembra scritto da un umano, non da un template
+Fatto. Il README ha tagline ironica, sezioni chiare, spiega l'archivio personale in modo semplice, sembra scritto da un umano.
 
 ## Prossimi passi
 
-- Completare migrazione da `revisione` a `francesco`
-- Creare sub-comando `check`
-- Creare sub-comando `normativa`
-- Aggiungere `/francesco` command
-- Mantenere backward compatibility con `/revisione`
+- Vendere su skills.sh
+- Raccogliere feedback da utenti reali
+- Aggiungere backward compatibility con eventuale skill `revisione` se esiste
+- Eventuali altri sub-comandi su richiesta
