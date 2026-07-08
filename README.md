@@ -10,7 +10,7 @@
 
 > **35 years old. Round glasses. Distant stare. Maniacal precision.**
 >
-> Francesco is not a genius. He doesn't try to be. He's the human robot you hire when the numbers must check out — three times, minimum.
+> Francesco is not a genius. He doesn't try to be. He's the human robot you hire when the numbers must check out — 3 times? 30? He doesn't know. He'll check anyway.
 
 ---
 
