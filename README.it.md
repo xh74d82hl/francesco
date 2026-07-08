@@ -16,17 +16,19 @@
 
 ## Avvio Rapido
 
-```bash
-# Carica Francesco (orchestratore — mostra menu, sceglie il flusso giusto)
-load francesco
+Dopo l'installazione, le skill vengono scoperte automaticamente dal tuo agente. Basta dire cosa serve:
 
-# O carica una sub-skill direttamente se sai già cosa fare:
-load francesco-bilancio    # Quadratura + Benford
-load francesco-estratto    # Riconciliazione bancaria
-load francesco-revisione   # Documenti di revisione
-```
+> "Usa Francesco, devo fare una revisione"
+> "Verifica il bilancio con Francesco"
+> "Check the documents with francesco-bilancio" (funziona in inglese)
+> "Fai il test Benford su questi numeri"
 
-L'orchestratore ti saluta, fa i controlli preflight, poi mostra cosa sa fare. Dì cosa ti serve — sceglie lui il flusso. Salta l'orchestratore con una sub-skill se sai già il compito.
+Dì **"cosa posso fare"** o dimmi direttamente cosa ti serve — scelgo io il flusso giusto.
+
+Inizia con l'**orchestratore** (solo "francesco") per il menu completo. Usa una **sub-skill** quando sai già cosa fare:
+- `francesco-bilancio` — controlli bilancio
+- `francesco-estratto` — riconciliazione bancaria
+- `francesco-revisione` — documenti di revisione
 
 ---
 
@@ -92,7 +94,7 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 6. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
 7. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
 
-**Sub-skill** (`load francesco-bilancio` ecc.) saltano il punto 2 e vanno dritte al loro flusso — per quando sai già cosa fare.
+**Sub-skill** (nominando direttamente `francesco-bilancio` ecc.) saltano il punto 2 e vanno dritte al loro flusso — per quando sai già cosa fare.
 
 ### 1. Safety Preflight
 

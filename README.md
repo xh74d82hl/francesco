@@ -16,17 +16,19 @@
 
 ## Quick Start
 
-```bash
-# Load Francesco (orchestrator — shows menu, picks the right flow)
-load francesco
+After installation, skills are auto-discovered by your agent. Just say what you need:
 
-# Or load a sub-skill directly when you know what you need:
-load francesco-bilancio    # Balance sheet checks
-load francesco-estratto    # Bank reconciliation
-load francesco-revisione   # Audit documentation
-```
+> "Use Francesco, I need to run an audit"
+> "Verifica il bilancio con Francesco"
+> "Check the documents with francesco-bilancio"
+> "Run Benford test on these numbers"
 
-Francesco's orchestrator greets you, runs preflight checks, then shows what it can do. Say what you need — he picks the right workflow. Skip the orchestrator with a sub-skill when you already know the task.
+Say **"cosa posso fare"** or tell Francesco directly what you need — he picks the right workflow.
+
+Start with the **orchestrator** (just "francesco") for the full menu. Use a **sub-skill** name when you already know the task:
+- `francesco-bilancio` — balance sheet checks
+- `francesco-estratto` — bank reconciliation  
+- `francesco-revisione` — audit documentation
 
 ---
 
@@ -92,7 +94,7 @@ Preflight → Capisci richiesta → Carica comando → Esegui → Verifica outpu
 6. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
 7. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
 
-**Sub-skills** (`load francesco-bilancio` etc.) skip step 2 and go straight to their flow — for when you already know the task.
+**Sub-skills** (mentioning `francesco-bilancio` etc. directly) skip step 2 and go straight to their flow — for when you already know the task.
 
 ### 1. Safety Preflight
 
