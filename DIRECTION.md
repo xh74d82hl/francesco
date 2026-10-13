@@ -1,7 +1,7 @@
 # DIRECTION — Skill Francesco
 
 Salvato il 2026-07-08 durante sessione di refactoring.
-Ultimo aggiornamento: 2026-07-08 — struttura multi-skill, root orchestratore, commands/ condivisi.
+Ultimo aggiornamento: 2026-10-13 — layout Agent Skills standard (`skills/<nome>/`), rimossi docling/MCP/setup.
 
 ## Concept
 
@@ -17,38 +17,27 @@ Ultimo aggiornamento: 2026-07-08 — struttura multi-skill, root orchestratore, 
 
 ## Struttura multi-skill
 
-Francesco e una famiglia di skill, ognuna col suo SKILL.md.
-La root SKILL.md e l'orchestratore (regole condivise + menu).
-commands/ e una libreria riutilizzabile da tutte le skill.
+Francesco e una famiglia di skill in formato Agent Skills, ognuna col suo SKILL.md.
+`skills/francesco/` e l'orchestratore (regole condivise + menu) e contiene in
+`references/` i flussi dettagliati, riusati dalle skill sorelle.
+
+Zero dipendenze: niente docling, niente MCP, niente plugin. I documenti scansionati
+li legge direttamente il modello.
 
 ```
 francesco/
-  SKILL.md                — orchestratore (regole condivise + menu)
-  DIRECTION.md            — questo file
-  README.md               — inglese
-  README.it.md            — italiano
-  install.sh              — auto-detect installer
-  install.ps1             — Windows installer
-  characters/
-    francesco.svg         — avatar / logo
-  commands/               — istruzioni condivise
-    struttura.md          — struttura canonica directory
-    revisione.md          — esecuzione sessione revisione
-    check.md              — validazione documenti
-    bilancio_check.md     — controlli bilancio + Benford/pattern
-    estratto_check.md     — riconciliazione estratti conto
-    normativa.md          — preflight + archivio normativo
-    triage.md             — scansione rapida
-    inizializza.md        — commissionamento nuova societa
-    setup.md              — installazione dipendenze
-    riepilogo.md          — report DOCX riassuntivo
-  skills/                 — skill specializzate
-    francesco-revisione/   — workflow revisione (attivo)
-    francesco-bilancio/    — controlli bilancio (attivo)
-    francesco-estratto/    — riconciliazione bancaria (attivo)
-  normative/              — archivio personale (gitignorato)
-  scripts/
-    docling-server.py     — MCP server OCR (embedded)
+  skills/
+    francesco/              — orchestratore
+      SKILL.md
+      references/           — struttura, revisione, check, bilancio_check,
+                              estratto_check, normativa, triage, inizializza, riepilogo
+    francesco-revisione/    — workflow revisione
+    francesco-bilancio/     — controlli bilancio
+    francesco-estratto/     — riconciliazione bancaria
+  install.sh / install.ps1  — installer senza dipendenze
+  README.md / README.it.md
+  DIRECTION.md              — questo file
+  characters/francesco.svg  — avatar / logo
 ```
 
 ## Stato sub-comandi
@@ -76,15 +65,15 @@ Questo e il cuore della skill. Tutto il resto e corollario.
 
 ## Installazione
 
-Installer pubblico:
-1. Rileva harness installati
+Installer pubblico (`install.sh`, `install.ps1`):
+1. Rileva gli agenti installati (`~/.claude`, `~/.config/opencode`; altrimenti `~/.agents/skills`)
 2. Se uno solo, usa quello
-3. Se piu di uno, chiede o richiede `--agent`
-4. Chiama `npx skills add <source> --global --skill francesco --agent <agent>`
+3. Se piu di uno, chiede o richiede `--agent` / `--dir`
+4. Scarica il repo e copia `skills/*` nella cartella skills scelta
 
-Non usare installazione globale bare come default, perche puo creare cartelle/symlink per troppi agenti.
+Non installare ovunque come default. Servono solo bash/curl/tar (o PowerShell).
 
-`--dev-copy` resta solo per test locale e non deve cancellare `normative/` o `scripts/`.
+Alternative: `npx skills add xh74d82hl/francesco`, oppure zip di `skills/francesco` caricato nell'app Claude.
 
 ## Personaggio
 
@@ -100,7 +89,6 @@ Fatto. Il README ha tagline ironica, sezioni chiare, spiega l'archivio personale
 - Vendere su skills.sh
 - Raccogliere feedback da utenti reali
 - Aggiungere backward compatibility con eventuale skill `revisione` se esiste
-- `commands/setup.md` — setup dipendenze da testare su macchina pulita
-- `commands/riepilogo.md` — report DOCX da testare
-- `scripts/docling-server.py` — MCP server embedded
+- `references/riepilogo.md` — report DOCX da testare
+- Pubblicare `francesco.zip` come asset di release per l'upload nell'app Claude
 - Eventuali altri sub-comandi su richiesta

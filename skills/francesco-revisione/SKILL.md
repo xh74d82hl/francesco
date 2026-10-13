@@ -1,8 +1,8 @@
 ---
 name: francesco-revisione
-description: "Francesco — revisione contabile completa. Scopre la societa, identifica tipo/mandato/settore, propone piano di lavoro, esegue con triplo check, chiude con log. Usa docling MCP per OCR. Use when users ask for: revisione, verbali, verifiche cassa, art.14, collegio sindacale, sindaco unico, documenti revisore, audit, check documenti."
+description: "Francesco — revisione contabile completa. Scopre la societa, identifica tipo/mandato/settore, propone piano di lavoro, esegue con triplo check, chiude con log. Use when users ask for: revisione, verbali, verifiche cassa, art.14, collegio sindacale, sindaco unico, documenti revisore, audit, check documenti."
 license: MIT
-compatibility: opencode, claude-code, cursor
+compatibility: Richiede la skill francesco installata nella stessa cartella skills (usa i suoi file in references/).
 metadata:
   domain: accounting
   role: specialist
@@ -13,10 +13,9 @@ metadata:
 
 # francesco-revisione
 
-Esegue revisione contabile. Usato dall'orchestratore `SKILL.md`.
-Se chiamato diretto, funziona standalone.
+Esegue revisione contabile. Scorciatoia diretta al flusso, senza il menu dell'orchestratore.
 
-> Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
+Le regole condivise (preflight, documenti scansionati, token discipline, MUST/MUST NOT) e i file di riferimento stanno nella skill `francesco`, installata accanto a questa: leggi `../francesco/SKILL.md` prima di iniziare. Se non c'è → fermati: "Manca la skill francesco. Installa la famiglia completa."
 
 ---
 
@@ -69,7 +68,7 @@ Scopri → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi
 
 ## Step 2 — Leggi stato
 
-1. Carica `commands/check.md` e fai un check rapido.
+1. Carica `../francesco/references/check.md` e fai un check rapido.
 2. Leggi `Revisione/PROCESSO_REVISIONE.md` → stato, calendario, mancanze.
 3. Leggi `Revisione/Date [NOME].xlsx` → scadenze.
 4. Leggi ultimo log in `LOG_AGENTI/` → ultima sessione.
@@ -93,7 +92,7 @@ Basato su calendario + stato + nuovi documenti:
 
 > "Oggi possiamo:
 > 1. [es. verbale Q2]
-> 2. [es. OCR nuovi documenti]
+> 2. [es. lettura nuovi documenti scansionati]
 > 3. [es. check generale]
 >
 > Cosa facciamo?"
@@ -105,7 +104,7 @@ Utente sceglie. Prendi nota.
 
 ## Step 4 — Esegui
 
-Carica `commands/revisione.md#Step4` per la tabella documenti per paese.
+Carica `../francesco/references/revisione.md#Step4` per la tabella documenti per paese.
 Usa il modello corretto da PROCESSO_REVISIONE.md.
 
 Per ogni documento:
@@ -114,7 +113,7 @@ Per ogni documento:
 Salva in:
 - Verbali: `Verbali/[ANNO]/*.docx`
 - Verifiche cassa: `verifica di cassa/[ANNO]/*.docx`
-- Altri paesi: vedi `commands/struttura.md`
+- Altri paesi: vedi `../francesco/references/struttura.md`
 
 ---
 
@@ -125,7 +124,7 @@ Salva in:
 **2° giro**: Verifica tutto.
 - N.d. risolvibili altrove?
 - Date coerenti? Nomi giusti? Importi combaciano?
-- Struttura cartelle integra? (riferimento: `commands/struttura.md`)
+- Struttura cartelle integra? (riferimento: `../francesco/references/struttura.md`)
 - Documenti salvati nella cartella giusta?
 - Convenzione nomi log rispettata?
 - Errore? → correggi e rifai 2° giro.
@@ -162,20 +161,18 @@ Poi:
 
 ---
 
-## Carica comandi condivisi
+## File di riferimento condivisi
 
 | Quando | Carica |
 |--------|--------|
-| Preflight + validazione struttura | `francesco/commands/struttura.md` |
-| Esecuzione documenti per paese | `francesco/commands/revisione.md#Step4` |
-| **Check bilancio (quadratura, scelte, Benford)** | `francesco/commands/bilancio_check.md` |
-| **Riconciliazione estratti conto** | `francesco/commands/estratto_check.md` |
-| Check documenti | `francesco/commands/check.md` |
-| Triage / stato rapido | `francesco/commands/triage.md` |
-| Normativa + ricerca fonti | `francesco/commands/normativa.md` |
-| Setup nuova societa | `francesco/commands/inizializza.md` |
-| Setup dipendenze | `francesco/commands/setup.md` |
-| Report DOCX riepilogo | `francesco/commands/riepilogo.md` |
+| Preflight + validazione struttura | `../francesco/references/struttura.md` |
+| Esecuzione documenti per paese | `../francesco/references/revisione.md#Step4` |
+| **Check bilancio (quadratura, scelte, Benford)** | `../francesco/references/bilancio_check.md` |
+| **Riconciliazione estratti conto** | `../francesco/references/estratto_check.md` |
+| Check documenti | `../francesco/references/check.md` |
+| Triage / stato rapido | `../francesco/references/triage.md` |
+| Normativa + ricerca fonti | `../francesco/references/normativa.md` |
+| Setup nuova societa | `../francesco/references/inizializza.md` |
+| Report DOCX riepilogo | `../francesco/references/riepilogo.md` |
 
-Tutti i comandi stanno in `francesco/commands/`.
-Script MCP server in `francesco/scripts/docling-server.py`.
+Tutti i file stanno in `../francesco/references/`.

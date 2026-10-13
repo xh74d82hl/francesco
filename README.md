@@ -63,9 +63,9 @@ Francesco is purpose-built for one job: **audit documentation, done right, every
 | **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
 | **Triple Check** | Execute → verify → re-verify → read one more file just in case |
 | **Context Extraction** | Scans existing docs to reconstruct jurisdiction, company type, mandate, audit state |
-| **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
+| **Scanned Documents** | Scanned PDFs and photos? Francesco reads them directly and re-adds the totals. No OCR tooling. |
 | **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
-| **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
+| **Cross-Platform** | Works on Linux, macOS, Windows. Claude, Claude Code, OpenCode, Cursor, others. Zero dependencies. |
 | **Balance Check** | Quadratura SP/CE, cross-foot, nota integrativa tie-out, scelte contabili |
 | **Benford / Anti-Manipulation** | χ² test, Z per digit, round-number bias, duplicated amounts, terminal-digit, threshold clustering |
 | **Bank Reconciliation** | Match movements, categorize unreconciled, reconcile saldo, cross-check cassa |
@@ -81,7 +81,7 @@ Check frustration → Preflight → Capisci richiesta → Carica comando → Ese
 ```
 
 1. **Frustration check** — detects frustration/cursing (IT + EN patterns); 1-2 hits → calm message; 3+ consecutive → skip, go straight to action
-2. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
+2. **Preflight** — finds the company dir, notes optional tools (docx/xlsx skills), validates directory structure, reads last log
 3. **What to do?** — if you haven't said anything, introduces himself and asks what you need; confirms understanding before proceeding
 4. **Picks the right command** — maps your request to a workflow
 5. **Executes** — runs the chosen command
@@ -89,7 +89,7 @@ Check frustration → Preflight → Capisci richiesta → Carica comando → Ese
 7. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
 8. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
 
-**Sub-skills** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) skip step 3 and go straight to their flow — fully standalone, with their own triple check and closure.
+**Sub-skills** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) skip step 3 and go straight to their flow, with their own triple check and closure. They read the shared rules and flows from the `francesco` skill, so install all four together.
 
 ### 1. Safety Preflight
 
@@ -116,7 +116,7 @@ Identify  →  Plan  →  Execute  →  Triple-Check  →  Close
   │           │          │                3rd: if doubt → ask; if sure → do it again
   │           │          │                4th: re-read last log line
   │           │          │
-  │           │          └─ OCR? docling. DOCX? docx skill. XLSX? xlsx skill.
+  │           │          └─ Scans? Read directly. DOCX? docx skill. XLSX? xlsx skill.
   │           │
   │           └─ What needs doing today? What NOT to touch?
   │
@@ -142,7 +142,7 @@ Francesco doesn't keep every law in his head. On every job:
 
 ## Token Discipline
 
-During analysis, OCR, source reading, and intermediate checks, Francesco writes in compressed `caveman ultra` style — short phrases, no narrative fluff, preserve all numbers/dates/names/references.
+During analysis, scan reading, source reading, and intermediate checks, Francesco writes in a compressed style — short phrases, no narrative fluff, preserve all numbers/dates/names/references.
 
 **Full readability reserved for:** user questions, critical warnings, official logs, formal documents, and final summary.
 
@@ -155,87 +155,87 @@ During analysis, OCR, source reading, and intermediate checks, Francesco writes 
 
 ## Installation
 
+No dependencies: Francesco is plain Markdown skills. No Python, no MCP server, no plugins.
+
+### One command (Linux / macOS)
+
 ```bash
-# Auto-detect (recommended)
-bash <(curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh) xh74d82hl/francesco
-
-# Via npx skills, explicit agent
-npx skills add xh74d82hl/francesco --global --skill francesco --agent opencode
-
-# Manual
-git clone https://github.com/xh74d82hl/francesco.git ~/.agents/skills/francesco
+curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh | bash
 ```
 
-Replace `opencode` with `claude-code`, `cursor`, or your harness of choice.
-
-### Flags
-
-| Flag | What it does |
-|---|---|
-| `--agent <name>` | Target a specific harness |
-| `--yes` | Skip prompts (only when 1 agent detected) |
-| `--list` | Show detected harnesses |
-| `--dev-copy` | Copy local files for testing |
+Detects your agent and copies the four skills into its skills folder. Restart the agent, then type `/francesco`.
 
 ### Windows
 
 ```powershell
 irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
-# Then if needed:
-.\install.ps1 xh74d82hl/francesco
 ```
 
-### Dev Copy
+### Claude app (claude.ai / desktop)
+
+1. Download this repo and zip the `skills/francesco` folder (the zip must contain the `francesco` folder itself).
+2. In Claude: Settings → Skills → upload the zip.
+
+The `francesco` skill contains every flow. The three `francesco-*` skills are shortcuts for terminal agents and are not needed here.
+
+### Other ways
 
 ```bash
-bash install.sh --dev-copy --target ~/.agents/skills
+# skills CLI (needs Node)
+npx skills add xh74d82hl/francesco
+
+# Manual
+git clone https://github.com/xh74d82hl/francesco.git
+cp -R francesco/skills/* ~/.claude/skills/
 ```
 
-Preserves existing `normative/` and `scripts/`. Safe for iterative development.
+### Installer flags
+
+| Flag | What it does |
+|---|---|
+| `--agent <name>` | `claude-code`, `opencode`, or `agents` (`~/.agents/skills`) |
+| `--dir <path>` | Install into any other skills folder |
+| `--yes` | Never prompt (fails if more than one agent is detected) |
+| `--list` | Show detected agents |
+
+Pass flags to the one-liner with `| bash -s -- --agent claude-code`. From a clone, `bash install.sh` installs your local copy.
 
 ---
 
 ## Structure
 
 ```
-~/.agents/skills/francesco/
-  SKILL.md              — orchestrator (shared rules + menu)
-  README.md             — this file (English)
-  README.it.md          — Italian version
-  install.sh            — installer for Linux/macOS
-  install.ps1           — installer for Windows
-  DIRECTION.md          — roadmap
-  characters/
-    francesco.svg       — the face
-  commands/             — shared reusable instructions
-    revisione.md        — full audit session flow
-    check.md            — document validation
-    bilancio_check.md   — balance sheet checks + Benford/patterns
-    estratto_check.md   — bank reconciliation
-    normativa.md        — regulation archive + auto-update
-    triage.md           — quick company scan
-    inizializza.md      — new company commissioning
-    setup.md            — dependency install
-    riepilogo.md        — DOCX summary report
-    struttura.md        — directory structure validation
-  skills/               — specialized skill entries (direct load)
-    francesco-revisione/
-      SKILL.md          — audit workflow
-    francesco-bilancio/
-      SKILL.md          — balance sheet checks + anti-manipulation
-    francesco-estratto/
-      SKILL.md          — bank reconciliation
-  normative/            — per-company regulation archive (gitignored)
-  scripts/              — local utility scripts (gitignored)
+francesco/                     — this repo
+  skills/
+    francesco/                 — orchestrator (shared rules + menu)
+      SKILL.md
+      references/              — detailed flows, loaded on demand
+        revisione.md           — full audit session flow
+        check.md               — document validation
+        bilancio_check.md      — balance sheet checks + Benford/patterns
+        estratto_check.md      — bank reconciliation
+        normativa.md           — regulation archive + auto-update
+        triage.md              — quick company scan
+        inizializza.md         — new company commissioning
+        riepilogo.md           — DOCX summary report
+        struttura.md           — directory structure validation
+    francesco-revisione/       — shortcut: audit workflow
+    francesco-bilancio/        — shortcut: balance sheet checks
+    francesco-estratto/        — shortcut: bank reconciliation
+  install.sh / install.ps1     — installers
+  README.md / README.it.md
+  DIRECTION.md                 — roadmap
+  characters/francesco.svg     — the face
 ```
+
+Install all four skills side by side: the shortcuts read the orchestrator's `references/`.
 
 ---
 
 ## Requirements
 
-- **OpenCode**, **Claude Code**, **Cursor**, or compatible agent
-- `npx` available in PATH
-- Optional: `docling` MCP for scanned PDFs
+- An agent that supports Agent Skills (Claude, Claude Code, OpenCode, Cursor, ...) with a model that reads PDFs and images
+- Optional: `docx` / `xlsx` skills for Word and Excel output (falls back to Markdown/CSV)
 - Optional: LibreOffice for legacy `.doc` files
 
 ---

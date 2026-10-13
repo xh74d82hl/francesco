@@ -1,4 +1,4 @@
-# commands/triage — Scansione rapida società
+# triage — Scansione rapida società
 
 **Chiamato da:** orchestratore `SKILL.md`.
 **Standalone:** preflight rapido se chiamato diretto.

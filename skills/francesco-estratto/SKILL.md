@@ -2,7 +2,7 @@
 name: francesco-estratto
 description: "Francesco — riconciliazione estratti conto bancari. Carica estratti (XLSX/PDF/CSV), confronta movimenti banca vs contabilità, segnala incongruenze, addebiti non contabilizzati, commissioni, e riconcilia saldi. Incrocia con verifiche di cassa. Use when users ask for: estratto conto, riconciliazione, check banca, liquidità, movimenti bancari."
 license: MIT
-compatibility: opencode, claude-code, cursor
+compatibility: Richiede la skill francesco installata nella stessa cartella skills (usa i suoi file in references/).
 metadata:
   domain: accounting
   role: specialist
@@ -13,10 +13,9 @@ metadata:
 
 # francesco-estratto
 
-Riconciliazione estratti conto. Usato dall'orchestratore `SKILL.md`.
-Se chiamato diretto, funziona standalone.
+Riconciliazione estratti conto. Scorciatoia diretta al flusso, senza il menu dell'orchestratore.
 
-> Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
+Le regole condivise (preflight, documenti scansionati, token discipline, MUST/MUST NOT) e i file di riferimento stanno nella skill `francesco`, installata accanto a questa: leggi `../francesco/SKILL.md` prima di iniziare. Se non c'è → fermati: "Manca la skill francesco. Installa la famiglia completa."
 
 ---
 
@@ -73,7 +72,7 @@ Come un contabile vero: vai a prendere le fonti, non ti fidare della contabilit�
 
 1. **Scansiona `Documenti acquisiti/`** → cerca `Estrai conto _[BANCA]_[ANNO].xlsx/.pdf/.csv`.
 2. **Se mancano** → proponi acquisizione:
-   - File locali (`*.xlsx`, `*.pdf`, `*.csv`) → leggi (docling per PDF scansionati).
+   - File locali (`*.xlsx`, `*.pdf`, `*.csv`) → leggi (anche PDF scansionati e immagini).
    - Home banking / portali banca → chiedi all'utente di esportare e fornire il file. **Non accedere da solo.**
 3. **Scansiona la contabilità** → libro giornale / mastri banca (`Bilanci/`, `Documenti acquisiti/`, o foglio `Prima nota *.xlsx`).
 4. Salva le fonti in `Documenti acquisiti/` con nome canonico. Non modificarle.
@@ -86,7 +85,7 @@ Mai procedere senza almeno un estratto e la contabilità di riferimento.
 
 ## Step 3 — Leggi lo stato
 
-1. Carica `commands/check.md` (check rapido struttura).
+1. Carica `../francesco/references/check.md` (check rapido struttura).
 2. Leggi `Revisione/PROCESSO_REVISIONE.md` → stato, calendario, mancanze, conti banca noti.
 3. Leggi ultimo log in `LOG_AGENTI/`.
 4. Apri estratto(i) e contabilità banca.
@@ -118,7 +117,7 @@ Utente sceglie. Prendi nota.
 
 ## Step 5 — Esegui (la riconciliazione vera)
 
-Carica `commands/estratto_check.md` per la procedura dettagliata. Sintesi:
+Carica `../francesco/references/estratto_check.md` per la procedura dettagliata. Sintesi:
 
 ### 5.1 — Confronto movimenti
 - Per ogni conto banca: allinea data, descrizione, importo tra estratto e contabilità.
@@ -191,16 +190,15 @@ Poi:
 
 ---
 
-## Carica comandi condivisi
+## File di riferimento condivisi
 
 | Quando | Carica |
 |--------|--------|
-| Preflight + validazione struttura | `francesco/commands/struttura.md` |
-| **Riconciliazione estratti** | `francesco/commands/estratto_check.md` |
-| Check documenti generico | `francesco/commands/check.md` |
-| Controlli bilancio (liquidità nel bilancio) | `francesco/commands/bilancio_check.md` |
-| Triage / stato rapido | `francesco/commands/triage.md` |
-| Setup dipendenze | `francesco/commands/setup.md` |
-| Report DOCX riepilogo | `francesco/commands/riepilogo.md` |
+| Preflight + validazione struttura | `../francesco/references/struttura.md` |
+| **Riconciliazione estratti** | `../francesco/references/estratto_check.md` |
+| Check documenti generico | `../francesco/references/check.md` |
+| Controlli bilancio (liquidità nel bilancio) | `../francesco/references/bilancio_check.md` |
+| Triage / stato rapido | `../francesco/references/triage.md` |
+| Report DOCX riepilogo | `../francesco/references/riepilogo.md` |
 
-Tutti i comandi stanno in `francesco/commands/`.
+Tutti i file stanno in `../francesco/references/`.

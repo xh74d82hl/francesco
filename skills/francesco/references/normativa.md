@@ -1,11 +1,19 @@
-# commands/normativa — Archivio normativo + ricerca per giurisdizione
+# normativa — Archivio normativo + ricerca per giurisdizione
 
-**Chiamato da:** orchestratore `SKILL.md` (preflight), `commands/inizializza.md`.
+**Chiamato da:** orchestratore `SKILL.md` (preflight), `references/inizializza.md`.
 **Standalone:** preflight rapido se chiamato diretto.
 
 Costruisce e aggiorna l'archivio normativo locale per paese/tipo/settore.
 Usa fonti ufficiali del paese di competenza.
 Salva in `normative/` dentro la directory societa.
+
+## Contenuti
+
+- Il problema
+- Preflight
+- Quando NON cercare online
+- Consultazione su richiesta
+- Summary finale normativa
 
 ## Il problema
 
@@ -15,7 +23,7 @@ Non un monolito GitHub. Roba sua. Locale. Aggiornata quando serve.
 
 Regola dura: `normative/` e archivio utente. Non cancellare, non sovrascrivere in blocco, non rigenerare da zero durante reinstall/update. Aggiornare solo con merge o append dei file necessari.
 
-Durante ricerca e lettura fonti usa stile interno compresso tipo `caveman ultra`. Il riepilogo finale torna leggibile.
+Durante ricerca e lettura fonti usa stile interno compresso. Il riepilogo finale torna leggibile.
 
 ---
 

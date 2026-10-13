@@ -1,6 +1,6 @@
-# commands/struttura — Struttura canonica directory + validazione
+# struttura — Struttura canonica directory + validazione
 
-**Chiamato da:** orchestratore `SKILL.md` (preflight), `commands/inizializza.md`.
+**Chiamato da:** orchestratore `SKILL.md` (preflight), `references/inizializza.md`.
 **Standalone:** caricato come riferimento, non eseguito da solo.
 
 Definisce la struttura cartelle canonica e le regole di validazione.

@@ -63,9 +63,9 @@ Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta 
 | **Archivio Normativo** | Database normativo locale costruito per giurisdizione, tipo società e settore. Funziona offline. |
 | **Triplo Check** | Esegui → verifica → riverifica → rileggi un altro file per sicurezza |
 | **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire giurisdizione, tipo società, mandato, stato revisione |
-| **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
+| **Documenti Scansionati** | PDF scansionati e foto? Francesco li legge direttamente e risomma i totali. Nessuno strumento OCR. |
 | **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
-| **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
+| **Multi-piattaforma** | Funziona su Linux, macOS, Windows. Claude, Claude Code, OpenCode, Cursor, altri. Zero dipendenze. |
 | **Controllo Bilancio** | Quadratura SP/CE, cross-foot, aggancio nota integrativa, scelte contabili |
 | **Benford / Anti-Manipolazione** | Test χ², Z per cifra, bias arrotondamento, importi duplicati, terminal-digit, clustering soglie |
 | **Riconciliazione Bancaria** | Abbina movimenti, classifica unreconciled, riconcilia saldo, incrocia cassa |
@@ -81,7 +81,7 @@ Check frustrazione → Preflight → Capisci richiesta → Carica comando → Es
 ```
 
 1. **Check frustrazione** — rileva frustrazione/imprecazioni (pattern IT + EN); 1-2 match → messaggio calma; 3+ consecutivi → salta, vai diretto
-2. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
+2. **Preflight** — trova la directory società, segnala strumenti opzionali (skill docx/xlsx), valida struttura, legge ultimo log
 3. **Cosa vuoi fare?** — se non hai ancora detto nulla, si presenta e chiede cosa serve; conferma la comprensione prima di procedere
 4. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
 5. **Esegue** — lancia il comando scelto
@@ -89,7 +89,7 @@ Check frustrazione → Preflight → Capisci richiesta → Carica comando → Es
 7. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
 8. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
 
-**Sub-skill** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) saltano il punto 3 e vanno dritte al loro flusso — completamente standalone, con triplo check e chiusura propri.
+**Sub-skill** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) saltano il punto 3 e vanno dritte al loro flusso, con triplo check e chiusura propri. Leggono regole e flussi condivisi dalla skill `francesco`, quindi installa le quattro insieme.
 
 ### 1. Safety Preflight
 
@@ -116,7 +116,7 @@ Identifica  →  Pianifica  →  Esegui  →  Triplo Check  →  Chiudi
   │             │             │                3°: se dubbio → chiedi; se certo → rifai
   │             │             │                4°: rileggi ultima riga ultimo log
   │             │             │
-  │             │             └─ OCR? docling. DOCX? skill docx. XLSX? skill xlsx.
+  │             │             └─ Scansioni? Lettura diretta. DOCX? skill docx. XLSX? skill xlsx.
   │             │
   │             └─ Cosa serve oggi? Cosa NON toccare?
   │
@@ -142,7 +142,7 @@ Francesco non tiene in testa tutte le leggi. A ogni lavoro:
 
 ## Disciplina Token
 
-Durante analisi, OCR, lettura fonti e controlli intermedi, Francesco scrive in stile compresso `caveman ultra` — frasi brevi, niente narrativa inutile, conserva tutti i numeri, le date, i nomi e i riferimenti.
+Durante analisi, lettura scansioni, lettura fonti e controlli intermedi, Francesco scrive in stile compresso — frasi brevi, niente narrativa inutile, conserva tutti i numeri, le date, i nomi e i riferimenti.
 
 **Leggibilità piena riservata a:** domande all'utente, warning critici, log ufficiali, documenti formali e riepilogo finale.
 
@@ -155,87 +155,87 @@ Durante analisi, OCR, lettura fonti e controlli intermedi, Francesco scrive in s
 
 ## Installazione
 
+Nessuna dipendenza: Francesco è fatto di skill in Markdown. Niente Python, niente server MCP, niente plugin.
+
+### Un comando (Linux / macOS)
+
 ```bash
-# Auto-detect (consigliato)
-bash <(curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh) xh74d82hl/francesco
-
-# Via npx skills, agente esplicito
-npx skills add xh74d82hl/francesco --global --skill francesco --agent opencode
-
-# Manuale
-git clone https://github.com/xh74d82hl/francesco.git ~/.agents/skills/francesco
+curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh | bash
 ```
 
-Sostituisci `opencode` con `claude-code`, `cursor` o il tuo agente.
-
-### Flag
-
-| Flag | Cosa fa |
-|---|---|
-| `--agent <nome>` | Installa per un agente specifico |
-| `--yes` | Salta i prompt (solo se 1 agente rilevato) |
-| `--list` | Mostra gli agenti rilevati |
-| `--dev-copy` | Copia i file locali per test |
+Rileva il tuo agente e copia le quattro skill nella sua cartella skills. Riavvia l'agente, poi scrivi `/francesco`.
 
 ### Windows
 
 ```powershell
 irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
-# Poi, se serve:
-.\install.ps1 xh74d82hl/francesco
 ```
 
-### Copia di Sviluppo
+### App Claude (claude.ai / desktop)
+
+1. Scarica questo repo e crea uno zip della cartella `skills/francesco` (lo zip deve contenere la cartella `francesco`).
+2. In Claude: Impostazioni → Skills → carica lo zip.
+
+La skill `francesco` contiene tutti i flussi. Le tre skill `francesco-*` sono scorciatoie per gli agenti da terminale e qui non servono.
+
+### Altri modi
 
 ```bash
-bash install.sh --dev-copy --target ~/.agents/skills
+# CLI skills (richiede Node)
+npx skills add xh74d82hl/francesco
+
+# Manuale
+git clone https://github.com/xh74d82hl/francesco.git
+cp -R francesco/skills/* ~/.claude/skills/
 ```
 
-Preserva `normative/` e `scripts/` esistenti. Sicura per sviluppo iterativo.
+### Flag dell'installer
+
+| Flag | Cosa fa |
+|---|---|
+| `--agent <nome>` | `claude-code`, `opencode` o `agents` (`~/.agents/skills`) |
+| `--dir <percorso>` | Installa in un'altra cartella skills |
+| `--yes` | Non chiede mai (fallisce se rileva più di un agente) |
+| `--list` | Mostra gli agenti rilevati |
+
+Per passare i flag al comando unico: `| bash -s -- --agent claude-code`. Da un clone, `bash install.sh` installa la tua copia locale.
 
 ---
 
 ## Struttura
 
 ```
-~/.agents/skills/francesco/
-  SKILL.md              — orchestratore (regole condivise + menu)
-  README.md             — versione inglese 🇬🇧
-  README.it.md          — questo file (italiano) 🇮🇹
-  install.sh            — installer per Linux/macOS
-  install.ps1           — installer per Windows
-  DIRECTION.md          — roadmap
-  characters/
-    francesco.svg       — la faccia
-  commands/             — istruzioni riutilizzabili
-    revisione.md        — sessione revisione completa
-    check.md            — validazione documenti
-    bilancio_check.md   — controlli bilancio + Benford/pattern
-    estratto_check.md   — riconciliazione bancaria
-    normativa.md        — archivio normativo + auto-aggiornamento
-    triage.md           — scansione rapida società
-    inizializza.md      — commissionamento nuova società
-    setup.md            — installazione dipendenze
-    riepilogo.md        — report DOCX riassuntivo
-    struttura.md        — validazione struttura directory
-  skills/               — skill specializzate (caricamento diretto)
-    francesco-revisione/
-      SKILL.md          — workflow revisione
-    francesco-bilancio/
-      SKILL.md          — controlli bilancio + anti-manipolazione
-    francesco-estratto/
-      SKILL.md          — riconciliazione bancaria
-  normative/            — archivio normativo per società (gitignorato)
-  scripts/              — script di utilità locali (gitignorati)
+francesco/                     — questo repo
+  skills/
+    francesco/                 — orchestratore (regole condivise + menu)
+      SKILL.md
+      references/              — flussi dettagliati, caricati quando servono
+        revisione.md           — sessione revisione completa
+        check.md               — validazione documenti
+        bilancio_check.md      — controlli bilancio + Benford/pattern
+        estratto_check.md      — riconciliazione bancaria
+        normativa.md           — archivio normativo + auto-aggiornamento
+        triage.md              — scansione rapida società
+        inizializza.md         — commissionamento nuova società
+        riepilogo.md           — report DOCX riassuntivo
+        struttura.md           — validazione struttura directory
+    francesco-revisione/       — scorciatoia: workflow revisione
+    francesco-bilancio/        — scorciatoia: controlli bilancio
+    francesco-estratto/        — scorciatoia: riconciliazione bancaria
+  install.sh / install.ps1     — installer
+  README.md / README.it.md
+  DIRECTION.md                 — roadmap
+  characters/francesco.svg     — la faccia
 ```
+
+Installa le quattro skill una accanto all'altra: le scorciatoie leggono i `references/` dell'orchestratore.
 
 ---
 
 ## Requisiti
 
-- **OpenCode**, **Claude Code**, **Cursor** o agente compatibile
-- `npx` disponibile nel PATH
-- Opzionale: MCP `docling` per PDF scansionati
+- Un agente che supporta le Agent Skills (Claude, Claude Code, OpenCode, Cursor, ...) con un modello che legge PDF e immagini
+- Opzionale: skill `docx` / `xlsx` per output Word ed Excel (altrimenti Markdown/CSV)
 - Opzionale: LibreOffice per file `.doc` legacy
 
 ---

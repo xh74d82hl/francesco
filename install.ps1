@@ -1,50 +1,50 @@
-param(
-  [Parameter(Position = 0)]
-  [string]$Source = $env:FRANCESCO_REPO,
+# Francesco family installer for Windows. Copies the skills into your agent's skills folder.
+#
+# Remote: irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
+# Local:  .\install.ps1 [-Agent <name>] [-Dir <path>] [-Yes]
 
+param(
   [string]$Agent = "",
+  [string]$Dir = "",
   [switch]$Yes,
-  [switch]$List,
-  [switch]$DevCopy,
-  [string]$Target = "$HOME/.agents/skills"
+  [switch]$List
 )
 
 $ErrorActionPreference = "Stop"
-$SkillName = "francesco"
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Repo = if ($env:FRANCESCO_REPO) { $env:FRANCESCO_REPO } else { "xh74d82hl/francesco" }
+$Branch = if ($env:FRANCESCO_BRANCH) { $env:FRANCESCO_BRANCH } else { "main" }
+# Empty when run through `irm | iex`.
+$ScriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { "" }
 
 function Info($Message) { Write-Host "info $Message" -ForegroundColor Cyan }
 function Ok($Message) { Write-Host "ok $Message" -ForegroundColor Green }
-function Warn($Message) { Write-Host "warn $Message" -ForegroundColor Yellow }
 function Fail($Message) { Write-Host "error $Message" -ForegroundColor Red; exit 1 }
 
-function Test-Command($Name) {
-  return [bool](Get-Command $Name -ErrorAction SilentlyContinue)
+function Get-AgentDir($Name) {
+  switch ($Name) {
+    { $_ -in "claude-code", "claude" } { return (Join-Path $HOME ".claude/skills") }
+    "opencode" { return (Join-Path $HOME ".config/opencode/skills") }
+    "agents" { return (Join-Path $HOME ".agents/skills") }
+    default { Fail "unknown agent: $Name (use claude-code, opencode, agents, or -Dir <path>)" }
+  }
 }
 
 function Get-DetectedAgents {
   $Detected = @()
-  if (Test-Command "opencode") { $Detected += "opencode" }
-  if ((Test-Command "claude") -or (Test-Command "claude-code")) { $Detected += "claude-code" }
-  if (Test-Command "cursor") { $Detected += "cursor" }
-  if (Test-Command "windsurf") { $Detected += "windsurf" }
-  if (Test-Command "github-copilot-cli") { $Detected += "github-copilot" }
+  if (Test-Path (Join-Path $HOME ".claude")) { $Detected += "claude-code" }
+  if (Test-Path (Join-Path $HOME ".config/opencode")) { $Detected += "opencode" }
+  # No known agent: fall back to the shared ~/.agents/skills folder.
+  if ($Detected.Count -eq 0) { $Detected += "agents" }
   return $Detected
 }
 
-function Choose-Agent($Requested, [bool]$SkipPrompt) {
-  if ($Requested) { return $Requested }
-
+function Choose-Agent([bool]$SkipPrompt) {
   $Detected = @(Get-DetectedAgents)
-  if ($Detected.Count -eq 0) {
-    Fail "no supported harness detected. Rerun with -Agent opencode, -Agent claude-code, or -Agent cursor."
-  }
   if ($Detected.Count -eq 1) { return $Detected[0] }
   if ($SkipPrompt) {
-    Fail "multiple harnesses detected: $($Detected -join ', '). Rerun with -Agent <name>; refusing to install everywhere."
+    Fail "multiple agents detected: $($Detected -join ', '). Rerun with -Agent <name>; refusing to install everywhere."
   }
-
-  Info "detected harnesses:"
+  Info "detected agents:"
   for ($i = 0; $i -lt $Detected.Count; $i++) {
     Write-Host "  $($i + 1)) $($Detected[$i])"
   }
@@ -55,49 +55,44 @@ function Choose-Agent($Requested, [bool]$SkipPrompt) {
   return $Detected[[int]$Choice - 1]
 }
 
-function Install-WithSkills($InstallSource, $TargetAgent, [bool]$SkipPrompt) {
-  Info "install source: $InstallSource"
-  Info "target agent: $TargetAgent"
-  $Args = @("skills", "add", $InstallSource, "--global", "--skill", $SkillName, "--agent", $TargetAgent)
-  if ($SkipPrompt) { $Args += "--yes" }
-  & npx @Args
-  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-}
-
-function Copy-Dev($InstallTarget) {
-  if (-not (Test-Path (Join-Path $ScriptDir "SKILL.md"))) {
-    Fail "-DevCopy requires running from local repo"
-  }
-  $Dest = Join-Path $InstallTarget $SkillName
-  New-Item -ItemType Directory -Force -Path $Dest | Out-Null
-  Get-ChildItem -Path $ScriptDir -Force | Where-Object {
-    $_.Name -notin @(".git", "normative", "scripts")
-  } | ForEach-Object {
-    Copy-Item -Path $_.FullName -Destination $Dest -Recurse -Force
-  }
-  Ok "dev-copied to $Dest"
-  Info "preserved existing normative/ and scripts/"
-}
-
 if ($List) {
-  $Detected = @(Get-DetectedAgents)
-  if ($Detected.Count -eq 0) { Warn "no supported harness detected" } else { $Detected | ForEach-Object { Write-Host $_ } }
+  Get-DetectedAgents | ForEach-Object { Write-Host $_ }
   exit 0
 }
 
-if ($DevCopy) {
-  Copy-Dev $Target
-  exit 0
+$Target = $Dir
+if (-not $Target) {
+  if (-not $Agent) { $Agent = Choose-Agent $Yes.IsPresent }
+  $Target = Get-AgentDir $Agent
 }
 
-if (-not $Source) {
-  if (Test-Path (Join-Path $ScriptDir "SKILL.md")) {
+$TempDir = ""
+try {
+  # Source: this repo, or a fresh download.
+  if ($ScriptDir -and (Test-Path (Join-Path $ScriptDir "skills/francesco/SKILL.md"))) {
     $Source = $ScriptDir
   } else {
-    Fail "missing source repo"
+    $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("francesco-" + [System.Guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Force -Path $TempDir | Out-Null
+    $Zip = Join-Path $TempDir "francesco.zip"
+    Info "downloading $Repo ($Branch)..."
+    Invoke-WebRequest -Uri "https://github.com/$Repo/archive/refs/heads/$Branch.zip" -OutFile $Zip -UseBasicParsing
+    Expand-Archive -Path $Zip -DestinationPath $TempDir -Force
+    $Source = (Get-ChildItem -Path $TempDir -Directory | Select-Object -First 1).FullName
   }
-}
 
-$Chosen = Choose-Agent $Agent $Yes.IsPresent
-Install-WithSkills $Source $Chosen $Yes.IsPresent
-Ok "installed $SkillName for $Chosen"
+  New-Item -ItemType Directory -Force -Path $Target | Out-Null
+  Get-ChildItem -Path (Join-Path $Source "skills") -Directory | ForEach-Object {
+    $Dest = Join-Path $Target $_.Name
+    New-Item -ItemType Directory -Force -Path $Dest | Out-Null
+    # Replace our own reference files so removed ones do not linger.
+    $OldRefs = Join-Path $Dest "references"
+    if (Test-Path $OldRefs) { Remove-Item -Recurse -Force $OldRefs }
+    Copy-Item -Path (Join-Path $_.FullName "*") -Destination $Dest -Recurse -Force
+    Ok "installed $($_.Name)"
+  }
+  Ok "done: $Target"
+  Info "restart your agent, then type /francesco"
+} finally {
+  if ($TempDir -and (Test-Path $TempDir)) { Remove-Item -Recurse -Force $TempDir }
+}

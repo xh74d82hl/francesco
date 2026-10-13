@@ -1,4 +1,4 @@
-# commands/riepilogo — Report DOCX riassuntivo stato revisione
+# riepilogo — Report DOCX riassuntivo stato revisione
 
 **Chiamato da:** orchestratore `SKILL.md` (chiusura sessione).
 **Standalone:** se l'utente dice "riepilogo" / "report" / "stato".

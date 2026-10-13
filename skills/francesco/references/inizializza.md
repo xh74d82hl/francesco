@@ -1,4 +1,4 @@
-# commands/inizializza — Setup nuova societa
+# inizializza — Setup nuova societa
 
 **Chiamato da:** orchestratore `SKILL.md` (quando societa non inizializzata).
 **Standalone:** preflight rapido se chiamato diretto.
@@ -10,6 +10,17 @@ propone un processo di revisione su misura, lo fa approvare dall'utente,
 poi lo segue.
 
 ---
+
+## Contenuti
+
+- Flusso
+- Step 0 — Scopri la società
+- Fase 1 — Scan approfondito
+- Fase 2 — Identifica
+- Fase 3 — Propone processo di revisione
+- Fase 4 — Presenta all'utente
+- Fase 5 — Salva e inizia
+- Note
 
 ## Flusso
 
@@ -169,7 +180,7 @@ Francesco compila una bozza di `PROCESSO_REVISIONE.md` basata su:
 
 ### Struttura cartelle da creare
 
-Francesco segue la struttura canonica definita in `commands/struttura.md`.
+Francesco segue la struttura canonica definita in `references/struttura.md`.
 Qui il riepilogo:
 
 Base comune (sempre):
@@ -192,7 +203,7 @@ Base comune (sempre):
     Documenti da tenere/
 ```
 
-Extra per giurisdizione/tipo (vedi `commands/struttura.md` per dettagli):
+Extra per giurisdizione/tipo (vedi `references/struttura.md` per dettagli):
 
 | Giurisdizione | Se... | Aggiungi |
 |--------------|-------|----------|
@@ -330,7 +341,7 @@ Dopo approvazione:
 2. Crea `AGENTS.md` con regole base (se non esiste)
 3. Salva `PROCESSO_REVISIONE.md` approvato
 4. Crea `Date [NOME].xlsx` vuoto o con calendario base (se non esiste)
-5. Esegui preflight normativa (`commands/normativa.md#preflight`)
+5. Esegui preflight normativa (`references/normativa.md#preflight`)
 6. Scrivi `LOG_AGENTI/` log 001 di inizializzazione
 7. Conferma all'utente: "Pronto. Prossimo passo: partire con la prima revisione."
 

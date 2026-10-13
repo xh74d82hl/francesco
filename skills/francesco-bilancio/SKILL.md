@@ -2,7 +2,7 @@
 name: francesco-bilancio
 description: "Francesco — controlli di bilancio. Verifica che lo stato patrimoniale quadri, la CE torni, la nota integrativa si agganci ai numeri, le scelte contabili siano coerenti e applica test anti-manipolazione (legge di Benford e pattern sospetti). Scarica/acquisisce i documenti, ricontrolla i numeri come un revisore vero. Use when users ask for: bilancio, controlli bilancio, quadratura, nota integrativa, Benford, numeri truccati, verifica voci."
 license: MIT
-compatibility: opencode, claude-code, cursor
+compatibility: Richiede la skill francesco installata nella stessa cartella skills (usa i suoi file in references/).
 metadata:
   domain: accounting
   role: specialist
@@ -13,10 +13,9 @@ metadata:
 
 # francesco-bilancio
 
-Controlli di bilancio. Usato dall'orchestratore `SKILL.md`.
-Se chiamato diretto, funziona standalone.
+Controlli di bilancio. Scorciatoia diretta al flusso, senza il menu dell'orchestratore.
 
-> Regole condivise in SKILL.md padre (preflight, token discipline, MUST/MUST NOT).
+Le regole condivise (preflight, documenti scansionati, token discipline, MUST/MUST NOT) e i file di riferimento stanno nella skill `francesco`, installata accanto a questa: leggi `../francesco/SKILL.md` prima di iniziare. Se non c'è → fermati: "Manca la skill francesco. Installa la famiglia completa."
 
 ---
 
@@ -74,11 +73,11 @@ Come un contabile vero: non ti fidare di quello che c'è, vai a prendere le font
 1. **Scansiona `Bilanci/`** → trova bilancio dell'esercizio target (`Bilancio_[ANNO].xlsx/.pdf`, nota integrativa, relazioni).
 2. **Scansiona `Documenti acquisiti/` e `Documenti da tenere/`** → lettere incarico, attestazioni, comunicazioni banca/tesoriere.
 3. **Se mancano fonti** → segnala e proponi di acquisirle:
-   - File locali (`*.xlsx`, `*.pdf`, `*.csv`) → leggi diretto (docling per PDF scansionati).
+   - File locali (`*.xlsx`, `*.pdf`, `*.csv`) → leggi diretto (anche PDF scansionati e immagini).
    - Portali/URL ufficiali (es. CCIAA visura, Registro Imprese, Bundesanzeiger, Légifrance, SEC EDGAR) → chiedi all'utente il link o il download, **non navigare da solo senza conferma**.
    - Estratti conto / libro giornale / mastri → se servono per riconciliare, carica `francesco-estratto`.
 4. **Salva le fonti** in `Documenti acquisiti/` con nome canonico, non modificarle.
-5. **OCR se serve** → MCP docling sui PDF scansionati.
+5. **PDF scansionati e immagini** → leggili direttamente e ricontrolla i totali (regole in `../francesco/SKILL.md`, "Documenti scansionati").
 
 > "Ho acquisito: [lista file]. Mancano: [lista]. Procedo sui disponibili o aspetti le fonti?"
 
@@ -88,7 +87,7 @@ Mai procedere cieco senza fonti. Se proprio non ci sono → FERMATI E CHIEDI.
 
 ## Step 3 — Leggi lo stato
 
-1. Carica `commands/check.md` (check rapido struttura).
+1. Carica `../francesco/references/check.md` (check rapido struttura).
 2. Leggi `Revisione/PROCESSO_REVISIONE.md` → stato, calendario, mancanze, **criteri/contabilità applicati**.
 3. Leggi `Revisione/Date [NOME].xlsx` → scadenze (approvazione bilancio, deposito, cda).
 4. Leggi ultimo log in `LOG_AGENTI/`.
@@ -124,7 +123,7 @@ Utente sceglie. Prendi nota.
 
 ## Step 5 — Esegui (i controlli veri)
 
-Carica `commands/bilancio_check.md` per la procedura dettagliata. Sintesi:
+Carica `../francesco/references/bilancio_check.md` per la procedura dettagliata. Sintesi:
 
 ### 5.1 — I numeri tornano? (quadratura)
 - **Stato patrimoniale**: Attivo Totale = Passivo Totale (in ogni schema: civilistico OIC, IFRS, HGB, US/UK GAAP). Diff = 0 al centesimo.
@@ -144,7 +143,7 @@ Verifica che le scelte siano **dichiarate, coerenti e applicate**:
 - Per ogni scelta: **è documentata nella nota? È uguale all'anno prima? Se cambiata, c'è la spiegazione e l'effetto?**
 
 ### 5.3 — I numeri sono veri o sono stati fatti su? (pattern sospetti)
-Carica il modulo `commands/bilancio_check.md#benford`:
+Carica il modulo `../francesco/references/bilancio_check.md#benford`:
 - **Legge di Benford** (prima cifra): estrai tutti gli importi significativi, conta la prima cifra, confronta con P(d)=log₁₀(1+1/d). Calcola scarto (χ² o Z per digit). Se supera soglia → flag "numeri possibilmente manipolati".
 - **Benford prime-due-cifre** per campioni grandi.
 - **Round-number bias**: importi con troppe cifre finali a zero (soglia configurabile, es. ≥60% degli importi terminano con 000/00).
@@ -207,19 +206,17 @@ Poi:
 
 ---
 
-## Carica comandi condivisi
+## File di riferimento condivisi
 
 | Quando | Carica |
 |--------|--------|
-| Preflight + validazione struttura | `francesco/commands/struttura.md` |
-| Check documenti generico | `francesco/commands/check.md` |
-| **Check bilancio (add-up, scelte, Benford)** | `francesco/commands/bilancio_check.md` |
-| Riconciliazione bancaria | `francesco/commands/estratto_check.md` |
-| Triage / stato rapido | `francesco/commands/triage.md` |
-| Normativa + ricerca fonti | `francesco/commands/normativa.md` |
-| Setup nuova società | `francesco/commands/inizializza.md` |
-| Setup dipendenze | `francesco/commands/setup.md` |
-| Report DOCX riepilogo | `francesco/commands/riepilogo.md` |
+| Preflight + validazione struttura | `../francesco/references/struttura.md` |
+| Check documenti generico | `../francesco/references/check.md` |
+| **Check bilancio (add-up, scelte, Benford)** | `../francesco/references/bilancio_check.md` |
+| Riconciliazione bancaria | `../francesco/references/estratto_check.md` |
+| Triage / stato rapido | `../francesco/references/triage.md` |
+| Normativa + ricerca fonti | `../francesco/references/normativa.md` |
+| Setup nuova società | `../francesco/references/inizializza.md` |
+| Report DOCX riepilogo | `../francesco/references/riepilogo.md` |
 
-Tutti i comandi stanno in `francesco/commands/`.
-Script MCP server in `francesco/scripts/docling-server.py`.
+Tutti i file stanno in `../francesco/references/`.

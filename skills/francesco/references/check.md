@@ -1,6 +1,6 @@
-# commands/check — Validazione documenti
+# check — Validazione documenti
 
-**Chiamato da:** orchestratore `SKILL.md` o da `commands/revisione.md`.
+**Chiamato da:** orchestratore `SKILL.md` o da `references/revisione.md`.
 **Standalone:** preflight rapido se chiamato diretto.
 
 Verifica documenti, dati, log, struttura.

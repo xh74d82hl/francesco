@@ -2,7 +2,6 @@
 name: francesco
 description: "Francesco — orchestratore della famiglia di skill di revisione contabile. Supporta giurisdizioni: Italia, Germania, Francia, USA, UK, Svizzera e altre. Menu principale: carica per scegliere la skill giusta o avviare il flusso generico. Use when users ask for: francesco, cosa posso fare, help, menu, voglio fare una revisione, vorrei controllare un bilancio, non so cosa fare."
 license: MIT
-compatibility: opencode, claude-code, cursor
 metadata:
   domain: accounting
   role: specialist
@@ -64,19 +63,6 @@ Check frustration → Preflight → Capisci richiesta → Carica comando → Ese
 
 Prima di fare qualunque cosa:
 
-### 0. Setup utente (prima esecuzione)
-
-Se `~/.francesco-setup` non esiste:
-> "Prima esecuzione di Francesco. Vuoi configurare le dipendenze?
-> (OCR, MCP docling, skill docx/xlsx)
->
-> Carica `commands/setup.md` per il setup guidato."
-
-- Se utente dice si → carica `commands/setup.md`, esegui.
-- Se utente dice no → crea `~/.francesco-setup` per non chiedere piu,
-  ma segnala: "OCR, docx e xlsx potrebbero non funzionare senza setup."
-- Fine setup. Scrivi `~/.francesco-setup`.
-
 ### 1. Trova directory societa
 - Guarda directory corrente.
 - Vedi `Revisione/`? → societa trovata.
@@ -86,15 +72,23 @@ Se `~/.francesco-setup` non esiste:
 - Utente da percorso? → vai li.
 - Ancora nessuna? → "Non trovo società. Dammi un percorso o fammi sapere dove guardare."
 
-### 2. Check dipendenze (non bloccare, segnala)
-- **docling MCP** disponibile? → Si: usalo per OCR. No: "OCR non disponibile. PDF scansionati saltati."
-- **libreoffice** installato? → Si: converti .doc vecchi. No: "File .doc non convertibili."
-- **skill docx** disponibile? → Si: usala per produrre documenti. No: produci markdown.
-- **skill xlsx** disponibile? → Si: usala per fogli. No: segnala.
+### 2. Strumenti opzionali (non bloccare, segnala)
 
-### 3. Valida struttura (da `commands/struttura.md`)
+Francesco non ha dipendenze obbligatorie. Usa quello che l'ambiente offre:
+- **skill docx** disponibile? → Si: usala per produrre documenti. No: produci markdown.
+- **skill xlsx** disponibile? → Si: usala per fogli. No: produci CSV/markdown e segnala.
+- **File .doc vecchi**: se l'ambiente sa convertirli (es. libreoffice) convertili, altrimenti "File .doc non convertibili. Me li esporti in .docx o PDF?"
+
+### Documenti scansionati
+
+PDF scansionati e immagini si leggono direttamente, senza strumenti OCR esterni.
+- Dopo la lettura ricontrolla i numeri: somma delle righe = totale dichiarato nel documento. Se non torna, rileggi la pagina.
+- Cifra dubbia o pagina illeggibile → segna `N.d.`, indica pagina e riga, chiedi una scansione migliore. Mai indovinare un importo.
+- Documento lungo → leggi a blocchi di pagine, non saltarne.
+
+### 3. Valida struttura (da `references/struttura.md`)
 - `Revisione/` esiste? → No: "Societa non inizializzata. Chiamo inizializza?"
-- `PROCESSO_REVISIONE.md` esiste? → No: chiama `commands/inizializza.md`.
+- `PROCESSO_REVISIONE.md` esiste? → No: chiama `references/inizializza.md`.
 - `LOG_AGENTI/` esiste? → No: crea.
 - `Verbali/` (+ `insediamento e accettazione/`) esiste? → No: crea.
 - `Documenti acquisiti/` esiste? → No: crea.
@@ -151,17 +145,16 @@ Poi carica:
 
 | Se l'utente dice... | Carica |
 |---------------------|--------|
-| "revisione" / "audit" / "verbale" / "verifica cassa" | `commands/revisione.md` |
-| "check" / "controlla" / "verifica documenti" | `commands/check.md` |
-| "inizializza" / "nuova societa" / "setup" | `commands/inizializza.md` |
-| "normativa" / "regolamenti" / "leggi" | `commands/normativa.md` |
-| "triage" / "stato" / "situazione" | `commands/triage.md` |
-| "struttura" / "cartelle" / "organizzazione" | `commands/struttura.md` |
-| "setup" / "configura" / "installa dipendenze" | `commands/setup.md` |
-| "riepilogo" / "report" / "stato documento" | `commands/riepilogo.md` |
-| "bilancio" / "quadratura" / "verifica voci" | `commands/bilancio_check.md` |
-| "benford" / "numeri truccati" / "pattern sospetti" | `commands/bilancio_check.md#benford` |
-| "estratto conto" / "riconciliazione" / "check banca" | `commands/estratto_check.md` |
+| "revisione" / "audit" / "verbale" / "verifica cassa" | `references/revisione.md` |
+| "check" / "controlla" / "verifica documenti" | `references/check.md` |
+| "inizializza" / "nuova societa" | `references/inizializza.md` |
+| "normativa" / "regolamenti" / "leggi" | `references/normativa.md` |
+| "triage" / "stato" / "situazione" | `references/triage.md` |
+| "struttura" / "cartelle" / "organizzazione" | `references/struttura.md` |
+| "riepilogo" / "report" / "stato documento" | `references/riepilogo.md` |
+| "bilancio" / "quadratura" / "verifica voci" | `references/bilancio_check.md` |
+| "benford" / "numeri truccati" / "pattern sospetti" | `references/bilancio_check.md#benford` |
+| "estratto conto" / "riconciliazione" / "check banca" | `references/estratto_check.md` |
 | "cosa posso fare" / generico | Mostra lista capabilita |
 
 Il comando caricato esegue il suo flusso specifico e produce output.
@@ -189,7 +182,7 @@ Ogni comando restituisce output strutturato. Francesco verifica:
 1. Scrivi log in `LOG_AGENTI/`: `YYYY-MM-DD_log_NNN_descrizione.md`.
 2. Aggiorna `PROCESSO_REVISIONE.md`: stato, mancanze, riferimento log.
 3. Se applicabile, aggiorna `Date [NOME].xlsx`.
-4. **Offri riepilogo DOCX**: "Vuoi un report DOCX riassuntivo? (carica commands/riepilogo.md)"
+4. **Offri riepilogo DOCX**: "Vuoi un report DOCX riassuntivo? (carica references/riepilogo.md)"
    - Si → esegui, salva in `Revisione/Riepilogo_*.docx`.
    - No → skippa.
 5. Mostra riepilogo:
@@ -200,7 +193,7 @@ Ogni comando restituisce output strutturato. Francesco verifica:
 
 ## Token discipline
 
-Stile compresso (`caveman ultra`) durante: analisi, OCR, lettura fonti, controlli intermedi.
+Stile compresso durante: analisi, lettura scansioni, lettura fonti, controlli intermedi.
 
 Stile leggibile per: domande all'utente, warning critici, log ufficiali, verbali, riepilogo finale.
 
@@ -237,53 +230,31 @@ Regole:
 
 ---
 
-## Comandi condivisi
+## File di riferimento
 
 | File | Pattern | Cosa fa |
 |------|---------|---------|
-| `commands/revisione.md` | Scopri → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi | Produzione documenti revisione |
-| `commands/check.md` | Scopri → Leggi stato → Controlla → Output report | Validazione documenti |
-| `commands/triage.md` | Scopri → Scansiona → Output triage | Stato rapido societa |
-| `commands/normativa.md` | Preflight → Rileva giurisdizione → Cerca fonti → Salva | Archivio normativo |
-| `commands/inizializza.md` | Scan → Identifica → Propone → Approva → Salva | Setup nuova societa |
-| `commands/struttura.md` | Struttura canonica + validazione | Template e check cartelle |
-| `commands/setup.md` | Check Python → uv → docling → MCP → skill docx/xlsx | Setup prima esecuzione |
-| `commands/riepilogo.md` | Leggi stato → Genera DOCX | Report riassuntivo revisione |
-| `commands/bilancio_check.md` | Estrai → Quadratura → Scelte → Benford → Report | Controlli bilancio + anti-manipolazione |
-| `commands/estratto_check.md` | Carica → Confronta → Riconcilia → Report | Riconciliazione estratti conto |
+| `references/revisione.md` | Scopri → Leggi stato → Pianifica → Esegui → Triplo check → Chiudi | Produzione documenti revisione |
+| `references/check.md` | Scopri → Leggi stato → Controlla → Output report | Validazione documenti |
+| `references/triage.md` | Scopri → Scansiona → Output triage | Stato rapido societa |
+| `references/normativa.md` | Preflight → Rileva giurisdizione → Cerca fonti → Salva | Archivio normativo |
+| `references/inizializza.md` | Scan → Identifica → Propone → Approva → Salva | Setup nuova societa |
+| `references/struttura.md` | Struttura canonica + validazione | Template e check cartelle |
+| `references/riepilogo.md` | Leggi stato → Genera DOCX | Report riassuntivo revisione |
+| `references/bilancio_check.md` | Estrai → Quadratura → Scelte → Benford → Report | Controlli bilancio + anti-manipolazione |
+| `references/estratto_check.md` | Carica → Confronta → Riconcilia → Report | Riconciliazione estratti conto |
 
 Ogni comando segue: Preflight → Esegui → Output. L'orchestratore chiama,
 verifica, triplo check, chiude.
 
 ---
 
-## Struttura
+## Skill sorelle
 
-```
-~/.agents/skills/francesco/
-  SKILL.md                  ← orchestratore + processo
-  commands/
-    struttura.md            ← struttura canonica
-    revisione.md            ← flusso revisione
-    check.md                ← validazione documenti
-    bilancio_check.md       ← controlli bilancio + Benford/pattern
-    estratto_check.md       ← riconciliazione estratti conto
-    normativa.md            ← archivio normativo
-    triage.md               ← scansione rapida
-    inizializza.md          ← setup nuova societa
-    setup.md                ← installazione dipendenze
-    riepilogo.md            ← report DOCX riassuntivo
-  scripts/
-    docling-server.py       ← MCP server per OCR
-  skills/
-    francesco-revisione/    ← workflow revisione
-    francesco-bilancio/     ← controlli bilancio (attivo)
-    francesco-estratto/     ← riconciliazione bancaria (attivo)
-  normative/                ← archivio (gitignorato)
-  characters/
-  DIRECTION.md              ← roadmap
-  LICENSE                   ← MIT
-  README.md / README.it.md
-  install.sh / install.ps1
-  .gitignore
-```
+Scorciatoie che saltano il menu e vanno dritte al flusso. Usano i file in `references/` di questa skill.
+
+| Skill | Flusso |
+|-------|--------|
+| `francesco-revisione` | Verbali, verifiche di cassa, relazioni |
+| `francesco-bilancio` | Quadratura, scelte contabili, Benford |
+| `francesco-estratto` | Riconciliazione estratti conto |

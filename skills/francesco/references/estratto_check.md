@@ -1,15 +1,26 @@
-# commands/estratto_check — Riconciliazione estratti conto
+# estratto_check — Riconciliazione estratti conto
 
-**Chiamato da:** `skills/francesco-estratto/SKILL.md` (Step 5), dall'orchestratore `SKILL.md`
+**Chiamato da:** la skill `francesco-estratto` (Step 5), dall'orchestratore `SKILL.md`
 quando l'utente dice "estratto conto" / "riconciliazione" / "check banca", o da
 `francesco-bilancio` per agganciare la liquidità del bilancio agli estratti.
 **Standalone:** se chiamato diretto, fa preflight rapido all'inizio.
 
 Confronta movimenti banca vs contabilità, segnala incongruenze, riconcilia i saldi.
 
-Token: stile compresso durante lettura/OCR/controlli. Leggibile per warning, report, log.
+Token: stile compresso durante lettura/lettura scansioni/controlli. Leggibile per warning, report, log.
 
 ---
+
+## Contenuti
+
+- Preflight rapido (solo se standalone)
+- Step 1 — Carica le fonti
+- Step 2 — Allinea i movimenti
+- Step 3 — Caccia incongruenze
+- Step 4 — Riconciliazione saldo
+- Step 5 — Incrocio cassa (opzionale)
+- Step 6 — Output report
+- Step 7 — Triplo check (ricorsivo)
 
 ## Preflight rapido (solo se standalone)
 
@@ -21,7 +32,7 @@ Token: stile compresso durante lettura/OCR/controlli. Leggibile per warning, rep
 
 ## Step 1 — Carica le fonti
 
-Da `Documenti acquisiti/` (XLSX/CSV via skill xlsx, PDF via docling):
+Da `Documenti acquisiti/` (XLSX/CSV via skill xlsx; PDF e scansioni: lettura diretta):
 - Estratti conto (per conto e per periodo).
 - Contabilità banca: libro giornale / mastro / prima nota (colonne: data, descrizione, dare, avere).
 

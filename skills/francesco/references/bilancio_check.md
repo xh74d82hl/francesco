@@ -1,6 +1,6 @@
-# commands/bilancio_check — Controlli di bilancio (il comando "check")
+# bilancio_check — Controlli di bilancio (il comando "check")
 
-**Chiamato da:** `skills/francesco-bilancio/SKILL.md` (Step 5), dall'orchestratore `SKILL.md`
+**Chiamato da:** la skill `francesco-bilancio` (Step 5), dall'orchestratore `SKILL.md`
 quando l'utente dice "check bilancio" / "benford" / "quadratura", o da `francesco-revisione`
 per validare i numeri dei verbali/relazioni.
 **Standalone:** se chiamato diretto, fa preflight rapido all'inizio.
@@ -8,9 +8,19 @@ per validare i numeri dei verbali/relazioni.
 Controlla che lo stato patrimoniale quadri, la CE torni, la nota integrativa si agganci,
 le scelte contabili siano coerenti e applica i test anti-manipolazione (Benford + pattern).
 
-Token: stile compresso durante estrazione/OCR/controlli. Leggibile per warning, report, log.
+Token: stile compresso durante estrazione/lettura scansioni/controlli. Leggibile per warning, report, log.
 
 ---
+
+## Contenuti
+
+- Preflight rapido (solo se standalone)
+- Step 1 — Estrai i numeri
+- Step 2 — Quadratura (i numeri tornano?)
+- Step 3 — Scelte contabili (cosa è stato deciso?)
+- Step 4 — Test anti-manipolazione {#benford}
+- Step 5 — Output report
+- Step 6 — Triplo check (ricorsivo)
 
 ## Preflight rapido (solo se standalone)
 
@@ -22,7 +32,7 @@ Token: stile compresso durante estrazione/OCR/controlli. Leggibile per warning, 
 
 ## Step 1 — Estrai i numeri
 
-Da `Bilanci/` / `Documenti acquisiti/` (XLSX via skill xlsx, PDF via docling):
+Da `Bilanci/` / `Documenti acquisiti/` (XLSX via skill xlsx; PDF e scansioni: lettura diretta):
 
 - Stato patrimoniale: voci attivo (A) e passivo (P) con totali.
 - Conto economico: voci e subtotali (VP, costi, ro, ebit, ebt, utile).

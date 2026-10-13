@@ -1,4 +1,4 @@
-# commands/revisione — Produzione documenti revisione
+# revisione — Produzione documenti revisione
 
 **Chiamato da:** orchestratore `SKILL.md` dopo preflight.
 **Standalone:** se chiamato diretto, fa preflight rapido all'inizio.
@@ -6,10 +6,21 @@
 Produce documenti di revisione per paese/tipo/mandato.
 Usa modelli da PROCESSO_REVISIONE.md o da cartella modelli.
 
-Token: stile compresso durante analisi/OCR/controlli.
+Token: stile compresso durante analisi/lettura scansioni/controlli.
 Leggibile per domande, log, riepilogo.
 
 ---
+
+## Contenuti
+
+- Preflight rapido (solo se standalone)
+- Step 1 — Scopri la società
+- Step 2 — Leggi lo stato
+- Step 3 — Pianifica la sessione
+- Step 4 — Esegui
+- Step 5 — Triplo Check
+- Step 6 — Chiudi
+- Output Template (per il log)
 
 ## Preflight rapido (solo se standalone)
 
@@ -72,7 +83,7 @@ Basandoti su calendario + stato + nuovi documenti, Francesco propone:
 
 > "Oggi possiamo:
 > 1. [Prima opzione — es. produrre verbale Q2 2025]
-> 2. [Seconda opzione — es. OCR nuovi documenti acquisiti]
+> 2. [Seconda opzione — es. lettura nuovi documenti scansionati]
 > 3. [Terza opzione — es. check generale documentazione]
 >
 > Cosa facciamo?"
@@ -107,7 +118,7 @@ In base al tipo di documento da produrre (seleziona in base a giurisdizione e ma
 | **Svizzera** | Rapporto di revisione (ordinaria/limitata) | Modello + skill docx |
 | | Rapporto al consiglio | Modello + skill docx |
 | **Qualsiasi** | Scheletro futuro | Copia modello con N.d. |
-| | OCR su PDF | MCP docling |
+| | PDF scansionati / immagini | Lettura diretta (vedi `SKILL.md`, "Documenti scansionati") |
 | | Tabella XLSX | skill xlsx (preservare schema) |
 
 Per ogni documento prodotto:
@@ -123,7 +134,7 @@ Per ogni documento prodotto:
 ### 1° giro — Esecuzione
 
 Fai il lavoro. Documenti, log, stato. Tutto senza fretta.
-Opzionale: carica `commands/check.md` per un check formale.
+Opzionale: carica `references/check.md` per un check formale.
 
 ### 2° giro — Verifica
 
@@ -132,12 +143,12 @@ Rileggi tutto. Controlla:
 - Date coerenti? Nomi scritti giusti?
 - Importi combaciano con le fonti?
 - **Numeri nei verbali/relazioni quadrati?** Se citi importi di bilancio →
-  carica `commands/bilancio_check.md` per validare quadratura + scelte contabili + Benford/pattern.
-- **Estratti conto riconciliati?** Se citi liquidità → carica `commands/estratto_check.md`.
+  carica `references/bilancio_check.md` per validare quadratura + scelte contabili + Benford/pattern.
+- **Estratti conto riconciliati?** Se citi liquidità → carica `references/estratto_check.md`.
 - Riferimenti incrociati tornano?
 - **Struttura cartelle ancora integra?** I nuovi documenti salvati
   sono nella cartella giusta? (es. verbale in `Verbali/[ANNO]/`,
-  non sparpagliato nella root). Usa `commands/struttura.md` come riferimento.
+  non sparpagliato nella root). Usa `references/struttura.md` come riferimento.
 - **Convenzioni nomi rispettate?** Log segue `YYYY-MM-DD_log_NNN_*.md`?
 
 Se trovi un errore, correggi e ricomincia il 2° giro da capo.
