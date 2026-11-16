@@ -1,242 +1,297 @@
-# Francesco
+# Francesco 2.0
+
+<p align="center">
+  <i>🇬🇧 <a href="README.md">Read this in English</a></i>
+</p>
 
 <p align="center">
   <img src="characters/francesco.svg" width="100%" alt="Francesco — il revisore contabile">
 </p>
 
-<p align="center">
-  <i>🇬🇧 <a href="README.md">Wanna read it in Francesco's broken English?</a></i>
-</p>
-
 > **35 anni. Occhialetti tondi. Sguardo assente. Precisione maniacale.**
 >
-> Francesco non è un genio. Non cerca di esserlo. È il robot umano che assumi quando i numeri devono tornare ed essere ricontrollati — 3 volte? 30? Non lo so, ma lui lo sa di sicuro. Se non lo sa, ricontrolla!
+> Francesco non è un genio. Non ci prova nemmeno. È il senior audit manager che
+> vuoi quando i numeri devono quadrare — e quando qualcuno deve spiegarti, in
+> parole semplici, cosa manca ancora.
+
+Francesco 2.0 è una **skill AI-first per la revisione legale** che copre l'intero
+incarico: onboarding, analisi rischi, verifiche periodiche, carte di lavoro,
+controlli di sostanza, findings e relazione finale.
+
+È **zero-dipendenze**. Niente OCR, docling, LibreOffice, librerie DOCX/XLSX.
+Legge PDF e scansioni con la vision nativa del modello, tiene la memoria in una
+Wiki Markdown incrementale e produce Markdown, CSV e HTML self-contained pronti
+per la stampa da browser.
+
+## Cosa cambia nella 2.0
+
+- **Una skill universale** invece di un orchestratore e tre sub-skill.
+- **Wiki Markdown incrementale** come unico stato, con ID collegati alle fonti
+  e audit trail append-only.
+- **Nessuna cartella di input fissa**: l'agente scopre i documenti e costruisce
+  la mappa. Niente `Revisione/`, nessun obbligo di naming.
+- **Nessuna dipendenza OCR/Office**: lettura multimodale nativa; output
+  Markdown, CSV e HTML stampabile.
+- **UX guidata**: banner di fase, richieste documenti in linguaggio semplice,
+  conferme prima di chiudere carte e relazione.
+- **Distribuzione cloud + CLI**: `npx francesco-audit` e bundle unico per
+  Claude Projects, ChatGPT Projects e Gemini Gems.
 
 ---
 
-## Avvio Rapido
+## Avvio rapido
 
-Dopo l'installazione, invoca Francesco per nome:
-
-> **`/francesco`** — orchestratore (menu completo, sceglie il flusso giusto)
-> **`/francesco-bilancio`** — controlli bilancio
-> **`/francesco-estratto`** — riconciliazione bancaria
-> **`/francesco-revisione`** — documenti di revisione
-
-L'orchestratore ti saluta, fa i controlli preflight, poi chiede cosa ti serve. Digli direttamente cosa vuoi — sceglie lui il flusso. Le sub-skill saltano il menu e vanno dritte al lavoro.
-
----
-
-## Cosa Sa Fare Francesco
-
-| Se dici... | Lui fa... |
-|---|---|
-| "revisione" / "verbale" | Sessione revisione completa: identifica → pianifica → esegue → triplo check → chiude |
-| "check" / "controlla" | Valida documenti: dati, date, firme, log |
-| "bilancio" / "quadratura" | Quadratura SP/CE, cross-foot, aggancio nota integrativa |
-| "benford" / "numeri truccati" | Anti-manipolazione: Benford χ², bias arrotondamento, duplicati, pattern |
-| "estratto conto" / "riconciliazione" | Riconciliazione bancaria: abbina movimenti, trova incongruenze |
-| "inizializza" / "nuova societa" | Setup nuova società: scan → identifica → propone → approva |
-| "normativa" / "leggi" | Archivio normativo per paese/tipo/settore (funziona offline) |
-| "triage" / "stato" | Scansione rapida stato società |
-| "riepilogo" / "report" | Genera report DOCX riassuntivo |
-
----
-
-## Perché Esiste Francesco
-
-Ogni revisione produce lo stesso dolore:
-- **Fogli di calcolo con trimestri mancanti**
-- **Firme che non coincidono con le date**
-- **"Sono sicuro di aver salvato quel file"** (non è vero)
-
-Francesco è costruito per un lavoro solo: **documentazione di revisione, fatta bene, ogni volta.** Non si annoia, non va di fretta, e ricontrolla tutto — compreso il suo stesso triplo check.
-
----
-
-## Funzionalità
-
-| Funzione | Cosa fa |
-|---|---|
-| **Flusso di Revisione** | Ciclo completo: estrazione contesto, pianificazione, esecuzione, triplo check, chiusura |
-| **Validazione Documenti** | Incrocia dati, date, firme, importi tra tutte le fonti |
-| **Archivio Normativo** | Database normativo locale costruito per giurisdizione, tipo società e settore. Funziona offline. |
-| **Triplo Check** | Esegui → verifica → riverifica → rileggi un altro file per sicurezza |
-| **Estrazione Contesto** | Scansiona i documenti esistenti per ricostruire giurisdizione, tipo società, mandato, stato revisione |
-| **OCR + Docling** | PDF scansionati? Francesco li legge. DOCX, XLSX? Nativo. |
-| **Auto-Logging** | Ogni sessione scrive un log datato. `PROCESSO_REVISIONE.md` sempre aggiornato. |
-| **Multi-piattaforma** | Funziona su Linux, macOS, Windows. OpenCode, Claude Code, Cursor, altri. |
-| **Controllo Bilancio** | Quadratura SP/CE, cross-foot, aggancio nota integrativa, scelte contabili |
-| **Benford / Anti-Manipolazione** | Test χ², Z per cifra, bias arrotondamento, importi duplicati, terminal-digit, clustering soglie |
-| **Riconciliazione Bancaria** | Abbina movimenti, classifica unreconciled, riconcilia saldo, incrocia cassa |
-
----
-
-## Come Funziona
-
-L'orchestratore (`/francesco`) esegue questo ciclo a ogni sessione:
-
-```
-Check frustrazione → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
-```
-
-1. **Check frustrazione** — rileva frustrazione/imprecazioni (pattern IT + EN); 1-2 match → messaggio calma; 3+ consecutivi → salta, vai diretto
-2. **Preflight** — trova la directory società, controlla dipendenze (docling, libreoffice, skill), valida struttura, legge ultimo log
-3. **Cosa vuoi fare?** — se non hai ancora detto nulla, si presenta e chiede cosa serve; conferma la comprensione prima di procedere
-4. **Sceglie il comando giusto** — associa la tua richiesta al flusso giusto
-5. **Esegue** — lancia il comando scelto
-6. **Verifica output** — apre i file prodotti, controlla che il log sia stato scritto
-7. **Triplo check** — 4 giri (esegui → verifica → sicurezza → rileggi ultima riga ultimo log)
-8. **Chiude** — scrive log, aggiorna `PROCESSO_REVISIONE.md`, offre report DOCX
-
-**Sub-skill** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) saltano il punto 3 e vanno dritte al loro flusso — completamente standalone, con triplo check e chiusura propri.
-
-### 1. Safety Preflight
-
-Prima di toccare qualsiasi cosa, Francesco:
-1. Verifica che la directory società esista
-2. Crea `AGENTS.md` se manca
-3. Crea `Revisione/PROCESSO_REVISIONE.md` se manca
-4. Testa la leggibilità dei file (`.docx`, `.xlsx`, PDF scansionati)
-5. Verifica che la data dell'ultimo log sia coerente
-
-Se qualcosa non torna, si ferma e chiede. Non procede mai alla cieca.
-
-### 2. Flusso di Revisione
-
-```
-Identifica  →  Pianifica  →  Esegui  →  Triplo Check  →  Chiudi
-  │             │             │             │              │
-  │             │             │             │              ├─ Scrivi log datato
-  │             │             │             │              ├─ Aggiorna PROCESSO_REVISIONE.md
-  │             │             │             │              └─ Valida file prodotti
-  │             │             │             │
-  │             │             │             └─ 1°: esegui
-  │             │             │                2°: verifica tutto
-  │             │             │                3°: se dubbio → chiedi; se certo → rifai
-  │             │             │                4°: rileggi ultima riga ultimo log
-  │             │             │
-  │             │             └─ OCR? docling. DOCX? skill docx. XLSX? skill xlsx.
-  │             │
-  │             └─ Cosa serve oggi? Cosa NON toccare?
-  │
-  └─ Giurisdizione? Tipo società? Mandato? Settore?
-```
-
-### 3. Archivio Normativo Personale
-
-Francesco non tiene in testa tutte le leggi. A ogni lavoro:
-
-1. Rileva la giurisdizione (IT, DE, FR, US, ...) dai documenti della società
-2. Controlla `normative/` per paese + tipo società + settore
-3. Se completo → procede. Se manca → cerca sulle fonti ufficiali giuste:
-   - **Italia**: Normattiva, Gazzetta Ufficiale, CNDCEC
-   - **Germania**: Bundesanzeiger, Handelsregister, IDW
-   - **Francia**: Légifrance, Journal Officiel, CNCC
-   - **USA**: SEC.gov, FASB, registri societari statali
-4. Salva in locale per paese. La prossima volta è già lì. Funziona offline.
-
-> Niente database centrali. Niente PR per aggiornare una norma. Roba sua. Locale. Aggiornata quando serve.
-
----
-
-## Disciplina Token
-
-Durante analisi, OCR, lettura fonti e controlli intermedi, Francesco scrive in stile compresso `caveman ultra` — frasi brevi, niente narrativa inutile, conserva tutti i numeri, le date, i nomi e i riferimenti.
-
-**Leggibilità piena riservata a:** domande all'utente, warning critici, log ufficiali, documenti formali e riepilogo finale.
-
----
-
-> *"N.d. è meglio di una bugia. Il dubbio è meglio di una certezza frettolosa."*
-> — Francesco, a ogni sessione
-
----
-
-## Installazione
+### 1. CLI / IDE agentico (OpenCode, Claude Code, Cursor)
 
 ```bash
-# Auto-detect (consigliato)
-bash <(curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh) xh74d82hl/francesco
+# inizializza la Wiki di lavoro nella cartella corrente
+npx francesco-audit init . --entity "Casa di Riposo Esempio" --period 2025
 
-# Via npx skills, agente esplicito
-npx skills add xh74d82hl/francesco --global --skill francesco --agent opencode
+# installa la skill nell'agente
+npx francesco-audit install --agent opencode
+# oppure: --agent claude-code / --agent cursor / --target <dir>
 
-# Manuale
-git clone https://github.com/xh74d82hl/francesco.git ~/.agents/skills/francesco
+# verifica l'integrità del pacchetto
+npx francesco-audit doctor
 ```
 
-Sostituisci `opencode` con `claude-code`, `cursor` o il tuo agente.
+`init` crea solo ciò che serve:
 
-### Flag
-
-| Flag | Cosa fa |
-|---|---|
-| `--agent <nome>` | Installa per un agente specifico |
-| `--yes` | Salta i prompt (solo se 1 agente rilevato) |
-| `--list` | Mostra gli agenti rilevati |
-| `--dev-copy` | Copia i file locali per test |
-
-### Windows
-
-```powershell
-irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
-# Poi, se serve:
-.\install.ps1 xh74d82hl/francesco
+```
+wiki/                 # stato incrementale, template già compilati
+output/               # deliverable (Markdown, CSV, HTML)
+.francesco/skill/     # SKILL.md + core/ + templates/, letti dall'agente
+.francesco/config.json
 ```
 
-### Copia di Sviluppo
+**Non esiste una cartella di input obbligatoria.** Metti i documenti dove
+preferisci, allegali in chat o indica una cartella all'agente. Francesco li
+scopre e costruisce la mappa documentale.
+
+Poi scrivi all'agente:
+
+> "Usa la skill in `.francesco/skill` e leggi `wiki/INDEX.md`. Dobbiamo
+> revisionare il bilancio 2025."
+
+### 2. Cloud (Claude Projects/Skills, ChatGPT Projects, Gemini Gems)
 
 ```bash
-bash install.sh --dev-copy --target ~/.agents/skills
+npx francesco-audit bundle --out francesco-cloud.md
+# contesto più piccolo:
+npx francesco-audit bundle --compact --out francesco-cloud-compact.md
 ```
 
-Preserva `normative/` e `scripts/` esistenti. Sicura per sviluppo iterativo.
+Carica il bundle come istruzioni di progetto / skill / conoscenza del gem, poi
+scrivi:
+
+> "Francesco, dobbiamo revisionare l'ente X per il 2025. Ecco i documenti."
+
+Il bundle è un unico file con skill, moduli e template. Non richiede filesystem.
+Tieni la Wiki in una sezione `WIKI` della conversazione; a fine lavoro esportala
+in Markdown.
+
+Bundle già pronti nel repository:
+
+- [`bundle/CLOUD-BUNDLE.md`](bundle/CLOUD-BUNDLE.md) — completo
+- [`bundle/CLOUD-BUNDLE.compact.md`](bundle/CLOUD-BUNDLE.compact.md) — ridotto
 
 ---
 
-## Struttura
+## Come funziona
+
+Francesco usa una macchina a stati, non un routing per parole chiave. Ogni
+sessione riprende dalla Wiki e mostra un banner di avanzamento:
 
 ```
-~/.agents/skills/francesco/
-  SKILL.md              — orchestratore (regole condivise + menu)
-  README.md             — versione inglese 🇬🇧
-  README.it.md          — questo file (italiano) 🇮🇹
-  install.sh            — installer per Linux/macOS
-  install.ps1           — installer per Windows
-  DIRECTION.md          — roadmap
-  characters/
-    francesco.svg       — la faccia
-  commands/             — istruzioni riutilizzabili
-    revisione.md        — sessione revisione completa
-    check.md            — validazione documenti
-    bilancio_check.md   — controlli bilancio + Benford/pattern
-    estratto_check.md   — riconciliazione bancaria
-    normativa.md        — archivio normativo + auto-aggiornamento
-    triage.md           — scansione rapida società
-    inizializza.md      — commissionamento nuova società
-    setup.md            — installazione dipendenze
-    riepilogo.md        — report DOCX riassuntivo
-    struttura.md        — validazione struttura directory
-  skills/               — skill specializzate (caricamento diretto)
-    francesco-revisione/
-      SKILL.md          — workflow revisione
-    francesco-bilancio/
-      SKILL.md          — controlli bilancio + anti-manipolazione
-    francesco-estratto/
-      SKILL.md          — riconciliazione bancaria
-  normative/            — archivio normativo per società (gitignorato)
-  scripts/              — script di utilità locali (gitignorati)
+[Francesco · Fase 3/8 · Evidenze]
+Fatto: letto bilancio 2025 (D-003) ed estratto BPER (D-011)
+Ora: aggiorno la mappa documentale
+Mi serve: nota integrativa 2025 (anche scansione)
+Prossimo: quadratura SP/CE
+```
+
+| Fase | Cosa succede | Output |
+|---|---|---|
+| 0 | Intake: ente, periodo, obiettivo, documenti | sintesi perimetro |
+| 1 | Incarico: profilo, mandato, indipendenza, materialità | `contesto-ente`, `piano-revisione` |
+| 2 | Rischi: cicli, assertioni, frode, controlli, risposte | `rischi-controlli` |
+| 3 | Evidenze: lettura fonti, estrazione fatti, mappa | `mappa-documentale` |
+| 4 | Carte di lavoro: procedure, campioni, risultati, conclusioni | `wiki/carte-lavoro/CL-*` |
+| 5 | Sostanza: quadrature, riconciliazioni, analitiche, Benford | `CL-*` + CSV |
+| 6 | Findings: severità, evidenza, risposta management | `anomalie-findings` |
+| 7 | Relazione: giudizio, KAM, continuità, firma | Markdown + HTML |
+| 8 | Chiusura: snapshot, indice, archivio, prossima azione | audit trail |
+
+Il ciclo completo è in [`SKILL.md`](SKILL.md); gli undici moduli operativi sono
+in [`core/`](core/). L'agente carica un modulo solo quando la fase lo richiede.
+
+---
+
+## La Wiki incrementale
+
+La Wiki è l'unico stato persistente. È Markdown puro: leggibile da un umano,
+modificabile dal modello, verificabile senza database.
+
+| Pagina | Scopo |
+|---|---|
+| `wiki/INDEX.md` | mappa del lavoro: fase, copertura, gap, prossima azione |
+| `wiki/contesto-ente.md` | ente, giurisdizione, mandato, framework, governance |
+| `wiki/rischi-controlli.md` | rischi `R-###`, controlli `C-###`, matrice |
+| `wiki/mappa-documentale.md` | fonti `D-###` e fatti estratti |
+| `wiki/richieste-documenti.md` | richieste documenti e impatto dei gap |
+| `wiki/piano-revisione.md` | perimetro, materialità, tempi, campioni |
+| `wiki/anomalie-findings.md` | findings `F-###` con evidenza e risposta |
+| `wiki/carte-lavoro/CL-*.md` | carte di lavoro con sign-off |
+| `wiki/registro-attivita.md` | audit trail append-only |
+
+Protocollo di aggiornamento:
+
+```
+Estrai → verifica sulla fonte → sintetizza → aggancia
+→ aggiorna la pagina → appendi al registro → aggiorna INDEX
+```
+
+Niente viene cancellato. Le correzioni sono nuove voci datate con `supersede`.
+Ogni affermazione ha fonte e pagina. I conflitti si aprono esplicitamente, mai
+si risolvono in silenzio.
+
+---
+
+## Output
+
+| Formato | Uso |
+|---|---|
+| **Markdown** | Wiki, carte di lavoro, narrativa della relazione |
+| **CSV** | riconciliazioni, campioni, tabelle (UTF-8, RFC 4180) |
+| **HTML** | self-contained, `@media print`, zero asset esterni |
+
+Template:
+
+- [`templates/output/carta-lavoro.html`](templates/output/carta-lavoro.html)
+- [`templates/output/relazione-finale.html`](templates/output/relazione-finale.html)
+- [`templates/output/checklist-chiusura.md`](templates/output/checklist-chiusura.md)
+
+Stampa: apri l'HTML in un browser → `Ctrl/Cmd + P` → salva come PDF. Nessun
+LibreOffice, nessun Word, nessun componente aggiuntivo.
+
+Francesco non produce DOCX/XLSX come formato primario. Se richiesto, spiega il
+compromesso e offre Markdown + HTML stampabile, oppure CSV da importare.
+
+---
+
+## Perché zero dipendenze
+
+| Approccio legacy | Francesco 2.0 |
+|---|---|
+| pipeline OCR / MCP docling | vision nativa di Claude, Gemini, GPT |
+| librerie per generare DOCX/XLSX | Markdown, CSV, HTML self-contained |
+| setup Python + uv + MCP | nessuno |
+| struttura `Revisione/` obbligatoria | scoperta autonoma dei documenti |
+| routing per parole chiave | interpretazione dell'intento + macchina a stati |
+| archivio normativo locale | fonti citate dentro la Wiki |
+
+Così la skill è usabile da revisori non tecnici ed è portabile tra cloud e
+agenti locali.
+
+---
+
+## Riferimento CLI
+
+```
+npx francesco-audit init [dir] [--entity NOME] [--period 2025] [--state wiki] [--force]
+npx francesco-audit bundle [--compact] [--out FILE]
+npx francesco-audit install [--agent opencode|claude-code|cursor] [--target DIR]
+npx francesco-audit doctor
+npx francesco-audit info
+```
+
+- `init` non sovrascrive pagine Wiki esistenti senza `--force`.
+- `bundle` è deterministico: stesse fonti, stesso file.
+- `install` copia `SKILL.md`, `core/`, `templates/` e il manifest.
+- `doctor` verifica file richiesti, frontmatter, zero dipendenze, CSS di stampa,
+  assenza di asset esterni e aggiornamento dei bundle.
+
+---
+
+## Compatibilità
+
+| Ambiente | Modalità |
+|---|---|
+| OpenCode | CLI + filesystem |
+| Claude Code | CLI + filesystem |
+| Cursor | CLI + filesystem |
+| Claude Web / Projects / Skills | bundle cloud |
+| ChatGPT Projects | bundle cloud |
+| Gemini Gems | bundle cloud |
+
+Per il cloud serve la vision per leggere le scansioni. Se il modello non ce
+l'ha, incolla il testo o fornisci un PDF testuale.
+
+---
+
+## Metadati per i registry
+
+- [`SKILL.md`](SKILL.md) usa il frontmatter standard (`name`, `description`,
+  `license`, `version`, `compatibility`, `metadata`).
+- [`skill.json`](skill.json) è il manifest leggibile dalle macchine per i
+  portali di skill: capacità, output, compatibilità, distribuzione e
+  dichiarazione delle dipendenze.
+- Topic GitHub suggeriti (presenti anche in `skill.json`): `audit`,
+  `revisione-legale`, `accounting`, `commercialista`, `revisore`,
+  `agent-skill`, `ai-skill`, `markdown`, `zero-dependency`, `npx`.
+- Il pacchetto è pubblicabile come `francesco-audit` con `npm publish`; nessun
+  build step e nessuna dipendenza runtime.
+
+---
+
+## Struttura del repository
+
+```
+SKILL.md                     entry point universale
+skill.json                   manifest per i registry
+package.json                 pacchetto npx zero-dependency
+bin/francesco.mjs            CLI: init | bundle | install | doctor | info
+core/                        undici moduli operativi
+templates/wiki/              template della Wiki incrementale
+templates/output/            HTML stampabile + checklist
+bundle/                      bundle cloud committati
+test/                        smoke test zero-dependency
+AUDIT.md                     audit di migrazione (cosa rimosso e perché)
+characters/francesco.svg     la faccia
 ```
 
 ---
 
-## Requisiti
+## Sviluppo
 
-- **OpenCode**, **Claude Code**, **Cursor** o agente compatibile
-- `npx` disponibile nel PATH
-- Opzionale: MCP `docling` per PDF scansionati
-- Opzionale: LibreOffice per file `.doc` legacy
+```bash
+npm test
+node bin/francesco.mjs doctor
+npm run bundle          # rigenera i bundle committati
+```
+
+La suite usa solo `node:test`. Nessuna dev dependency.
+
+### Aggiungere un modulo
+
+1. Crea `core/NN-nome.md` con scope e gate chiari.
+2. Referenzialo in `SKILL.md` §5 e nell'indice del bundle.
+3. Esegui `npm run bundle` e `npm test`.
+
+### Aggiungere un template
+
+1. Aggiungi il file sotto `templates/wiki/` o `templates/output/`.
+2. Mantieni la sintassi `{{PLACEHOLDER}}`.
+3. L'HTML deve restare self-contained e includere `@media print`.
+4. Rigenera i bundle.
+
+---
+
+## Migrazione
+
+Il repository è stato rifattorizzato da una struttura multi-skill, dipendente da
+OCR e da DOCX/XLSX. [`AUDIT.md`](AUDIT.md) elenca ogni file rimosso e il suo
+sostituto. La cronologia Git conserva la versione precedente.
 
 ---
 
@@ -246,10 +301,5 @@ Preserva `normative/` e `scripts/` esistenti. Sicura per sviluppo iterativo.
 
 ---
 
-## Crediti
-
-Stile ispirato da **Ralph** — perché quando un bro fa un buon lavoro, si dice.
-
-Localizzazione italiana di **Kami** — pulita, calda, precisa.
-
-Costruito con ❤️ per revisori, commercialisti e chiunque ricontrolli il proprio controllo.
+Costruito per revisori, commercialisti e per chi ricontrolla il proprio triplo
+controllo.

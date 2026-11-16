@@ -1,7 +1,7 @@
-# Francesco
+# Francesco 2.0
 
 <p align="center">
-  <i>🇮🇹 <a href="README.it.md">Parli solo rabbia e salsicce? Clicca qui.</a></i>
+  <i>🇮🇹 <a href="README.it.md">Preferisci l'italiano? Leggi il README italiano.</a></i>
 </p>
 
 <p align="center">
@@ -10,233 +10,289 @@
 
 > **35 years old. Round glasses. Distant stare. Maniacal precision.**
 >
-> Francesco is not a genius. He doesn't try to be. He's the human robot you hire when the numbers must check out — 3 times? 30? He doesn't know. He'll check anyway.
+> Francesco is not a genius. He doesn't try to be. He is the senior audit
+> manager you want when the numbers must tie out — and when someone has to
+> explain, in plain language, what is still missing.
+
+Francesco 2.0 is an **AI-first legal audit skill** covering the full engagement:
+onboarding, risk assessment, periodic verifications, working papers,
+substantive testing, findings and the final report.
+
+It is **zero-dependency**. No OCR, no docling, no LibreOffice, no DOCX/XLSX
+libraries. It reads PDFs and scans with the model's native vision, keeps its
+memory in an incremental Markdown wiki, and produces Markdown, CSV and
+self-contained HTML ready for browser printing.
+
+## What's new in 2.0
+
+- **One universal skill** instead of an orchestrator plus three sub-skills.
+- **Incremental Markdown wiki** as the only state, with source-linked IDs and
+  an append-only audit trail.
+- **No fixed input folders**: the agent discovers documents and builds its own
+  map. No `Revisione/`, no naming obligations.
+- **No OCR/Office dependencies**: native multimodal reading; Markdown, CSV and
+  printable HTML output.
+- **Guided UX**: phase banner, plain-language document requests, confirmation
+  gates before closing working papers and the report.
+- **Cloud + CLI distribution**: `npx francesco-audit` and a single-file bundle
+  for Claude Projects, ChatGPT Projects and Gemini Gems.
 
 ---
 
-## Quick Start
+## Quick start
 
-After installation, invoke Francesco by name:
-
-> **`/francesco`** — orchestrator (shows menu, picks the right flow)
-> **`/francesco-bilancio`** — balance sheet checks
-> **`/francesco-estratto`** — bank reconciliation
-> **`/francesco-revisione`** — audit documentation
-
-The orchestrator greets you, runs preflight, then asks what you need. Tell him directly — he picks the right workflow. Sub-skills skip the menu and go straight to work.
-
----
-
-## What Francesco Can Do
-
-| Say this... | He runs... |
-|---|---|
-| "revisione" / "audit" / "verbale" | Full audit session: identify → plan → exec → triple-check → close |
-| "check" / "controlla" | Validates docs: data, dates, signatures, logs |
-| "bilancio" / "quadratura" | Balance sheet: SP=CE ties, cross-foot, nota integrativa tie-out |
-| "benford" / "numeri truccati" | Anti-manipulation: Benford χ², round-number bias, duplicates, patterns |
-| "estratto conto" / "riconciliazione" | Bank reconciliation: match movements, catch discrepancies |
-| "inizializza" / "nuova societa" | New company setup: scan → identify → propose → approve |
-| "normativa" / "leggi" | Regulation archive by country/type/sector (builds offline) |
-| "triage" / "stato" | Quick company state scan |
-| "riepilogo" / "report" | Generates DOCX summary report |
-
----
-
-## Why Francesco Exists
-
-Every audit produces the same pain:
-- **Spreadsheets with missing quarters**
-- **Signatures that don't match dates**
-- **"I'm sure I saved that file"** (you didn't)
-
-Francesco is purpose-built for one job: **audit documentation, done right, every time.** He doesn't get bored, doesn't rush, and triple-checks everything — including his own triple check.
-
----
-
-## Features
-
-| Feature | What it means |
-|---|---|
-| **Audit Workflow** | Full audit cycle: context extraction, planning, execution, triple check, closure |
-| **Document Validation** | Cross-checks data, dates, signatures, import amounts across all sources |
-| **Personal Archive** | Local regulation database built per-jurisdiction, per-company-type, per-sector. Works offline. |
-| **Triple Check** | Execute → verify → re-verify → read one more file just in case |
-| **Context Extraction** | Scans existing docs to reconstruct jurisdiction, company type, mandate, audit state |
-| **OCR + Docling** | Scanned PDFs? Francesco reads them. DOCX, XLSX? Native. |
-| **Auto-Logging** | Every session writes a dated log. `PROCESSO_REVISIONE.md` always current. |
-| **Cross-Platform** | Works on Linux, macOS, Windows. OpenCode, Claude Code, Cursor, others. |
-| **Balance Check** | Quadratura SP/CE, cross-foot, nota integrativa tie-out, scelte contabili |
-| **Benford / Anti-Manipulation** | χ² test, Z per digit, round-number bias, duplicated amounts, terminal-digit, threshold clustering |
-| **Bank Reconciliation** | Match movements, categorize unreconciled, reconcile saldo, cross-check cassa |
-
----
-
-## How It Works
-
-Orchestrator (`/francesco`) runs this loop every session:
-
-```
-Check frustration → Preflight → Capisci richiesta → Carica comando → Esegui → Verifica output → Triplo check → Chiudi
-```
-
-1. **Frustration check** — detects frustration/cursing (IT + EN patterns); 1-2 hits → calm message; 3+ consecutive → skip, go straight to action
-2. **Preflight** — finds the company dir, checks deps (docling, libreoffice, skills), validates directory structure, reads last log
-3. **What to do?** — if you haven't said anything, introduces himself and asks what you need; confirms understanding before proceeding
-4. **Picks the right command** — maps your request to a workflow
-5. **Executes** — runs the chosen command
-6. **Verifies output** — opens produced files, checks log was written
-7. **Triple checks** — 4 passes (exec → verify → safety → re-read last log line)
-8. **Closes** — writes log, updates `PROCESSO_REVISIONE.md`, offers DOCX report
-
-**Sub-skills** (`/francesco-bilancio`, `/francesco-estratto`, `/francesco-revisione`) skip step 3 and go straight to their flow — fully standalone, with their own triple check and closure.
-
-### 1. Safety Preflight
-
-Before touching anything, Francesco:
-1. Checks if the company directory exists
-2. Creates `AGENTS.md` if missing
-3. Creates `Revisione/PROCESSO_REVISIONE.md` if missing
-4. Tests file readability (`.docx`, `.xlsx`, scanned PDFs)
-5. Verifies last log date is coherent
-
-If something doesn't add up, he stops and asks. Never proceeds blind.
-
-### 2. Audit Flow
-
-```
-Identify  →  Plan  →  Execute  →  Triple-Check  →  Close
-  │           │          │             │              │
-  │           │          │             │              ├─ Write dated log
-  │           │          │             │              ├─ Update PROCESSO_REVISIONE.md
-  │           │          │             │              └─ Validate output files
-  │           │          │             │
-  │           │          │             └─ 1st: execute
-  │           │          │                2nd: verify everything
-  │           │          │                3rd: if doubt → ask; if sure → do it again
-  │           │          │                4th: re-read last log line
-  │           │          │
-  │           │          └─ OCR? docling. DOCX? docx skill. XLSX? xlsx skill.
-  │           │
-  │           └─ What needs doing today? What NOT to touch?
-  │
-  └─ Jurisdiction? Company type? Mandate? Sector?
-```
-
-### 3. Personal Normative Archive
-
-Francesco doesn't keep every law in his head. On every job:
-
-1. Detects jurisdiction (IT, DE, FR, US, ...) from company docs
-2. Checks `normative/` for existing regulation by country + company type + sector
-3. Complete → proceed. Missing → searches the right official sources:
-   - **Italy**: Normattiva, Gazzetta Ufficiale, CNDCEC
-   - **Germany**: Bundesanzeiger, Handelsregister, IDW
-   - **France**: Légifrance, Journal Officiel, CNCC
-   - **US**: SEC.gov, FASB, state corporation registries
-4. Saves locally per-country. Next time it's there. Works offline.
-
-> No central database. No PRs to update a regulation. His stuff. Local. Updated when needed.
-
----
-
-## Token Discipline
-
-During analysis, OCR, source reading, and intermediate checks, Francesco writes in compressed `caveman ultra` style — short phrases, no narrative fluff, preserve all numbers/dates/names/references.
-
-**Full readability reserved for:** user questions, critical warnings, official logs, formal documents, and final summary.
-
----
-
-> *"N.d. is better than a lie. Doubt is better than a rushed certainty."*
-> — Francesco, every single session
-
----
-
-## Installation
+### 1. Agentic CLI / IDE (OpenCode, Claude Code, Cursor)
 
 ```bash
-# Auto-detect (recommended)
-bash <(curl -fsSL https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.sh) xh74d82hl/francesco
+# initialize a working wiki in the current directory
+npx francesco-audit init . --entity "Casa di Riposo Esempio" --period 2025
 
-# Via npx skills, explicit agent
-npx skills add xh74d82hl/francesco --global --skill francesco --agent opencode
+# install the skill into your agent
+npx francesco-audit install --agent opencode
+# or: --agent claude-code / --agent cursor / --target <dir>
 
-# Manual
-git clone https://github.com/xh74d82hl/francesco.git ~/.agents/skills/francesco
+# check package integrity
+npx francesco-audit doctor
 ```
 
-Replace `opencode` with `claude-code`, `cursor`, or your harness of choice.
+`init` creates only what the skill needs:
 
-### Flags
-
-| Flag | What it does |
-|---|---|
-| `--agent <name>` | Target a specific harness |
-| `--yes` | Skip prompts (only when 1 agent detected) |
-| `--list` | Show detected harnesses |
-| `--dev-copy` | Copy local files for testing |
-
-### Windows
-
-```powershell
-irm https://raw.githubusercontent.com/xh74d82hl/francesco/main/install.ps1 | iex
-# Then if needed:
-.\install.ps1 xh74d82hl/francesco
+```
+wiki/                 # the incremental state (templates pre-filled)
+output/               # deliverables (Markdown, CSV, HTML)
+.francesco/skill/     # SKILL.md + core/ + templates/, read by the agent
+.francesco/config.json
 ```
 
-### Dev Copy
+There is **no required input folder**. Put documents wherever you want, attach
+them in chat, or point the agent at a directory. Francesco discovers them and
+builds the document map.
+
+Then tell the agent:
+
+> "Use the skill in `.francesco/skill` and read `wiki/INDEX.md`. We need to
+> audit the 2025 financial statements."
+
+### 2. Cloud (Claude Projects/Skills, ChatGPT Projects, Gemini Gems)
 
 ```bash
-bash install.sh --dev-copy --target ~/.agents/skills
+npx francesco-audit bundle --out francesco-cloud.md
+# smaller context:
+npx francesco-audit bundle --compact --out francesco-cloud-compact.md
 ```
 
-Preserves existing `normative/` and `scripts/`. Safe for iterative development.
+Upload the bundle as project instructions / custom skill / gem knowledge, then
+write:
+
+> "Francesco, we need to audit Entity X for 2025. Here are the documents."
+
+The bundle is a single file with the skill, all core modules and all templates.
+It requires no filesystem. Keep the wiki in a `WIKI` section of the
+conversation; at the end, export it as Markdown.
+
+Ready-made bundles are committed:
+
+- [`bundle/CLOUD-BUNDLE.md`](bundle/CLOUD-BUNDLE.md) — full
+- [`bundle/CLOUD-BUNDLE.compact.md`](bundle/CLOUD-BUNDLE.compact.md) — smaller
 
 ---
 
-## Structure
+## How it works
+
+Francesco runs a state machine, not a keyword router. Every session resumes
+from the wiki and shows a progress banner:
 
 ```
-~/.agents/skills/francesco/
-  SKILL.md              — orchestrator (shared rules + menu)
-  README.md             — this file (English)
-  README.it.md          — Italian version
-  install.sh            — installer for Linux/macOS
-  install.ps1           — installer for Windows
-  DIRECTION.md          — roadmap
-  characters/
-    francesco.svg       — the face
-  commands/             — shared reusable instructions
-    revisione.md        — full audit session flow
-    check.md            — document validation
-    bilancio_check.md   — balance sheet checks + Benford/patterns
-    estratto_check.md   — bank reconciliation
-    normativa.md        — regulation archive + auto-update
-    triage.md           — quick company scan
-    inizializza.md      — new company commissioning
-    setup.md            — dependency install
-    riepilogo.md        — DOCX summary report
-    struttura.md        — directory structure validation
-  skills/               — specialized skill entries (direct load)
-    francesco-revisione/
-      SKILL.md          — audit workflow
-    francesco-bilancio/
-      SKILL.md          — balance sheet checks + anti-manipulation
-    francesco-estratto/
-      SKILL.md          — bank reconciliation
-  normative/            — per-company regulation archive (gitignored)
-  scripts/              — local utility scripts (gitignored)
+[Francesco · Fase 3/8 · Evidenze]
+Fatto: read 2025 financial statements (D-003) and BPER statement (D-011)
+Ora: updating the document map
+Mi serve: notes to the financial statements (a scan is fine)
+Prossimo: balance sheet tie-out
+```
+
+| Phase | What happens | Output |
+|---|---|---|
+| 0 | Intake: entity, period, goal, available docs | scope summary |
+| 1 | Engagement: profile, mandate, independence, materiality | `contesto-ente`, `piano-revisione` |
+| 2 | Risks: cycles, assertions, fraud, controls, responses | `rischi-controlli` |
+| 3 | Evidence: read sources, extract facts, map documents | `mappa-documentale` |
+| 4 | Working papers: procedures, samples, results, conclusions | `wiki/carte-lavoro/CL-*` |
+| 5 | Substance: tie-outs, reconciliations, analytics, Benford | `CL-*` + CSV |
+| 6 | Findings: severity, evidence, management response | `anomalie-findings` |
+| 7 | Report: opinion, KAM, going concern, signature | Markdown + HTML |
+| 8 | Closure: snapshot, index, archive, next action | audit trail |
+
+The full cycle is described in [`SKILL.md`](SKILL.md) and the eleven modules in
+[`core/`](core/). The agent loads a module only when the phase requires it.
+
+---
+
+## The incremental wiki
+
+The wiki is the only persistent state. It is plain Markdown: readable by a
+human, editable by the model, verifiable without a database.
+
+| Page | Purpose |
+|---|---|
+| `wiki/INDEX.md` | work map: phase, coverage, gaps, next action |
+| `wiki/contesto-ente.md` | entity, jurisdiction, mandate, framework, governance |
+| `wiki/rischi-controlli.md` | risks `R-###`, controls `C-###`, matrix |
+| `wiki/mappa-documentale.md` | sources `D-###` and extracted facts |
+| `wiki/richieste-documenti.md` | document requests and impact of gaps |
+| `wiki/piano-revisione.md` | scope, materiality, timeline, samples |
+| `wiki/anomalie-findings.md` | findings `F-###` with evidence and response |
+| `wiki/carte-lavoro/CL-*.md` | working papers with sign-off |
+| `wiki/registro-attivita.md` | append-only audit trail |
+
+Update protocol:
+
+```
+Extract → verify against source → synthesize → cross-reference
+→ update page → append to activity log → update INDEX
+```
+
+Nothing is deleted. Corrections are new dated entries with `supersede`. Every
+claim carries a source and a page. Conflicts are opened explicitly, never
+silently resolved.
+
+---
+
+## Outputs
+
+| Format | Use |
+|---|---|
+| **Markdown** | wiki, working papers, report narrative |
+| **CSV** | reconciliations, samples, tables (UTF-8, RFC 4180) |
+| **HTML** | self-contained, `@media print`, no external assets |
+
+Templates:
+
+- [`templates/output/carta-lavoro.html`](templates/output/carta-lavoro.html)
+- [`templates/output/relazione-finale.html`](templates/output/relazione-finale.html)
+- [`templates/output/checklist-chiusura.md`](templates/output/checklist-chiusura.md)
+
+Printing: open the HTML in any browser → `Ctrl/Cmd + P` → save as PDF. No
+LibreOffice, no Word, no add-ons.
+
+Francesco does not produce DOCX/XLSX as a primary format. If asked, it explains
+the trade-off and offers Markdown + printable HTML, or CSV for spreadsheet
+import.
+
+---
+
+## Why zero dependencies
+
+| Legacy approach | Francesco 2.0 |
+|---|---|
+| OCR pipeline / docling MCP | native vision of Claude, Gemini, GPT |
+| DOCX/XLSX generation libraries | Markdown, CSV, self-contained HTML |
+| Python + uv + MCP setup | none |
+| Fixed `Revisione/` folder tree | autonomous document discovery |
+| Keyword routing table | intent interpretation + phase state machine |
+| Local normative database | cited sources inside the wiki |
+
+This makes the skill usable by non-technical auditors and portable across
+cloud and local agents.
+
+---
+
+## CLI reference
+
+```
+npx francesco-audit init [dir] [--entity NAME] [--period 2025] [--state wiki] [--force]
+npx francesco-audit bundle [--compact] [--out FILE]
+npx francesco-audit install [--agent opencode|claude-code|cursor] [--target DIR]
+npx francesco-audit doctor
+npx francesco-audit info
+```
+
+- `init` never overwrites existing wiki pages unless `--force`.
+- `bundle` is deterministic: the same sources produce the same file.
+- `install` copies `SKILL.md`, `core/`, `templates/` and the manifest.
+- `doctor` validates required files, frontmatter, zero dependencies, print CSS,
+  absence of external assets and bundle freshness.
+
+---
+
+## Compatibility
+
+| Environment | Mode |
+|---|---|
+| OpenCode | CLI + filesystem |
+| Claude Code | CLI + filesystem |
+| Cursor | CLI + filesystem |
+| Claude Web / Projects / Skills | cloud bundle |
+| ChatGPT Projects | cloud bundle |
+| Gemini Gems | cloud bundle |
+
+For cloud use, the model needs vision to read scans. If it does not have
+vision, paste the text or provide a text-based PDF.
+
+---
+
+## Registry metadata
+
+- [`SKILL.md`](SKILL.md) uses standard skill frontmatter (`name`,
+  `description`, `license`, `version`, `compatibility`, `metadata`).
+- [`skill.json`](skill.json) is the machine-readable manifest for skill
+  portals: capabilities, outputs, compatibility, distribution and dependency
+  declarations.
+- Suggested GitHub topics (also listed in `skill.json`): `audit`,
+  `revisione-legale`, `accounting`, `commercialista`, `revisore`,
+  `agent-skill`, `ai-skill`, `markdown`, `zero-dependency`, `npx`.
+- The package is publishable as `francesco-audit` with `npm publish`; no build
+  step and no runtime dependencies.
+
+---
+
+## Repository structure
+
+```
+SKILL.md                     universal entry point
+skill.json                   registry manifest
+package.json                 zero-dependency npx package
+bin/francesco.mjs            CLI: init | bundle | install | doctor | info
+core/                        eleven operational modules
+templates/wiki/              incremental wiki templates
+templates/output/            printable HTML + checklist
+bundle/                      committed cloud bundles
+test/                        zero-dependency smoke tests
+AUDIT.md                     migration audit (what was removed and why)
+characters/francesco.svg     the face
 ```
 
 ---
 
-## Requirements
+## Development
 
-- **OpenCode**, **Claude Code**, **Cursor**, or compatible agent
-- `npx` available in PATH
-- Optional: `docling` MCP for scanned PDFs
-- Optional: LibreOffice for legacy `.doc` files
+```bash
+npm test
+node bin/francesco.mjs doctor
+npm run bundle          # regenerate committed bundles
+```
+
+The test suite uses `node:test` only. No dev dependencies.
+
+### Adding a module
+
+1. Add `core/NN-name.md` with a clear scope and gate.
+2. Reference it in `SKILL.md` §5 and in the bundle index.
+3. Run `npm run bundle` and `npm test`.
+
+### Adding a template
+
+1. Add the file under `templates/wiki/` or `templates/output/`.
+2. Keep `{{PLACEHOLDER}}` syntax.
+3. HTML must stay self-contained and include `@media print`.
+4. Regenerate bundles.
+
+---
+
+## Migration
+
+This repository was refactored from a multi-skill, OCR-dependent, DOCX/XLSX
+setup. [`AUDIT.md`](AUDIT.md) lists every removed file and its replacement.
+Git history preserves the old version.
 
 ---
 
@@ -246,9 +302,5 @@ Preserves existing `normative/` and `scripts/`. Safe for iterative development.
 
 ---
 
-## Credits
-
-Style inspired by **Ralph** — because when a bro does good work, you say it.
-
-
-Built with ❤️ for auditors, accountants, and everyone who triple-checks their triple check.
+Built for auditors, accountants, and everyone who triple-checks their triple
+check.
