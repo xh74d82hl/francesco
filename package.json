@@ -1,0 +1,50 @@
+{
+  "name": "francesco-audit",
+  "version": "2.0.0",
+  "description": "Francesco 2.0 — AI-first, zero-dependency legal audit skill with an incremental Markdown wiki, multimodal ingestion and Markdown/CSV/HTML outputs. CLI for npx, cloud bundles and agent install.",
+  "type": "module",
+  "bin": {
+    "francesco-audit": "bin/francesco.mjs",
+    "francesco": "bin/francesco.mjs"
+  },
+  "files": [
+    "SKILL.md",
+    "skill.json",
+    "AUDIT.md",
+    "README.md",
+    "README.it.md",
+    "LICENSE",
+    "bin/",
+    "core/",
+    "templates/",
+    "bundle/"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "doctor": "node bin/francesco.mjs doctor",
+    "bundle": "node bin/francesco.mjs bundle --out bundle/CLOUD-BUNDLE.md && node bin/francesco.mjs bundle --compact --out bundle/CLOUD-BUNDLE.compact.md"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "audit",
+    "revisione-legale",
+    "accounting",
+    "commercialista",
+    "revisore",
+    "agent-skill",
+    "ai-skill",
+    "markdown",
+    "zero-dependency"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xh74d82hl/francesco.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xh74d82hl/francesco/issues"
+  },
+  "homepage": "https://github.com/xh74d82hl/francesco#readme"
+}
