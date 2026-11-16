@@ -1,0 +1,87 @@
+{
+  "name": "francesco",
+  "displayName": "Francesco — Revisione Legale",
+  "version": "2.0.0",
+  "description": "Skill AI-first per il ciclo completo di revisione legale: onboarding incarico, analisi rischi, verifiche periodiche, carte di lavoro, controlli di sostanza, relazione finale. Wiki Markdown incrementale, vision nativa, output Markdown/CSV/HTML.",
+  "license": "MIT",
+  "entrypoint": "SKILL.md",
+  "type": "skill",
+  "compatibility": [
+    "opencode",
+    "claude-code",
+    "claude-web",
+    "chatgpt",
+    "gemini",
+    "cursor"
+  ],
+  "capabilities": [
+    "engagement-onboarding",
+    "risk-assessment",
+    "periodic-verification",
+    "working-papers",
+    "substantive-testing",
+    "bank-reconciliation",
+    "benford-analysis",
+    "findings-management",
+    "audit-report",
+    "incremental-wiki",
+    "multimodal-ingestion",
+    "markdown-output",
+    "csv-output",
+    "print-ready-html"
+  ],
+  "outputs": ["markdown", "csv", "html"],
+  "dependencies": [],
+  "runtime": {
+    "languages": ["it", "en", "de", "fr", "es"],
+    "requiresNode": false,
+    "requiresOcr": false,
+    "requiresOffice": false,
+    "requiresNetwork": false
+  },
+  "distribution": {
+    "npx": "npx francesco-audit init",
+    "cloud": "bundle/CLOUD-BUNDLE.md",
+    "cloudCompact": "bundle/CLOUD-BUNDLE.compact.md",
+    "agents": ["opencode", "claude-code", "cursor"]
+  },
+  "files": {
+    "core": [
+      "core/00-motore-wiki.md",
+      "core/01-ingestione.md",
+      "core/02-onboarding-incarico.md",
+      "core/03-analisi-rischi.md",
+      "core/04-verifiche-periodiche.md",
+      "core/05-carte-lavoro.md",
+      "core/06-controlli-sostanza.md",
+      "core/07-relazione-finale.md",
+      "core/08-output-universali.md",
+      "core/09-guida-utente.md",
+      "core/10-principi-e-normativa.md"
+    ],
+    "templates": {
+      "wiki": "templates/wiki/",
+      "output": "templates/output/"
+    }
+  },
+  "topics": [
+    "audit",
+    "revisione-legale",
+    "accounting",
+    "commercialista",
+    "revisore",
+    "agent-skill",
+    "ai-skill",
+    "markdown",
+    "zero-dependency",
+    "npx"
+  ],
+  "keywords": [
+    "audit",
+    "revisione-legale",
+    "accounting",
+    "working-papers",
+    "wiki",
+    "agent-skill"
+  ]
+}
