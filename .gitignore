@@ -1,3 +1,5 @@
-normative/
-scripts/*
-!scripts/docling-server.py
+node_modules/
+.francesco/
+output/
+*.tmp
+.DS_Store
